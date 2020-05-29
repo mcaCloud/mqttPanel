@@ -25,8 +25,11 @@ use Auth;
 
 /*************MAIL-NOTIFICATION****************/
 /*Por cada mail que desee enviar lo tengo que importar aqui para poderlo utilizar*/
-use App\Mail\newUser;
-use App\Notifications\StatusUpdat;
+use App\Mail\welcome;
+
+
+use App\Notifications\welcomeNotification;
+use App\Notifications\userDeleted;
 
 /*Para recibir las notificacion desde la base de datos y desplegarlas en el panel de control*/
 use Illuminate\Support\Facades\Notification;
@@ -51,7 +54,7 @@ class UserController extends Controller
         /*THIS es un puntero que hace referencia a un OBJETO*/
         /*El AUTHORIZE es un metodo del controller App\Http\Requests\UserRequest
         /* Se autoriza a quien tenga permiso de 'listar-usuarios'*/
-        /*$this->authorize('listar-usuarios');
+        $this->authorize('listar-usuarios');
 
         /*Creo un variable USERS para que me guarde el QUERY el modelo de usuario*/
         $users = User::query();
@@ -171,18 +174,17 @@ class UserController extends Controller
         /*Guardamos en la base de datos*/
         \DB::commit();
 
-
         /*Cuando el usuario nuevo a sido creado le enviamos un correo de bienvenida*/
-        /*Tuvimos que ya haber importado el modelo MAIL y el correo que queremos enviar*/
+        /*Tuvimos que ya haber importado el modelo MAIL y el mailable del correo que queremos enviar*/
         /*El correo se lo enviamos al user que acabamos de crear*/
         /*Y lo que le enviamos es el correo que se llama 'newUser' dentro de la carpeta de MAIL en los controladores*/
-        /*LE pasamos la VAR del user que acaba de crearse para poder utilizar las propiedasd en el body del email*/
-        \Mail::to($user)->send(new newUser($user));
+        /*Le pasamos la VAR del user que acaba de crearse para poder utilizar las propiedasd en el body del email*/
+        \Mail::to($user)->send(new welcome($user));
 
 
-        /* Esta notificacion la guardamos en la base de datos y tambien la enviamos por corre*/
-        /*Revisar la notificacion para ver la logica*/
-        Notification::send($user, new StatusUpdat($user));
+        /* Esta notificacion la guardamos en la base de datos y tambien la enviamos por corre0*/
+        /*Lo que pasa es que es mejor enviar una notificacion y un carreo aparte porque aun no manejo bien el markdown desde toMail function de la notificacion*/
+        Notification::send($user, new welcomeNotification($user));
 
 
 
@@ -354,9 +356,13 @@ class UserController extends Controller
         /*authorize este es un método opcional donde colocamos la lógica para la autorización del usuario que devolverá true si el usuario está autorizado para hacer la solicitud y false en caso contrario.*/
         $this->authorize('eliminar-usuarios');
         //Ahora hacemos un find para conseguir el usuario que deseamos borrar
+
         $user = User::findOrFail($id);
+    
+
         //Finamente eliminar el registro del usuario de la base de datos
         User::destroy($id);
+
         //Lo ultimo que hace este metodo es redirigirnos a la pagina en que estabamos con el array de mensaje para que me diga si se elimino o no correctamente
         return redirect()->route('dashboard::users.index')->with([
             'message' => 'Se ha eliminado al usuario [' . $user->completeName() . ']',
