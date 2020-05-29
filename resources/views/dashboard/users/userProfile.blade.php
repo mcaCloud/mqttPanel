@@ -41,7 +41,7 @@
                 <!-- Aqui estoy utilizando el metodo del UserProfile ('getImage')-->
                 <!-- Como segundo parametro la ruta necesita el 'filename', entonces le paso el path de la image que guardé en el metodo update-->
                 <!--La quiero centrar entonces utilizo una posicion relativa y 25% hacia la izquierda-->
-                <img src="{{url('/miniatura/'.$user->image)}}" class="img-fluid" style="vertical-align: middle;width:50%;height:50%;border-radius: 50%;box-shadow: 0 0 8px rgba(0,0,0,0.8);" />   
+                <img src="{{url('/miniatura/'.$user->image)}}" class="img-fluid" style="vertical-align: middle;width:80%;height:90%;border-radius: 50%;box-shadow: 0 0 8px rgba(0,0,0,0.8);" />   
               @else
                 <img src="{{ URL::to('/') }}/img/avatar.png" alt="logo" class="img-thumbnail"/>
               @endif
