@@ -34,9 +34,17 @@
           <div class="row">
             <!----------------------IMAGE-FORM---------------------------->
             <div class="container-fluid col-md-6">
-            <!--------MINIATURA----------------->
 
+            <!-- Para mostrar las imagenes de cada video hacemos un if para comprobar que realmente existen en el disco. Con (has) verifica-->
+              @if(Storage::disk('avatars')->has($user->image))
+                <!-- Le concateno a la ruta minitura la imagen que quiero ver-->
+                <!-- Aqui estoy utilizando el metodo del UserProfile ('getImage')-->
+                <!-- Como segundo parametro la ruta necesita el 'filename', entonces le paso el path de la image que guardé en el metodo update-->
+                <!--La quiero centrar entonces utilizo una posicion relativa y 25% hacia la izquierda-->
+                <img src="{{url('/miniatura/'.$user->image)}}" class="img-fluid" style="vertical-align: middle;width:50%;height:50%;border-radius: 50%;box-shadow: 0 0 8px rgba(0,0,0,0.8);" />   
+              @else
                 <img src="{{ URL::to('/') }}/img/avatar.png" alt="logo" class="img-thumbnail"/>
+              @endif
 
             </div>
             <!----------------------/IMAGE-FORM----------------------------->

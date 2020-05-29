@@ -51,8 +51,7 @@ class UserProfile extends Controller
     {   
         /*El AUTHORIZE es un metodo del controller App\Http\Requests\UserRequest
         /*authorize este es un método opcional donde colocamos la lógica para la autorización del usuario que devolverá true si el usuario está autorizado para hacer la solicitud y false en caso contrario.*/
-        $this->authorize('editar-usuarios');
-
+        /*$this->authorize('editar-usuarios');
         /*Creo la variable PAge para guardar la request que recibo*/
         $page = $request->get('page');
 
@@ -60,24 +59,20 @@ class UserProfile extends Controller
         //Esta variable de userProfile es la que vamos a utilizar en el formulario para conseguir cada campo
         $user = User::findOrFail($id);
 
-        /*Si el usuario tiene rol de Super-Admin*/
-        if($user->hasRole('super-administrador')){
+        /*The pluck method retrieves all of the values for a given key*/
+        /*La variable Roles me guarda la consulta al modelo ROLE*/
+        /*La consulta a la tabla de la base de datos se hace a traves de la columna 'display_name' y me despliega los resultados de forma ascende*/
+        /*EL PLUCK utiliza dos keys : 'display:name' y 'id'*/
+        /*De esta forma puedo obtener los resultados de los campos de la BD desde la vista del formulario*/
+        $roles = Role::orderBy('display_name', 'asc')->pluck('display_name', 'id');
 
-          $roles = Role::orderBy('display_name', 'asc')->pluck('display_name', 'id');
+        /*The pluck method retrieves all of the values for a given key*/
+        /*La variable Roles me guarda la consulta al modelo PERMISSION*/
+        /*La consulta a la tabla de la base de datos se hace a traves de la columna 'display_name' y me despliega los resultados de forma ascende*/
+        /*EL PLUCK utiliza dos keys : 'display:name' y 'id'*/
+        /*De esta forma puedo obtener los resultados de los campos de la BD desde la vista del formulario*/
+        $permissions = Permission::orderBy('display_name', 'asc')->pluck('display_name', 'id');
 
-          /*Creo una VAR para que me guarde la busqueda de los permisos disponible en la base de datos con su nombre de manera asendente*/
-          /*Si no incluyo esto aqui cunado uno se mete a editar el usuario Super-admin me da un error porque no encuentra la variable (permissions)*/
-          $permissions = Permission::orderBy('display_name', 'asc')->pluck('display_name', 'id');
-
-        }else{
-          /*Aqui es para que me pueda mostrar los roles en la caja de seleccion del formulario*/
-
-          $roles = Role::where('name','!=','super-administrador')->orderBy('display_name', 'asc')->pluck('display_name', 'id');
-
-          /*Creo una VAR para que me guarde la busqueda de los permisos disponible en la base de datos con su nombre de manera asendente*/
-          /*Cualquier otro usuario que no sea super admin podra ver listados sus permisos*/
-          $permissions = Permission::orderBy('display_name', 'asc')->pluck('display_name', 'id');
-        }
 
         return view('dashboard.users.userProfile', [
             /* Aqui se guarda la informacion del objeto que contiene las propiedades de la busqueda en la base de datos.
@@ -113,8 +108,6 @@ class UserProfile extends Controller
         ]);
     }
 /******************* /EDITAR*********************************/
-
-
 
 /******************* ACTUALIZAR *********************************/
 

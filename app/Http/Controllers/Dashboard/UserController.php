@@ -182,7 +182,7 @@ class UserController extends Controller
         \Mail::to($user)->send(new welcome($user));
 
 
-        /* Esta notificacion la guardamos en la base de datos y tambien la enviamos por corre0*/
+        /* Esta notificacion la guardamos en la base de datos y tambien la enviamos por correo*/
         /*Lo que pasa es que es mejor enviar una notificacion y un carreo aparte porque aun no manejo bien el markdown desde toMail function de la notificacion*/
         Notification::send($user, new welcomeNotification($user));
 
