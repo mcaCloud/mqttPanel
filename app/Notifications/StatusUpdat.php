@@ -63,11 +63,10 @@ class StatusUpdat extends Notification
             /*Funciona muy bien cuando necesito saber tema defollowers que suscriben*/
             'user_id'=>$this->user->id,
             'name' => $this->user->first_name,
-            'email' => $this->user->email
-            
-
-
-
+            'email' => $this->user->email,
+            'action' => 'actualizada',
+            'body' => 'Cuenta actualizada' 
+         
         ];
     }
 }

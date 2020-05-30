@@ -186,6 +186,7 @@ class UserController extends Controller
         /*Lo que pasa es que es mejor enviar una notificacion y un carreo aparte porque aun no manejo bien el markdown desde toMail function de la notificacion*/
         Notification::send($user, new welcomeNotification($user));
 
+        Notification::send($user, new welcomeNotification($user));
 
 
 

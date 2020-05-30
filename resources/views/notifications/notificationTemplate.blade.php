@@ -2,62 +2,92 @@
 @section('title','Panel de control')
 @section('content')
 
-
+<!-- Page Heading -->
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-	 <h1 class="h3 mb-0 text-gray-800">{{Auth::user()->completeName()}}</h1>
+	 <h1 class="h3 mb-0 text-gray-800"></h1>
 	 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
 </div>
 
+
+
 <div class="row">
-	
-	<div class=" card col-md-8">
-		 @foreach(Auth::user()->notifications as $notification)
- 				<!--Llega el objeto JSON y lo decodifica para nosotros-->
- 			<div class="card-header">
+
+	<div class="card col-md-8">
+
+
+ 		<div class="card-body">
  			
-				<h5>
-					<a href="/x/{{$notification->data['user_id']}}" >
- 						Ennviada por {{ $notification->data['name'] }} 					
- 					</a>
- 				</h5>
 
- 			</div>		
- 				
-			<div class="card-body">
- 				 <u>
- 				 	<li>
- 				 		{{ $notification}}
- 				 	</li>
- 				 </u>
- 			</div>
- 				 
- 			<div class="card-footer">
- 				<p>
- 					Enviada {{ $notification->created_at->diffForHumans() }}
- 				</p>
- 			</div> 	
+ 			
+ 		</div>
+ 		
+ 	</div>
 
- 			@endforeach
-	</div>
+ 	<div class="card col-md-4">
 
-	<div class="card col-md-4">
-		<div class=" card-body">
-			@foreach(Auth::user()->notifications as $notification)
+ 		<div class="card-header">
+ 			Notificacion
+ 		</div>
+
+ 		<div class="card-body">
+
+ 			@foreach(Auth::user()->notifications as $notification)
  				<!--Llega el objeto JSON y lo decodifica para nosotros-->
  				
- 				<h5>
-					<a href="/x/{{$notification->data['user_id']}}" >
- 						{{ $notification->data['name'] }} 
- 						genero esta notificacion
- 					</a>
- 				</h5>
- 			@endforeach
-		</div>
+ 				<!-- En caso de que salga el error de Undefined index verificamos 
+ 					que en las notificaciones los indices solicitados existen
+ 					Me paso que sabia que todo estaba bien pero seguia fallando
+ 					 Era que algunas notificaciones en la base de datos que habia enviado antes no tenia los campos de indice. Por eso no lo encontraba . Para ello comence a probar si llegaban y descubri que algunos indices no llegaban en algunas notiicaciones.
+ 					 Por eso el programa decia que no encontraba esos indices pero era solo en algunas notificaciones, por eso la pagina no podia cargar.
+ 					 Para probar utilizo el ISSET y verifico-->
+ 				<!--{{isset($notification->data['email'])}}-->
 
-	</div>
+				<!-- Aqui trabajamos el icono de cada alerta-->
+		          <a class="dropdown-item d-flex align-items-center" href="#">
+
+		            <!-- Comparamos el tipo de notificacion que me ingresa
+		                Y todas las de userDeleted me vendran con el siguinte icono-->
+		            @if ($notification->type == 'App\Notifications\userDeleted')
+		              <div class="mr-3">
+		                <div class="icon-circle bg-danger">
+		                  <i class="fas fa-exclamation-triangle text-white"></i>
+		                  
+		                </div>
+		              </div>
+		            @elseif ($notification->type == 'App\Notifications\userCreated')
+		              <div class="mr-3">
+		                <div class="icon-circle bg-success">
+		                  <i class="fas fa-check-circle text-white"></i>
+		                  
+		                </div>
+		              </div>
+		            @elseif ($notification->type == 'App\Notifications\userUpdated')
+		             <div class="mr-3">
+		                <div class="icon-circle bg-primary">
+		                  <i class="fas fa-user-edit text-white"></i>
+		                  
+		                </div>
+		              </div>
+		            @else
+		            @endif
+
+		            <div>
+		              <div class="small text-gray-500"> Enviada {{$notification->created_at->diffForHumans()}}
+		              </div>
+
+		              {{$notification->data['name']}} ha sido {{$notification->data['action']}} 
+
+		            </div>
+		          </a>
+
+ 			@endforeach
+ 		</div>
+  		
+  	</div>
+
 </div>
 
+ 
 
- 		
-@endsection
+@stop

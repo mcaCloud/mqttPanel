@@ -151,7 +151,7 @@ Route::get('/d', function(){
 });
 /*Esta es una funcion de testing para ver como se puede retrive la info de la notificacion y imprimirla en pantalla*/
 /* Me imprime directamente lo que viene dentro del objeto*/
-Route::get('/x/{user_id}', function(){
+Route::get('/notificaciones', function(){
 
  return view ('notifications.notificationTemplate');
 });

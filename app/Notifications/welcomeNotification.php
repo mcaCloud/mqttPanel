@@ -11,11 +11,11 @@ class welcomeNotification extends Notification
 {
     use Queueable;
 
-      public $user;
+    public $user;
     /*Esto es para poder utilizar el objeto user*/
     /*Hay que injectar el usuario en el contructor*/
     /*Todo lo que entre en este constructor como user lo guardamos en la variable de arriba User para que la info se pueda acceder*/
-    public function __construct($user){
+    public function __construct(User $user){
 
     $this->user = $user;
         //
@@ -66,9 +66,6 @@ class welcomeNotification extends Notification
             'name' => $this->user->first_name,
             'email' => $this->user->email
             
-
-
-
         ];
     }
 }
