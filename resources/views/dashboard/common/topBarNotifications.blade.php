@@ -10,29 +10,48 @@
           <i class="fas fa-bell fa-fw"></i>
 
           <!-- Counter - Alerts -->
-          <!-- Trabajar la connectividad a los mensajes
-               Ahora esta de manera estatica-->
-          <span class="badge badge-danger badge-counter">{{Auth::user()->notifications->count()}}</span>
+
+          <!--Aqui es necesario hacer una comprobacion para que el numerito de unread notifications no aparezca a menos que haya alguna.
+            Si no hay niguna no esta en el IF-->
+          @if(Auth::user()->unreadNotifications->count())
+            <!-- Trabajar la connectividad a los mensajes
+                 Ahora esta de manera estatica-->
+                <span class="badge badge-danger badge-counter">{{Auth::user()->unreadNotifications->count()}}</span>
+
+          @endif
       </a>
       <!--------ICONO-BUTTON-------->
 
       <!--------Alerts-menu -------------->
       <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+        <a href="{{route('notifications')}}">
 
-        <a href="#"><h6 class="dropdown-header">
-          
-          Centro de mensajes
+          <!--Aqui es necesario hacer una comprobacion para que el numerito de unread notifications no aparezca a menos que haya alguna.
+          Si no hay niguna no esta en el IF-->
+          @if(Auth::user()->unreadNotifications->count())
+            <!-- Trabajar la connectividad a los mensajes
+                 Ahora esta de manera estatica-->
+                <h6 class="dropdown-header"> Mensajes<span class="badge badge-danger badge-counter">{{Auth::user()->unreadNotifications->count()}}</span></h6>
+          @else
+                <h6 class="dropdown-header"> Mensajes</h6>
+          @endif
+        
+        </a>
 
-        </h6></a>
-
-        <!-- Por cada notificaion que tenga el authorized user que me la pase hacia la variable notification-->
-        @foreach(Auth::user()->notifications as $notification)
-
-          <!----------MSJ-2----------------->
-
+        <!-- Por cada notificacion sin leer que tenga el authorized user que me la pase hacia la variable notification-->
+        @foreach(Auth::user()->unreadNotifications as $notification) 
+          <!-- En caso de que salga el error de Undefined index verificamos 
+          que en las notificaciones los indices solicitados existen
+          Me paso que sabia que todo estaba bien pero seguia fallando
+           Era que algunas notificaciones en la base de datos que habia enviado antes no tenia los campos de indice. Por eso no lo encontraba . Para ello comence a probar si llegaban y descubri que algunos indices no llegaban en algunas notiicaciones.
+           Por eso el programa decia que no encontraba esos indices pero era solo en algunas notificaciones, por eso la pagina no podia cargar.
+           Para probar utilizo el ISSET y verifico-->
+        <!--{{isset($notification->data['email'])}}-->
           <!-- Aqui trabajamos el icono de cada alerta-->
-          <a class="dropdown-item d-flex align-items-center" href="#">
-
+          <!-- Le metemos un background para diferenciar las no leidas de las leidas-->
+          <a class="dropdown-item d-flex align-items-center" href="{{route('notificationDetail',[$notification->id])}}" style="background-color: lightgray ">
+          <!----------------------------------------------->
+          
             <!-- Comparamos el tipo de notificacion que me ingresa
                 Y todas las de userDeleted me vendran con el siguinte icono-->
             @if ($notification->type == 'App\Notifications\userDeleted')
@@ -60,20 +79,22 @@
             @endif
 
             <div>
-              <div class="small text-gray-500"> Enviada {{$notification->created_at->diffForHumans()}}
+              <div class="small text-white"> 
+                <strong style="text-shadow: 2px 2px 8px #323231">
+                  Enviada {{$notification->created_at->diffForHumans()}}
+                </strong>                
               </div>
 
               {{$notification->data['name']}} ha sido {{$notification->data['action']}} 
 
             </div>
           </a>
-          <!----------/MSJ-2----------------->
 
         @endforeach
 
-        <!----------MSJ-4----------------->
         <!-- Este link me  lleva a una pagina con todas las alertas-->
-        <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+        <a class="dropdown-item text-center small text-gray-500" href="{{route('markAllAsRead')}}">Marcar todo como leido
+        </a>
         <!----------/MSJ-4----------------->
 
       </div>

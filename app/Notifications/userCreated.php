@@ -24,8 +24,20 @@ class userCreated extends Notification
     /* Via recive el objeto Notifiable por URL y 
     decide el canal que va a utilizar for delivery*/
     public function via($notifiable)
-    {
-        return ['database'];
+    {   
+        /* Para poder hacer que el ususario escoja que tipo de comunicacion prefiere
+        se crea un campo en la tabla de Usuarios de la base de datos
+        notification_preference.*/
+
+        /* Basicamente el notifiable puede acceder a las propiedade s de la tabla users.
+            *Solo le pedimos que nos lea la opcion del campo de preferencias en la base de datos para saber como prefiere ser contactado el user
+            *En la base de datos se pueden agregar campos en forma de array separados con una coma
+        */
+        return explode(',', $notifiable->notification_preference);
+
+        /* Esto es como el stack de formas de notificar al usuario*/
+        /* Si se queire escojer cada opcion manualmente es asi*/
+        //return ['database'];
     }
 /****************** VIA *************************/
 /*
@@ -38,13 +50,12 @@ class userCreated extends Notification
 
     function toMail($notifiable)
     {
-       /* return (new MailMessage)
-                    
-         
-                    ->subject('Te damos la bienvenida!!')
-                    ->from('no_reply@example.com', 'Sender')
-                    ->line('Tu cuenta ha sido creada con éxito. Ya eres parte de equipo.')
-                    ->action('Ingresa aquí', url('/'));*/
+        return (new MailMessage)
+                          
+          ->subject('Te damos la bienvenida!!')
+          ->from('no_reply@example.com', 'Sender')
+          ->line('Tu cuenta ha sido creada con éxito. Ya eres parte de equipo.')
+          ->action('Ingresa aquí', url('/'));
     
                     
                     
@@ -62,10 +73,9 @@ class userCreated extends Notification
             'user_id'=>$this->user->id,
             'name' => $this->user->first_name,
             'email' => $this->user->email,
+            'subject' => 'Nuevo usuario creado',
             'place' => 'el sistema',
-            'action' => 'creado',
-            'body' => 'Este usuario ha sido creado en el sistema' 
-            
+            'action' => 'creado',           
         ];
     }
 }

@@ -15,7 +15,7 @@ class welcomeNotification extends Notification
     /*Esto es para poder utilizar el objeto user*/
     /*Hay que injectar el usuario en el contructor*/
     /*Todo lo que entre en este constructor como user lo guardamos en la variable de arriba User para que la info se pueda acceder*/
-    public function __construct(User $user){
+    public function __construct($user){
 
     $this->user = $user;
         //
@@ -64,7 +64,10 @@ class welcomeNotification extends Notification
             /*Funciona muy bien cuando necesito saber tema defollowers que suscriben*/
             'user_id'=>$this->user->id,
             'name' => $this->user->first_name,
-            'email' => $this->user->email
+            'email' => $this->user->email,
+            'subject' => 'Bienvenido',
+            'place' => 'el sistema',
+            'action' => 'ingresado',  
             
         ];
     }

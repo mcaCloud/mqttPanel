@@ -77,9 +77,9 @@ class userDeleted extends Notification
             'user_id'=>$this->user->id,
             'name' => $this->user->first_name,
             'email' => $this->user->email,
+            'subject' => 'Usuarios eliminado',
             'place' => 'el sistema',
-            'action' => 'eliminado',
-            'body' => 'Este usuario ha sido borrado del sistema'      
+            'action' => 'eliminado',       
         ];
     }
 }

@@ -30,6 +30,8 @@ use App\Mail\welcome;
 
 use App\Notifications\welcomeNotification;
 use App\Notifications\userDeleted;
+use App\Notifications\userUpdated;
+use App\Notifications\userCreated;
 
 /*Para recibir las notificacion desde la base de datos y desplegarlas en el panel de control*/
 use Illuminate\Support\Facades\Notification;
@@ -186,10 +188,6 @@ class UserController extends Controller
         /*Lo que pasa es que es mejor enviar una notificacion y un carreo aparte porque aun no manejo bien el markdown desde toMail function de la notificacion*/
         Notification::send($user, new welcomeNotification($user));
 
-        Notification::send($user, new welcomeNotification($user));
-
-
-
         /*Finalmente nos redirige a la base de datos con un mensaje
         que incluya el nombre completo del nuevo usuario*/
         return redirect()->route('dashboard::users.index')->with([
@@ -336,6 +334,8 @@ class UserController extends Controller
         */
         $user->permissions()->sync($request->input('permission_id'));
 
+        /* Esta notificacion la guardamos en la base de datos y tambien la enviamos por correo*/
+        /*Lo que pasa es que es mejor enviar una notificacion y un carreo aparte porque aun no manejo bien el markdown desde toMail function de la notificacion*/
 
         return redirect()->route('dashboard::users.index')->with([
             'message' => 'Se han actualizado los datos del usuario [' . $user->completeName() . ']',
