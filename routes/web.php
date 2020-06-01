@@ -2,6 +2,8 @@
 
 //\URL::forceScheme('https');
 
+use \App\Events\FormSubmitted;
+
 /***************LOGIN-LOGOUT******************************/
 
 /*Esta ruta entra dentro del LoginController y no utiliza un metodo de ahi, sino que de una vez ahi llama un TRAIT (showLoginForm) porque dentro del controlador llame al TRAIT AuthenticatesUser*/
@@ -166,5 +168,31 @@ Route::get('/emptyNotification','NotificationsController@empty') ->name('emptyNo
 /************* ONE-READ******************/
 
 /******************** Notifications ***********************************/
+/*************/
+/************/
+/******************** PUSHER ***********************************/
+/*Prueba la funcionalidad con la debug console en PUSHER site*/
+Route::get('/pusherCluster',function(){
+    return view('pusherCluster');
+});
+/*Prueba la funcoinalidad dentro de laravel ya ingresada el API keys*/
+/*Esto me lleva a una pagina donde puedo enviar mensajes*/
+Route::get('/pusherSenderTest',function(){
+    return view('pusherSenderTest');
+});
+/*Esto recibe el post de la pagina de prueba*/
+Route::post('/pusherSenderTest',function(){
+    
+    /*La variable ejemplo me va a cojer lo que venga en el request y guardarlo*/
+    $ejemplo = request()->ejemplo;
+    /*Indico que lo que me llegue de este formulario debe de ser enviado como un event*/
+    /*Para que esto funcione arriba tengo que incluir use\App\Events\FormSubmitted*/
+    /*Dentro del event podemos incluir cualquier variable que desemos
+     *Este PAYLOAD es la misma que vamos a utilizar en el contructor del evento*/
+    event(new FormSubmitted($ejemplo));
+});
+
+
+/******************** PUSHER ***********************************/
 /*************/
 /************/

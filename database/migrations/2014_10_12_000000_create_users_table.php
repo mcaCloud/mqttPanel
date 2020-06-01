@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('rut');
             $table->string('image')->nullable();
-            $table->string('notification_preference')->dafault('mail');
+            $table->string('notification_preference')->default('mail');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('father_surname')->nullable();
