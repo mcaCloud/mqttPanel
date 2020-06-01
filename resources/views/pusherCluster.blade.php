@@ -15,8 +15,9 @@
     /*Esta es como una habitacion o ROOM donde podemos ver mensajes
       Lo podemos llamar como queramos*/
     var channel = pusher.subscribe('my-channel');
-    /* Este es el event especifico que vamos a escuchar por este canal*/
-    channel.bind('my-event', function(data) {
+    /* Este es el event especifico que vamos a escuchar por este canal
+      Le ponemos un nombre en el EVENT itself*/
+    channel.bind('form-submitted', function(data) {
       /*Esto es lo que vamos a hacer si se escucha el evento*/
       alert(JSON.stringify(data));
     });

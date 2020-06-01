@@ -1,6 +1,6 @@
-<form action="/pusherSenderTest" method="POST">
-	@csrf
-	<input type="test" name="context">
-	<input type="submit" name="">
-
+<form action="/pusherSenderTest" method="post">
+	
+	<input type="text" name="text">
+	<input type="submit">
+	{{csrf_field()}}
 </form>

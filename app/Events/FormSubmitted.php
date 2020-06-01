@@ -43,4 +43,11 @@ class FormSubmitted implements ShouldBroadcast
         */
         return new Channel('my-channel');
     }
+    /*Esta funcion me deja darle un nombre mas agradeble el EVENT y poder llamarlo por ese nombre
+     Si nos fijamos en PUSHER web el EVENT va a venir con este nombre
+     Esto evita que usuarios maliciosos vean el (App\Events\....) y tengas mas info de como el proyecto esta estructurado*/
+    public function broadcastAs()
+    {
+        return 'form-submitted';
+    }
 }
