@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Role extends Model
 {
+    
+
+    use User;
     /**
      * The attributes that are mass assignable.
      *
@@ -44,4 +47,6 @@ class Role extends Model
 
         return $query->where('name', 'LIKE', '%'.$name.'%');
     }
+
+    
 }

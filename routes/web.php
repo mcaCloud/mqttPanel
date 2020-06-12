@@ -2,9 +2,14 @@
 
 //\URL::forceScheme('https');
 
-use \App\Events\FormSubmitted;
+/*Ponemos el evento aqiu para poder usarlo desde este controlador, pero hay que ponerlo en el controlador desde el cual se va a utilizar*/
 
-/***************LOGIN-LOGOUT******************************/
+Route::get('/', 'HomeController@index')->name('index');
+/********************************************************/
+/*************/                            /*************/  
+/**************     *//*LOGIN-LOGOUT*//*   ***************/ 
+/*************/                            /*************/ 
+/********************************************************/
 
 /*Esta ruta entra dentro del LoginController y no utiliza un metodo de ahi, sino que de una vez ahi llama un TRAIT (showLoginForm) porque dentro del controlador llame al TRAIT AuthenticatesUser*/
 /*Entonces se puede mencionar el controlador y directamente un trait*/
@@ -14,22 +19,16 @@ Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login.form');
 
 Route::post('/login', 'Auth\LoginController@login')->name('login');
 
-Route::get('auth/logout', 'Auth\LoginController@logout')->name('logout');
-/*************** /LOGIN-LOGOUT /******************************/
-/*
-/*
-/*
-*/
-/*************** INDEX/******************************/
-Route::get('/', 'Dashboard\HomeController@index')->name('index');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-/*
-/*
-/*
-*/
-/*************** RESET-PASSWORD ******************************/
-/**/
 
+
+
+/********************************************************/
+/*************/                            /*************/  
+/**************     *//*RESET-PSS*//*      ***************/ 
+/*************/                            /*************/ 
+/********************************************************/
 /******   1  *****/
 /*Esta es la ruta cuando el USER hace click en el 'Forgot Password', me lleva a la vista 'email' para que e ususario intoduzca el email*/
 /*Dentro el controlador 'ForgotPasswordController' solo hay una referencia hacia el TRAIT de 'SendsPasswordresetEmails'*/
@@ -53,13 +52,15 @@ Route::get('/password/reset/{token} ', 'Auth\ResetPasswordController@showResetFo
 /* Dentro del controlador de 'ResetPasswordController' solo hace referencia a el TRAIT de 'ResetPasswords' ubicado en'Illuminate/Foundation/Auth/ResetPasswords'*/
 /*Dentro de ese TRAIT llamo al metodo 'reset'*/
 Route::post('/password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
-/**********/
 
-/*************** RESET-PASSWORD ******************************/
-/*
-/*
-/*
-*/
+
+/********************************************************/
+/*************/                            /*************/  
+/**************     *//*DASHBOARD*//*      ***************/ 
+/*************/                            /*************/ 
+/********************************************************/
+
+/*************** PREFIX-DASHBOARD ******************************/
 /*Esto lo que hace es que pueda solicitar cuaquier ruta del dashboard con el prefijo*/
 /*dashboard va a ir enfrente de todas las rutas*/
 /*Utilizo name space porque todas las rutas de los controlladores estan dentro del folder dashboard*/
@@ -67,26 +68,32 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
 
  /*Todas estas rutas estan agrupadas con el middleware 'auth' que es un metodo dentro del controllador 'router.php' ubicado en'Illuminate/Routing*/
  /*aqui se pueden ver las diferentes rutas que el el metodo cubre*/
+
+/*------------------>  MIDDLEWARE */
   Route::group(['middleware' => ['auth']], function () {
 
+        //Al final la ruta seria 'dashboard/'porque estamos dentro del namespace de 'Dashboard' entonces cualquier ruta aqui adentro comienza con dashboard como prefijo
         Route::get('/', 'HomeController@index')->name('index');
-
         /*Maneja todos los metodos tipicos con una solo linea de codigo*/
         /*Al ser Resourceful ya tiene metodos preestablacidos para las operaciones mas basicas de crud*/
         /*El except significa que el controller maneja las defualt actions except for SHOW*/
+
+        /*------------*USER*-------------------*/
         Route::resource('/users', 'UserController', ['except' => ['show']]);
 
-        Route::get('/users/{user}/access', 'UserController@toggleAccess')->name('users.toggleAccess');
+             Route::get('/users/{user}/access', 'UserController@toggleAccess')->name('users.toggleAccess');
+             Route::get('/users/export', 'UserController@export')->name('users.export');
 
-        Route::get('/users/export', 'UserController@export')->name('users.export');
-
+        /*------------*ROLES*-------------------*/
         Route::resource('/roles', 'RoleController', ['except' => ['show']]);
 
-
+        /*------------*PERMISSIONS*-------------------*/
         Route::resource('/permissions', 'PermissionController', ['except' => ['show']]);
 
+        /*------------*COMMON*-------------------*/
         Route::get('/common/slug/{name}', 'CommonController@slug')->name('common.slug');
 
+        /*------------*PDFS*-------------------*/
         Route::get('/pdfs', 'PdfController@index')->name('pdfs.index');
 
         Route::post('/pdfs/generate', 'PdfController@export_document_generate')->name('pdfs.export_document_generate');
@@ -96,16 +103,47 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
         Route::get('/pdfs/view', 'PdfController@export_by_view')->name('pdfs.export_by_view');
 
 
+        /******************************************/
+         /*------------*FOLDERS*-------------------*/
+        /******************************************/
+
+         //Aqui ya tenemos 2 prefijos . El del namespace 'dashboard' y el resource 'folders'
+        //Cualquier ruta de aqui llevara los dos
+         Route::resource('/folders', 'FoldersController');
+             //Esta ruta por ejemplo seria:  /dashboard/folders/crear
+             Route::get('/crear','FoldersController@create')->name('folder-create');
+             //dashboard/folder/store
+             Route::get('/store','FoldersController@store')->name('folder-store');
+
+             //Route::post('/folders/borrar',  'UserController@destroy')->name('folders.delete');
+             Route::get('show/{id}/','FoldersController@show')->name('folder-edit');
+          
+            //Route::post('folders_restore/{id}','UserController@restore')->name('folders.restore');
+
+            //Route::delete('folders_perma_del/{id}', 'UserController@restore') ->name('folders.perma_del');
+
+        /******************************************/
+         /*------------*ARCHIVOS*-------------------*/
+        /******************************************/
+        //Aqui ya tenemos 2 prefijos . El del namespace 'dashboard' y el resource 'archivos'
+        //Cualquier ruta de aqui llevara los dos
+         Route::resource('/archivos', 'FileController');
+
+            //Route::get('/folders','FoldersController@index')->name('folder-index');
+            // dashboard/archivos/crear
+            Route::get('/crear','FileController@create')->name('file-create');
+            Route::get('/store','FileController@store')->name('file-store');
+            Route::get('/download/{id}','FileController@show')->name('file-download');
   });
-
-
-
+/*------------------>  /MIDDLEWARE */
 });
 
-/******************** /PREFIX-NAMESPACE ***********************************/
-/*************/
-/************/
-/******************** PERFIL-DE-USUARIO ***********************************/
+/********************************************************/
+/*************/                            /*************/  
+/**************     *//*USER-PROFILE*//*   ***************/ 
+/*************/                            /*************/ 
+/********************************************************/
+
 /*Se recomienda poner las llamadas a los metodos antes de poner el RESOURCEFULL*/
 Route::get('/editar/{id}','UserProfile@edit') ->name('perfil');
 
@@ -122,15 +160,13 @@ Route::get('/miniatura/{filename}','UserProfile@getImage') ->name('miniatura');
     Route::resource('/Perfil', 'UserProfile')->except([
     'create', 'store', 'show'
 ]);
-/******************** PERFIL-DE-USUARIO ***********************************/
-/*************/
-/************/
 
-/*************/
-/************/
-/******************** Notifications ***********************************/
-/*************/
-/************/
+/********************************************************/
+/*************/                            /*************/  
+/**************   *//*NOTIFICATIONS*//*    ***************/ 
+/*************/                            /*************/ 
+/********************************************************/
+
 /*/*********** ALL-READ ************/
 /*Esta es una funcion de testing para ver como se puede retrive la info de la notificacion y imprimirla en pantalla*/
 /* Me imprime directamente lo que viene dentro del objeto*/
@@ -142,7 +178,6 @@ Route::get('/allRead','NotificationsController@allRead') ->name('markAllAsRead')
 /* Me imprime directamente lo que viene dentro del objeto*/
 
 Route::get('/allUnRead','NotificationsController@allUnRead')->name('markAllAsUnRead');
-
 
 
 /*/*********** Notification-Page ************/
@@ -165,40 +200,40 @@ Route::get('/unReadNotification/{id}','NotificationsController@oneUnRead') ->nam
 Route::get('/emptyNotification','NotificationsController@empty') ->name('emptyNotifications');
 
 
-/************* ONE-READ******************/
-
-/******************** Notifications ***********************************/
-/*************/
-/************/
-/******************** PUSHER ***********************************/
-/*Prueba la funcionalidad con la debug console en PUSHER site*/
-Route::get('/pusherCluster',function(){
-    return view('pusherCluster');
-});
+/********************************************************/
+/*************/                            /*************/  
+/**************     *//*PUSHER*//*         ***************/ 
+/*************/                            /*************/ 
+/********************************************************/
 
 
-/*Prueba la funcoinalidad dentro de laravel ya ingresada el API keys*/
+/********* Muestra la pagina*************/
+/*Prueba la funcionalidad dentro de laravel ya ingresada el API keys*/
 /*Esto me lleva a una pagina donde puedo enviar mensajes*/
-Route::get('/pusherSenderTest',function(){
+Route::get('/pusherTestPage',function(){
     return view('pusherSenderTest');
-
 });
 
+/*********ENVIA*************/
 /*Esto recibe el post de la pagina de prueba*/
 Route::post('/pusherSenderTest',function(){
     
     /*La variable ejemplo me va a cojer lo que venga en el request como TEXT y guardarlo*/
     $ejemplo = request()->text;
-    /* Esto es un linea de prueba para debugear si me llega el contenido*/
+    /* Esto es una linea de prueba para debugear si me llega el contenido*/
     /*Lo hice porque me estaba dando NULL el PAYLOAD*/
     /*Indico que lo que me llegue de este formulario debe de ser enviado como un event*/
     /*Para que esto funcione arriba tengo que incluir use\App\Events\FormSubmitted*/
     /*Dentro del event podemos incluir cualquier variable que desemos
      *Este PAYLOAD es la misma que vamos a utilizar en el contructor del evento*/
     event(new FormSubmitted($ejemplo));
+
+    return view('pusherSenderTest');
 });
 
+/***********RECIBE*************/
+/*Prueba la funcionalidad con la debug console en PUSHER site*/
+Route::get('/pusherReceiverTest',function(){
+    return view('testingPusher');
+});
 
-/******************** PUSHER ***********************************/
-/*************/
-/************/

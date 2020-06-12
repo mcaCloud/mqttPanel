@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+use App\File;
+
+class HomeController extends Controller
+{
+       public function __construct()
+    {
+        //Le quitamos el 'auth' y le agregamos el 'web' para que no se necesite autenticacion para ver los videos pero si para modificarlos
+        $this->middleware('web');
+    }
+
+
+//*******************************************//
+    public function index()
+    {
+
+        //-------------PAGINATE----------------//
+        /*Hay varias formas de hacerlo. Lo puedo hacer con el QUERY builder utilizando el metodo DB. EN este caso NO tengo que importar el modelo de USER
+
+        $videos = DB::table('videos')->paginate(5);
+        return view('home');
+        */
+        /*Tambien lo puedo hacer utilizando el modelo, de esta forma debo de importar el modelo FILE en el controlador. Tambien utilizo el ORDER BY para ordenar los videos de mas nuevo a mas antiguo*/
+        $files = File::orderBy('id','desc')-> paginate(5);
+        /*Ahora le tengo que pasar la informacion a la vista, para eso le paso un array al VIEW*/
+
+        return view ('welcome',array(
+            /*Creo un indice FILES y le paso todos los files, de esta forma ya tengo accesible todos los files en la vista welcome*/
+            'files' =>$files
+        ));
+
+
+    }
+}

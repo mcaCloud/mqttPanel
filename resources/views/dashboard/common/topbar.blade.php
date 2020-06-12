@@ -23,6 +23,7 @@
     <!-------------------------->
     <!-------- ALERTS ---------->
         @include('dashboard.common.topBarNotifications')
+        
     <!-------- Alerts ---------->
     <!-------------------------->
     <!--////////////////////////////////////////////////////////-->
@@ -48,7 +49,7 @@
                 <!--La quiero centrar entonces utilizo una posicion relativa y 25% hacia la izquierda-->
                 <img src="{{url('/miniatura/'.Auth::user()->image)}}" class="img-fluid" style="vertical-align: middle;width:50px;height:50px;border-radius: 50%;box-shadow: 0 0 8px rgba(0,0,0,0.8);" />   
               @else
-                  <img src="{{ URL::to('/') }}/img/avatar.png" class="img-fluid" style="vertical-align: middle;width: 50%;height: 50%;border-radius: 50%;box-shadow: 0 0 8px rgba(0,0,0,0.8);"/>
+                  <img src="{{ URL::to('/') }}/img/avatar.png" class="img-fluid" style="vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;box-shadow: 0 0 8px rgba(0,0,0,0.8);"/>
               @endif
                          
                     

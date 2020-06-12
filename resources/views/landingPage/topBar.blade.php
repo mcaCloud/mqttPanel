@@ -1,8 +1,4 @@
-@push('styles')
-    <!--<link href="{{ asset('css/socialMediaIcons.css') }}" rel="stylesheet">-->
-@endpush
-
-<!--------------------------TOP-NAVIGATION-BAR-------------------------------->
+    <!--------------------------TOP-NAVIGATION-BAR-------------------------------->
 <nav class="navbar navbar-default navbar-static-top" style="box-shadow: 0 0 10px 0 black;" >
 
 <!--------------------------TOP-BAR---------------------------------------- -->
@@ -29,29 +25,12 @@
 
             <!-- -------------- /Branding Image ------------------->          
         </div>
+
         <!--------------------------/HEADER---------------------------------------- -->          
-  <div class="navbar-header col-md-4">          
-    <ul class="nav navbar-nav">
-      <li class="active"><a href=""><span class=" glyphicon glyphicon-off"></a></li>
-
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Proyectos
-        <span class="caret"></span></a>
-
-        <ul class="dropdown-menu">
-          <li><a href=""><span class=" glyphicon glyphicon-play-circle"> Videos</a></li>
-
-          <li><a href=""><span class=" glyphicon glyphicon-volume-up"> Audios</a></li>
-
-          <li><a href=""><span class=" glyphicon glyphicon-folder-open"> Archivos</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Sobre mí</a></li>
-      <li><a href="">Contacto</a></li>
-    </ul>
-   </div>         
+        <div class="navbar-header col-md-8"> 
+        </div>         
         <!-----------------SOCIAL-MEDIA ------------------------------------------------>
-        <div class="col-md-3" >
+        <!--<div class="col-md-3" >
             <ul class="nav navbar-nav">
                 <a href="#" class="fa fa-facebook fa-2x" style="padding-top: 7px">&nbsp; &nbsp;</a>                 
                 <a href="#" class="fa fa-twitter fa-2x">&nbsp; &nbsp;</a>                    
@@ -59,12 +38,12 @@
                 <a href="#" class="fa fa-youtube fa-2x">&nbsp; &nbsp;</a>                    
                 <a href="#" class="fa fa-instagram fa-2x">&nbsp; &nbsp;</a>                                       
             </ul> 
-        </div>
+        </div>-->
 
         <!-----------------/Social-MEdia ------------------------------------------------>
 
         <!--------------------------LEFT-HEADER---------------------------------------- -->
-        <div class=" col-md-5 collapse navbar-collapse" id="app-navbar-collapse">
+        <div class=" col-md-2 collapse navbar-collapse" id="app-navbar-collapse">
 
             <!-- ----------- Right Side Of Navbar----------- -->
             <ul class="nav navbar-nav navbar-right">
@@ -73,7 +52,7 @@
                 <!-- SI no estamos identificados nos muestra el login y registro -->
                 @if (Auth::guest())
                     <li><a href="{{ route('login') }}"><span class=" glyphicon glyphicon-user"> Login</a></li>
-                    <!--<li><a href="{{ route('register') }}">Register</a></li>-->
+                    
 
                 <!-- SI  estamos identificados nos muestra la pagina de USUARIO -->
                 @else
@@ -102,8 +81,8 @@
                         <!-- Para que el titulo me lleve al perfil tenemos que pasarle el nombre de la ruta y el parametro del [id] que estamos recorriendo en este preciso instante-->
                         </li>
                         <li>
-                            <!-- Como estamos en la plantilla principal el llamado a las propiedades del ojeto user se hacen diferente. So se puede utilizar el objeto userProfile que creamos en el controlador porque no funciona.Tenemos que cojer las propiedades del Auth::user -->
-                            <!--<a href="{{route('editProfile',['id' =>Auth::user()->id]) }}">Perfil</a>-->
+
+
                         </li>
                     </ul>
                     <!-- ---------/OPCIONES-MENU --------------->

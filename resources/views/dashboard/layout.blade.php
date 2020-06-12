@@ -7,6 +7,8 @@
 
 	@include('dashboard.common.header')
 
+	
+
 </head>
 
 <!-- Le pongo el id para que el boton de abajo me lleve a esta seccion-->
@@ -42,16 +44,13 @@
 				<!--Despues es necesario pasasr la applicacion a un app -->
 
 				<div class="container-fluid">
+
+					@stack('styles')
+					
 					@yield('content')
 				</div>
 
 			</div>
-
-			<!---------- Footer -------------->
-			<footer class="sticky-footer bg-white">
-				@include('dashboard.common.footer')
-			</footer>
-			<!----------- /Footer -------------->
 
 		</div>
 		<!----------- /CONTENEDOR --------------------->

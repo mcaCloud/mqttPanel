@@ -12,7 +12,7 @@
   <!-- Nav Item - Dashboard -->
   <li class="nav-item active">
     <a class="nav-link" href="{{route('dashboard::index')}}">
-      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <i class="fas fa-fw fa-home"></i>
       <span>Inicio</span></a>
   </li>
 
@@ -23,35 +23,64 @@
   <div class="sidebar-heading">
     Menu
   </div>
-
-  <!-- Nav Item - Utilities Collapse Menu -->
+<!---------------------------------------------------------->
+ <!---------------------- LI-1 ----------------------------->
   <li class="nav-item">
+
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
       <i class="fas fa-fw fa-wrench"></i>
-      <span>Control de acceso</span>
+      <span>Accesos</span>
     </a>
+
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="{{ route('dashboard::users.index') }}">Colaboradores</a>
-        <a class="collapse-item" href="{{ route('dashboard::roles.index') }}">Roles</a>
-        <a class="collapse-item" href="{{ route('dashboard::permissions.index') }}">Permisos</a>
+        <a class="collapse-item" href="{{ route('dashboard::users.index') }}"><i class="fas fa-users"></i>   Usuarios</a>
+        <a class="collapse-item" href="{{ route('dashboard::roles.index') }}"><i class="fas fa-briefcase"></i> Roles</a>
+        <a class="collapse-item" href="{{ route('dashboard::permissions.index') }}"><i class="fa fa-unlock" aria-hidden="true"></i> Permisos</a>
       </div>
     </div>
+<!---------------------------------------------------------->
+ <!---------------------- LI-2 ----------------------------->
+
+  <li class="nav-item">
+    <!-- El 'data-target ' lo que hace es vincular el ID de lo que tiene que mostrar-->
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#procesosUtility" aria-expanded="true" aria-controls="collapseUtilities">
+      <i class="fas fa-briefcase"></i>
+      <span>Mis documentos</span>
+    </a>
+    <!-- El ID se vincula con el 'data-target' de arriba para poder mostrar el menu-->
+    <div id="procesosUtility" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+
+      <div class="bg-white py-2 collapse-inner rounded">
+
+        <a class="collapse-item" href="{{route('dashboard::folders.index')}}"><i class="fa fa-file"></i> Carpetas</a>
+        <a class="collapse-item" href="{{ route('dashboard::pdfs.index') }}"><i class="fa fa-file-pdf" aria-hidden="true"></i>  Exportar a pdf</a>
+      </div>
+
+    </div>
+<!---------------------------------------------------------->
+ <!---------------------- LI-2 ----------------------------->
   </li>
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities2" aria-expanded="true" aria-controls="collapseUtilities2">
-      <i class="fas fa-fw fa-wrench"></i>
-      <span>Otro</span>
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#miPlanUtility" aria-expanded="true" aria-controls="collapseUtilities2">
+      <i class="fas fa-credit-card"></i>
+      <span>Mi plan</span>
     </a>
-    <div id="collapseUtilities2" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+    <div id="miPlanUtility" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="{{ route('dashboard::pdfs.index') }}">Exportaciones a pdf</a>
-      </div>
+
+        <a class="collapse-item" href="#"><i class="fas fa-credit-card "></i> Pagos</a>
+        <a class="collapse-item" href="#"><i class="fa fa-address-card" aria-hidden="true"></i></i> Suscripción</a>
+
+        <a class="collapse-item" href="{{ route('dashboard::pdfs.index') }}"><i class="fas fa-key"></i> Cambiar contraseña</a>
+
+
     </div>
   </li>
 
-
+<!---------------------------------------------------------->
+<!---------------------- LI-1 ----------------------------->
 
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">

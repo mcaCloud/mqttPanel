@@ -47,7 +47,10 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-
+    public function render($request, Exception $exception)
+    {
+        return parent::render($request, $exception);
+    }
      /**
      * Convert an authentication exception into an unauthenticated response.
      *
@@ -61,32 +64,10 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
+
+        
         return redirect()->route('login.form');
     }
 
-    public function render($request, Exception $exception)
-    {
 
-      if ($request->wantsJson()) {
-
-          if($exception instanceof \Illuminate\Auth\AuthenticationException ){
-            return response()->json(['error' => 'Unauthorized.'], 401);
-          }
-
-          if($exception instanceof \Laravel\Passport\Exceptions\MissingScopeException ){
-            return response()->json(['error' => 'AccessDenied.'], 403);
-          }
-
-          if ($exception instanceof \League\OAuth2\Server\Exception\OAuthServerException && $exception->getCode() == 9) {
-            return response()->json(['error' => 'Unauthorized.'], 401);
-          }
-
-      }
-
-      if($exception instanceof \Illuminate\Auth\AuthenticationException ){
-        return redirect()->route('login.form');
-      }
-
-      return parent::render($request, $exception);
-    }
 }

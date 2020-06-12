@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 /*Para poder enviar reset password links*/
 use Illuminate\Contracts\Auth\CanResetPassword;
+
 class User extends Authenticatable
 {
   use HasRoles, Notifiable;
@@ -57,7 +58,7 @@ class User extends Authenticatable
       $this->attributes['password'] = bcrypt($password);
   }
 
-
+  /*Esto es una funcion que me permite llamar el nombre completo del usuario cuando lo ocupe*/
   public function completeName()
   {
       return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'] . ' ' . $this->attributes['father_surname'] . ' ' . $this->attributes['mother_surname'];
@@ -74,4 +75,9 @@ class User extends Authenticatable
       $this->attributes[$type] = ($this->attributes[$type]) ? false : true;
   }
 
+    /*Esta funcion me permite utilizar el modelo de ROLE con el modelo de USER, muy util especialmente cuado tengo que enviar notificaciones*/
+    public function scopeHasRoles(\Illuminate\Database\Eloquent\Builder $query, $roles)
+    {
+        return $this->scopeRole($query, $roles);
+    }
 }

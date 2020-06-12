@@ -20,9 +20,16 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Contracts\Auth\CanResetPassword;
 
 /*Importo el MODELO de User*/
+use App\Notification;
 use App\User;
 /* Middleware vendor/laravel/framework/src/iluminate/auth/middleware/Authenticate*/
 use Auth;
+
+
+/************* EVENTS ***************/
+use \App\Events\userUpdate;
+use \App\Events\roleUpdate;
+use \App\Events\permissionUpdate;
 
 class NotificationsController extends Controller
 {
@@ -36,7 +43,15 @@ class NotificationsController extends Controller
         $user = User::find(1);
         $notification = Auth::user()->notifications;
   
-        return view('notifications.index')->with('notification',$notification);
+        return view('notifications.eventsPusherIndex',[
+            /*Donde la variable 'items' me muestra el QUERY dentro de la variable USERS de forma paginada
+              *CONFIG es parte de un helper to Get / set the specified configuration value. Y poder utilizar el User Interface*/ 
+            /*La variable 'page' me da el objeto de la request dentro de la pagina
+            */
+            /*Se hace asi para poder utilizar el JS de DataTables*/
+            'notification' => $notification,
+            'page' => $request->query('page')
+        ]);
 
     }
 /******************* /INDEX*********************************/
@@ -231,4 +246,34 @@ class NotificationsController extends Controller
 
     }
 /******************* ALL-UNREAD *********************************/
+
+/*******************TOGGLE**************************************/
+  /* Aqui recivo la REQUEST y el ID del usuario que me viene por la URL*/
+  public function toggleAccess(Request $request, $id)
+    {   
+        /*Almaceno en la variable NOTIFICATION de la notification que coincida con el ID 
+          que me llega por la URL
+         *Del lado del formulario lo que pedi fue el ($item->id)
+         */
+        $notification = User::findOrFail($id);
+        /*User va a llamar a la funcion del modelo USER 'toggleAccess'
+         *Este metodo pide una variable TYPE
+         *Entonces aqui recojo la variable de 'type' que vienen dentro del request
+         que me llega por la URL
+         */
+        $user->toggleAccess($request->get('type'));
+
+        /*Guardo el objeto en la base de datos*/
+        $user->save();
+
+        /*Redirijo a la base de datos con un mensaje que contiene el nombre completo del usuario*/
+        return redirect()->route('dashboard::users.index', ['page' => $request->query('page')])->with([
+            'message' => 'Se han actualizado los accesos del usuario [' . $user->completeName() . ']',
+            'level' => 'success'
+        ]);
+    }
+/*****************************************************************/
+
+
+/******************* /TOGGLE**************************************/
 }

@@ -4,9 +4,25 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
+/*Con esto importo los metodos (authorize,rules,message)*/
+/*Es unicamente para la creacion y actualizacion de usuarios*/
+use App\Http\Requests\PermissionRequest;
+
+/********IMPORTANTE***********************/
+/*Aqui importo los MODELOS de Role y Permissions*/
+/*Dentro de estos modelos ya se encuentran importados los TRAIT de HasRoles y HasPermissions*/
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use App\Http\Requests\PermissionRequest;
+/********IMPORTANTE***********************/
+
+use Auth;
+/*Importo el MODELO de User para poder utilizarlo en los eventos*/
+use App\User;
+//use App\Role;
+
+/************* EVENTS ***************/
+use \App\Events\permissionUpdate;
 
 
 class PermissionController extends Controller
@@ -41,6 +57,7 @@ class PermissionController extends Controller
       ]);
 
     }
+/*******************STORE*********************************/
 
     public function store(PermissionRequest $request) {
 
@@ -51,7 +68,24 @@ class PermissionController extends Controller
           'name' => $request->get('name'),
           'description' => $request->get('description'),
         ]);
+          /****************************/
+          /******* Evento *******/
+          /****************************/
+          //Tenemos que mencionar el evento en la cabecera del controlador, sino no lo puede llamar.
+          //STATE es una variable que cree dentro del evento, junto con USER. STATE me va a guardar un vor que retrive en el front-end.Por ahora es un string despues intentare con un array
 
+          $user = 'CREADO';
+          $authUser = Auth::user();
+          $state = 'creado';
+
+          //Esto es lo que sacamos en la vista. Todas las propiedades de los objetos que creamos. AUnque a estate solo le sacamos un string, lo podemos convertir en un array
+          //Aun cuando no mencionamos 'role' ams arriba tiene que ir declarada dentro del EVENTO y incluirlo como parametro para poder sacarlo en la vista. Role curiosamente en este controlador ya es una variable.
+          event(new permissionUpdate($permission,$state,$user,$authUser));
+
+          
+          /****************************/
+          /******* /Evento *******/
+          /****************************/
       \DB::commit();
 
       return redirect()->route('dashboard::permissions.index')->with([
@@ -60,6 +94,7 @@ class PermissionController extends Controller
       ]);
 
     }
+/******************* /STORE*********************************/
 
     public function edit(Request $request, $id)
     {
@@ -94,4 +129,32 @@ class PermissionController extends Controller
         ]);
 
     }
+
+    /*******************DESTROY*********************************/
+      public function destroy(Permission $permission)
+      {
+          $permission->delete();
+
+          /****************************/
+          /******* Evento *******/
+          /****************************/
+          //Tenemos que mencionar el evento en la cabecera del controlador, sino no lo puede llamar.
+          //STATE es una variable que cree dentro del evento, junto con USER. STATE me va a guardar un vor que retrive en el front-end.Por ahora es un string despues intentare con un array
+         // $user = 'BORRADO';
+         // $authUser = Auth::user();
+          //$state = 'borrado';
+
+          //Esto es lo que sacamos en la vista. Todas las propiedades de los objetos que creamos. AUnque a estate solo le sacamos un string, lo podemos convertir en un array
+         // event(new permissionUpdate($permission,$state,$user,$authUser));
+
+          /****************************/
+          /******* /Evento *******/
+          /****************************/
+
+         return redirect()->route('dashboard::permissions.index')->with([
+            'message' => "Permiso :". $permission->name. "eliminado",
+            'level' => 'success'
+        ]);
+      }
+/****************************************************/
 }

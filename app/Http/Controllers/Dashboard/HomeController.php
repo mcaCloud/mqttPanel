@@ -24,11 +24,8 @@ class HomeController extends Controller
     public function index(){
 
     $user = User::findOrFail(1);
-    
-              /*Muestreme esta vista*/
-        return view('dashboard.index', [
- 
-        ]);
+             /*Muestreme esta vista*/
+        return view('dashboard.index');
     
     }
 }

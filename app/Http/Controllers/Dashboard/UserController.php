@@ -22,16 +22,16 @@ use App\User;
 /* Middleware vendor/laravel/framework/src/iluminate/auth/middleware/Authenticate*/
 use Auth;
 
+/************* EVENTS ***************/
+use \App\Events\userUpdate;
 
 /*************MAIL-NOTIFICATION****************/
 /*Por cada mail que desee enviar lo tengo que importar aqui para poderlo utilizar*/
 use App\Mail\welcome;
 
-
-use App\Notifications\welcomeNotification;
+//use App\Notifications\userCreated;
 use App\Notifications\userDeleted;
 use App\Notifications\userUpdated;
-use App\Notifications\userCreated;
 
 /*Para recibir las notificacion desde la base de datos y desplegarlas en el panel de control*/
 use Illuminate\Support\Facades\Notification;
@@ -116,7 +116,6 @@ class UserController extends Controller
             'hidden'=> $request->old('hidden', false),
             'model'=> $model,
             'page'=> $request->query('page'),
-
             /***************ROLES********************/
             /*The pluck method retrieves all of the values for a given key*/
             /*La variable Roles me guarda la consulta al modelo ROLE*/
@@ -145,7 +144,6 @@ class UserController extends Controller
             */
             'permission_id'=> (!is_null(old('permission_id')))? old('permission_id'):[],
             /*************** /PERMISSIONS ********************/
-
             /*El boton de cancel me regresa al index de users*/
             'cancel_link'=> route('dashboard::users.index', ['page' => $page])
         ]);
@@ -183,10 +181,43 @@ class UserController extends Controller
         /*Le pasamos la VAR del user que acaba de crearse para poder utilizar las propiedasd en el body del email*/
         \Mail::to($user)->send(new welcome($user));
 
+        /****************************/
+        /******* NOTIFICACION *******/
+        /****************************/
+        /* Creo una variable para que me guarde la informacion de quien deberia de ser informado de la creacion del usuario*/
+        /*En este ejemplo envia la notificacion a todos los usuarios que tengan un ID diferente al del usuarios que ha sido creado*/
+        /**/
+        //$notificationReceiver =User::where('id','!=',auth()->user()->id)->get();
+        /**/
+        /*En este caso envio la notificacion a todos los usuarios que tengan el ROLE de super administrador*/
+        /*Para ello cree un metodo en el MODELO de USER que se llama 'hasroles' y me permite llamar a los reloes desde el modelo USER*/
+        //$notificationReceiver =User::hasRoles('super-administrador')->get();
 
         /* Esta notificacion la guardamos en la base de datos y tambien la enviamos por correo*/
-        /*Lo que pasa es que es mejor enviar una notificacion y un carreo aparte porque aun no manejo bien el markdown desde toMail function de la notificacion*/
-        Notification::send($user, new welcomeNotification($user));
+        /*Lo que pasa es que es mejor enviar una notificacion y un carreo aparte porque aun no manejo bien el markdown desde toMail funciontion de la notificacion*/
+        //Notification::send($notificationReceiver, new userCreated($user));
+        /****************************/
+        /******* /NOTIFICACION *******/
+        /****************************/
+
+        /****************************/
+        /******* Evento *******/
+        /****************************/
+        //Tenemos que mencionar el evento en la cabecera del controlador, sino no lo puede llamar.
+        //Este es para conseguir la info de quien realiza la accion
+        $authUser = Auth::user();
+        //STATE es una variable que cree dentro del evento, junto con USER. STATE me va a guardar un vor que retrive en el front-end.Por ahora es un string despues intentare con un array
+
+        $state = 'creado';
+
+        $name =$user->roles->pluck('display_name');
+
+        //Esto es lo que sacamos en la vista. Todas las propiedades de los objetos que creamos. AUnque a estate solo le sacamos un string, lo podemos convertir en un array
+        event(new userUpdate($user,$state,$name,$authUser));
+
+        /****************************/
+        /******* /Evento *******/
+        /****************************/
 
         /*Finalmente nos redirige a la base de datos con un mensaje
         que incluya el nombre completo del nuevo usuario*/
@@ -334,9 +365,6 @@ class UserController extends Controller
         */
         $user->permissions()->sync($request->input('permission_id'));
 
-        /* Esta notificacion la guardamos en la base de datos y tambien la enviamos por correo*/
-        /*Lo que pasa es que es mejor enviar una notificacion y un carreo aparte porque aun no manejo bien el markdown desde toMail function de la notificacion*/
-
         return redirect()->route('dashboard::users.index')->with([
             'message' => 'Se han actualizado los datos del usuario [' . $user->completeName() . ']',
             'level' => 'success'
@@ -361,8 +389,49 @@ class UserController extends Controller
         $user = User::findOrFail($id);
     
 
+
+        /****************************/
+        /******* NOTIFICACION *******/
+        /****************************/
+        /* Creo una variable para que me guarde la informacion de quien deberia de ser informado de la creacion del usuario*/
+        /*En este ejemplo envia la notificacion a todos los usuarios que tengan un ID diferente al del usuarios que ha sido creado*/
+        /**/
+        $notificationReceiver =User::where('id','!=',auth()->user()->id)->get();
+        /*En este caso envio la notificacion a todos los usuarios que tengan el ROLE de super administrador*/
+        /*Para ello cree un metodo en el MODELO de USER que se llama 'hasroles' y me permite llamar a los reloes desde el modelo USER*/
+        $notificationReceiver =User::hasRoles('super-administrador')->get();
+        /* Esta notificacion la guardamos en la base de datos y tambien la enviamos por correo*/
+        /*Lo que pasa es que es mejor enviar una notificacion y un carreo aparte porque aun no manejo bien el markdown desde toMail funciontion de la notificacion*/
+        //Notification::send($notificationReceiver, new userDeleted($user));
+        /****************************/
+        /******* /NOTIFICACION *******/
+        /****************************/
+
+        /****************************/
+        /******* Evento *******/
+        /****************************/
+        //Tenemos que mencionar el evento en la cabecera del controlador, sino no lo puede llamar.
+        //Me connecto al evento con todo el objeto USER, y ya dentro de la vista conmienzo a sacar los atributos.
+        //Este es para conseguir la info de quien realiza la accion
+        $authUser = Auth::user();
+        //STATE es una variable que cree dentro del evento, junto con USER. STATE me va a guardar un vor que retrive en el front-end.Por ahora es un string despues intentare con un array
+        $state = 'borrado';
+        //ROLE me guarda la propiedad de 'roles' 'display_name' con un pluck.Podria sacar mas propiedades de roles.
+        $role =$user->roles->pluck('display_name');
+
+       //Tenemos que mencionar el evento en la cabecera del controlador, sino no lo puede llamar.
+        //Me connecto al evento con todo el objeto USER, y ya dentro de la vista conmienzo a sacar los atributos. De igual forma utilzo las varibales que cree dentro del EVENTO y en la vista le comienzo a sacar los atributos
+        event(new userUpdate($user,$state,$role,$authUser));
+
+        /****************************/
+        /******* /Evento *******/
+        /****************************/
+
+
+
         //Finamente eliminar el registro del usuario de la base de datos
         User::destroy($id);
+
 
         //Lo ultimo que hace este metodo es redirigirnos a la pagina en que estabamos con el array de mensaje para que me diga si se elimino o no correctamente
         return redirect()->route('dashboard::users.index')->with([

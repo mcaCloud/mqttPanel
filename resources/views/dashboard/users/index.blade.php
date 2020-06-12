@@ -4,7 +4,7 @@
 
 
 <!-- ----------------CARD--------------------- -->
-<div class="card shadow mb-5">
+<div class="card shadow mb-6">
   <!-------------------------------------->
   <!--------- Header---------------------->
   <div class="card-header py-3">

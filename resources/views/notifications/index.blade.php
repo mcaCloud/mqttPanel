@@ -1,43 +1,34 @@
 @extends('dashboard.layout')
 @section('title','Notificaciones')
 
+
 @section('content')
 <!-- ----------------CARD--------------------- -->
 <div class="card shadow mb-5">
-
   <!-------------------------------------->
   <!--------- Header---------------------->
   <div class="card-header py-3">
 
     <!------12COL------------->
     <div class="row col-12">
-        
-      <div class="col">  
-        <h6 class="m-0 font-weight-bold text-primary btn-icon-split align-bottom">
 
-        @if(Auth::user()->unreadNotifications->count())
-            <!-- Trabajar la connectividad a los mensajes
-                 Ahora esta de manera estatica-->
-            <button type="button" class="btn btn-primary">Sin leer<span class="badge">{{Auth::user()->unreadNotifications->count()}}</span></button>
-             
-        @else
-        	No tienes notificaciones nuevas.
-        @endif
-         </h6>
+      <div class="col-6">
+        <h6 class="m-0 font-weight-bold text-primary btn-icon-split align-bottom">Lista de colaboradores</h6>
       </div>
 
-      <div class="span">
+
+      <div class="col-6">
         <!-- Utilizo el metodo CREATE del controlador de User-->
-        <a href="{{route('emptyNotifications')}}" class="btn btn-danger btn-icon-split float-left">
+        <a href="#" class="btn btn-success btn-icon-split float-right">
           <!-- Le meto un simbolo de +, con una luminosidad del 50%-->
           <span class="icon text-white-50">
-            <i class="fas fa-folder-minus"></i>
+            <i class="fas fa-plus"></i>
           </span>
 
-          <span class="text">Vaciar</span>
+          <span class="text">Nueva notificación</span>
         </a>
       </div>
-      
+
     </div>
     <!------12COL------------->
 
@@ -45,105 +36,94 @@
   <!--------- Header---------------------->
   <!-------------------------------------->
 
-<!--/////////////////////////////////////////////////////////-->
+  <!-------------------------------------->
   <!-------------BODY--------------------->
   <div class="card-body">
-    <div>
-
-<!---------------------Table------------------->
+   
+      
+      <!---------------------Table------------------->
       <!---(dabatable-responsive) es el ID que utilizo en el dashboard/layout-->
       <!---De esta forma el JS sabe que esta tabla utiliza DATATABLES--->
       <table id="datatable-responsive" class="table table-striped  dt-responsive display" style="width: 100%">
+        <!----------------->
+        <thead>
+          <tr>
 
-        <tbody>
-            <!--Aqui tomo la variable ('details') que cree en el metodo Index
-                del controloador de User-->
-            @foreach ($notification as $index => $item)
-
-              <!--***** TR *****-->
-              <tr>
-                <!--Me recorre cada uno de los resultados-->
-<!-- TD 1--------------------------------------------------------->
-                <td>
-
-                <!-- En caso de que salga el error de Undefined index verificamos 
-		          que en las notificaciones los indices solicitados existen
-		          Me paso que sabia que todo estaba bien pero seguia fallando
-		           Era que algunas notificaciones en la base de datos que habia enviado antes no tenia los campos de indice. Por eso no lo encontraba . Para ello comence a probar si llegaban y descubri que algunos indices no llegaban en algunas notiicaciones.
-		           Por eso el programa decia que no encontraba esos indices pero era solo en algunas notificaciones, por eso la pagina no podia cargar.
-		           Para probar utilizo el ISSET y verifico-->
-		        <!--isset($notification->data['email'])-->
-		          <!-- Aqui trabajamos el icono de cada alerta-->
-		          <!-- Le metemos un background para diferenciar las no leidas de las leidas-->
-		 			<!----------------------------------------------->
-					@if (!is_null($item->read_at))
-
-			          <a class="dropdown-item d-flex align-items-center" href="{{route('notificationDetail',[$item->id])}}"vstyle="background-color: #F3F3EF ">
+          </tr>
+        </thead>
+        <!----------------->
+        @foreach ($notification as $index => $item)
 
 
-			         @else
-			          <a class="dropdown-item d-flex align-items-center" href="{{route('notificationDetail',[$item->id])}}" style="background-color: lightgray ">
+                  <div class="row alert alert-success">
+                    <div class="media col-md-2">
 
-			            
-		         	@endif
-					<!-- Comparamos el tipo de notificacion que me ingresa
-			           Y todas las de userDeleted me vendran con el siguinte icono-->
-		<!----------------------------------------------->
+                      <!--------------------------------->
+                      <div class="media-left">
+                          <div class="media-object">
+                            <img src="https://api.adorable.io/avatars/71/`+avatar+`.png" class="img-circle" alt="50x50" style="width: 50px; height: 50px;">
+                          </div>
+                        </div>
+                      </div>
+                      <!--------------------------------->
+                      <div class="col-md-2"><h6>{{'$item'}} </h6></div>
+                      
+                      <!--------------------------------->
+                      <div class="col-md-4">
+                        <h6>{{$item->notifiable_id}}{{$item->created_at->diffForHumans()}}</h6>
+                      </div>
+                      <!--------------------------------->
+                      <div class="col-md-1">                                
+                        <a href="{{ route('notificationDetail', ['notification' => $item->id, 'page' => $page]) }}" class="btn btn-info btn-circle btn-sm" title="Editar" style="margin:1px">
+                           <span class="icon">
+                               <i class="fas fa-eye"></i>
+                            </span>
+                        </a>
+                      </div>
+                      <!--------------------------------->
+                      <div class="col-md-1">                          
+                       <!--La URL lo que me dice es que en el nacespace definido en la rutas 'dashboard', existe una ruta cuyo nombre es 'users.toggleAccess'
+                        Esta ruta me abre el controlador de 'UserController@toggleAccess'-->
+                        <!-- En donde 'user' es igual al ID de 'item' o usuario que estoy recorriendo-->
+                        <!-- 'type' contiene el permiso de 'access_web'-->
+                      <!-- 'page' contiene a la variable 'page'-->
+                        @if($item->read_at)
 
-		            @if ($item->type == 'App\Notifications\userDeleted')
-		              <div class="mr-3">
-		                <div class="icon-circle bg-danger">
-		                  <i class="fas fa-exclamation-triangle text-white"></i>
-		                  
-		                </div>
-		              </div>
-		            @elseif ($item->type == 'App\Notifications\userCreated')
-		              <div class="mr-3">
-		                <div class="icon-circle bg-success">
-		                  <i class="fas fa-check-circle text-white"></i>
-		                  
-		                </div>
-		              </div>
-		            @elseif ($item->type == 'App\Notifications\userUpdated')
-		             <div class="mr-3">
-		                <div class="icon-circle bg-primary">
-		                  <i class="fas fa-user-edit text-white"></i>
-		                  
-		                </div>
-		              </div>
-		            @else
-		            @endif
-		<!----------------------------------------------->
+                          <a  href="{{ route('oneRead', ['notification' => $item->id]) }}" 
 
-				   <div id="flip">
-		              <div class="small text-white"> 
-		                	<strong style="text-shadow: 2px 2px 8px #323231">	
-		                 		Enviada {{$item->created_at->diffForHumans()}}
-		                	</strong>  		                              
-		              </div>
+                            data-toggle="tooltip" data-placement="top" title="" class="status-icons d-flex justify-content-center" data-original-title="Marcar como leida">
 
-		              {{$item->data['subject']}} 
-		            </div>
+                            <!--Le meto un Fa Icon con un IF para cambiarlo ON/OFF--> 
+                            <i class="fa @if(!is_null($item->read_at) ) fa-toggle-off @else fa-toggle-on @endif fa-2x"></i>
+                          </a>
 
+                        @else
+
+                          <a  href="{{ route('oneUnRead', ['notification' => $item->id]) }}" 
+
+                            data-toggle="tooltip" data-placement="top" title="" class="status-icons d-flex justify-content-center" data-original-title="Marcar como leida">
+
+                            <!--Le meto un Fa Icon con un IF para cambiarlo ON/OFF--> 
+                            <i class="fa  @if(!is_null($item->read_at) ) fa-toggle-off @else fa-toggle-on @endif fa-2x"></i>
+                          </a>
+                        @endif
+                      </div>
+
+                  </div>
                 </td>
-<!-- TD 1--------------------------------------------------------->
 
-
-
-              </tr>
-              <!--***** /TR *****-->
-            @endforeach
-
+            </tr>
+            
         </tbody>
-<!-------------***********************----------------------->
-
-
+        @endforeach
       </table>
       <!---------------------Table------------------->
-    </div>
-  </div>
+
+ 
   <!-------------------------------------->
   <!-------------BODY--------------------->
+
 </div>
- <!-- ----------------CARD--------------------- -->
+
+<!-- ----------------CARD--------------------- -->
 @stop

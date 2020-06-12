@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="card shadow mb-4">
+
       <div class="card-header py-3">
         <div class="row col-12">
           <div class="col-6">
@@ -9,6 +10,7 @@
           </div>
         </div>
       </div>
+
       <div class="card-body">
         <form method="POST" action="{{route('dashboard::users.store')}}" class="form-horizontal form-label-left" id='formCreateUser'>
             {{ csrf_field() }}
@@ -16,6 +18,7 @@
             @include('dashboard.common.form_buttons')
         </form>
       </div>
+      
     </div>
 
     <!-- /page content -->

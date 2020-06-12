@@ -33,11 +33,11 @@ class userCreated extends Notification
             *Solo le pedimos que nos lea la opcion del campo de preferencias en la base de datos para saber como prefiere ser contactado el user
             *En la base de datos se pueden agregar campos en forma de array separados con una coma
         */
-        return explode(',', $notifiable->notification_preference);
+        //return explode(',', $notifiable->notification_preference);
 
         /* Esto es como el stack de formas de notificar al usuario*/
         /* Si se queire escojer cada opcion manualmente es asi*/
-        //return ['database'];
+        return ['database'];
     }
 /****************** VIA *************************/
 /*
@@ -48,7 +48,7 @@ class userCreated extends Notification
     /*Receive a $notifiable entity and should return an Illuminate\Notifications\Messages\MailMessage*/
     /*Aqui se modifica que es lo que va a llevar el mensaje*/
 
-    function toMail($notifiable)
+    /*function toMail($notifiable)
     {
         return (new MailMessage)
                           
@@ -59,7 +59,7 @@ class userCreated extends Notification
     
                     
                     
-    }
+    }*/
 /**************** /ToMAIL ***************************/
 
 
@@ -72,6 +72,7 @@ class userCreated extends Notification
             /*Funciona muy bien cuando necesito saber tema defollowers que suscriben*/
             'user_id'=>$this->user->id,
             'name' => $this->user->first_name,
+            'surname' => $this->user->last_name,
             'email' => $this->user->email,
             'subject' => 'Nuevo usuario creado',
             'place' => 'el sistema',

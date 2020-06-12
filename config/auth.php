@@ -12,7 +12,7 @@ return [
     | as required, but they're a perfect start for most applications.
     |
     */
-
+    // Si no especificamos que guardia deseamos utilizar por defautl utilizada el 'web'
     'defaults' => [
         'guard' => 'web',
         'passwords' => 'users',
@@ -37,16 +37,25 @@ return [
 
     'guards' => [
         
+        /**Esto es lo que estan utilizando los usuarios normales*/
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
+        /* Esto es para n sistema de autenticacion basado en tokens*/
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
         ],
+
+    /*************************************************/
+    /*Creamos una guardia para customers*/
+        /*'customers' => [
+            'driver' => 'session',
+            'provider' => 'customers',
+        ],*/
+
     ],
 
     /*
@@ -67,6 +76,7 @@ return [
     */
 
     'providers' => [
+
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
@@ -76,6 +86,14 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        //Creamos el provider del customer y lo tenemos que registrar aqui
+        //'customers' => [
+            /*Vamos a utilizar Eloquent con el modelo de Customer que cramos al principio*/
+            /*'driver' => 'eloquent',
+            'model' => App\Customer::class,*/
+            /*Una vez definido nuestro nuevo GUARD le tenemos que decir al controlador que lo utilice*/
+        //],
     ],
 
     /*
@@ -93,12 +111,21 @@ return [
     |
     */
 
+    //La misma table de password reset se ùede utilizar para todos los modelos solo cambiando los valores de aqui
+
     'passwords' => [
+
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',
-            'expire' => 60,
+            'expire' => 30,
         ],
+
+        /* 'customers' => [
+            'provider' => 'customers',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],*/
     ],
 
 ];

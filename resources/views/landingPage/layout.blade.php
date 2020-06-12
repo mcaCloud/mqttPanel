@@ -3,13 +3,15 @@
 
 <head>
 
-	<title>Welcome</title>
+	<title>Bienvenidos</title>
 
-	@include('dashboard.common.header')
+	@include('landingPage.common.headers')
 
-	@stack('styles')
-    
-    @stack('scripts')
+	   <!--Esto lo coloco aqui para poder hacer PUSH de styles o scrips individuales en las vistas
+        Es super poderoso para poder conbinar estilos en las vistas
+        La vista que los ocupe solo tiene que hacer el PUSH y la RUTA-->
+        @stack('styles')
+        @stack('scripts')
 
 </head>
 
@@ -30,61 +32,33 @@
 		<div id="content-wrapper" class="d-flex flex-column">
 
 			<div id="content">
-				@include('landingPage.topbar')
 
-				<!-- ---------MAIN-PAGE-TABS---------->
-				@include('landingPage.Tabs')
+				<div class="col-md-12 col-md-offset">
+					@yield('topBar')
+				</div>
 
-				<!-- ---------/MAIN-PAGE-TABS---------->
-
-				<!-- ---------MAIN-PAGE-CONTENT---------->
-
-				@section('content')
-					<!-- Esto es como sifuera el layout de app, comienza de cero
-					para que todo lo que se hga click en la barra se refleje solo aqui 
-					manteniendo el layout principal -->
-					<div class="col-md-10" style="padding-top: 10px">
-						<div class="row">
-
-							<div class="polaroid rotate_right">
-	  							<img src="{{ URL::to('/') }}/DSC06584.JPG" alt="Pulpit rock" width="50%" height="auto">
-	  							<p class="caption">The pulpit rock in Lysefjorden, Norway.</p>
-							</div>
-
-							<div class="polaroid rotate_left">
-							  <img src="{{ URL::to('/') }}/DSC06584.JPG" alt="Monterosso al Mare" width="50%" height="auto">
-							  <p class="caption">Monterosso al Mare. One of the five villages in Cinque Terre, Italy.</p>
-							</div>
-						</div>	
-					</div>			
-				@endsection
-
+				<!-- ---------MAIN-PAGE-CONTENT---------->				
+				<div class="col-xs-12 col-md-offset col-md-8">
+					@yield('tabs')					
+				</div>
 				<!-- ---------/MAIN-PAGE-CONTENT---------->
+				<div class="col-xs-12 col-md-4">	
+					@yield ('sideBar')					
+				</div>
 
-				<!-- ---------MAIN-PAGE-SIDEBAR---------->
-				@section('sideBar')
-					@include('layouts.sideBars.mainSideBar')
-				@endsection
-				<!-- ---------MAIN-PAGE-SIDEBAR---------->
+			</div>
 
-				<!---------- Footer -------------->
-				<footer class="sticky-footer bg-white">
-					@include('dashboard.common.footer')
-				</footer>
-				<!----------- /Footer -------------->
 
 		</div>
 		<!----------- /CONTENEDOR --------------------->
 
-	</div>
+	</div><br>
 <!---------------- /WRAPPER----------------------------->
-
-	<!-- Este boton me regresa a arriba en la pagina-->
-	<!-- Le asigne el ID top-page al body para poder regresar-->
-	<!-- Se lo paso como parametro al href-->
-	<a class="scroll-to-top rounded" href="#page-top">
-		<i class="fas fa-angle-up"></i>
-	</a>
+    <!-- Scripts -->
+    <!-- Este script es el que permite que el dropdown del topbar funcione. Sin el no va a funcionar-->
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
-
+				<footer >
+					@include('landingPage.common.footer')
+				</footer>
 </html>
