@@ -134,6 +134,219 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
             Route::get('/crear','FileController@create')->name('file-create');
             Route::get('/store','FileController@store')->name('file-store');
             Route::get('/download/{id}','FileController@show')->name('file-download');
+
+        /******************************************/
+         /*------------*VIDEOS*-------------------*/
+        /******************************************/
+            /*Creamos la ruta hacia la pagina y utilizamos un array para pasarle los parametros que estaremos utilizando*/
+            Route::get ('/crear-video', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'createVideo', 
+                //Uso el AUTH para que solo pueda crear videos si estoy identificados
+               // 'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'VideoController@createVideo'
+            ));
+
+            /*------------GUARDAR------------------*/
+            /*Creamos la ruta para guardar el video una vez creado*/
+
+            Route::post ('/guardar-video', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'saveVideo', 
+                //Uso el AUTH para que solo pueda crear videos si estoy identificados
+                'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'VideoController@saveVideo'
+            ));
+            /*------------GET-IMAGE------------------*/
+            //A la ruta le tengo que pasar el parametro que llega obligatoriamente. 
+            Route::get('/miniatura/{filename}', array(
+            //Como segundo parametro le paso un array con el nombre que va a tenr la ruta
+                'as' => 'imageVideo',
+            //Que controlador va a utilizar y que metodo dentro de ese controlador
+                'uses' =>'VideoController@getImage'
+            ));
+
+            /*------------PAGINA -VIDEO-----------------*/
+            /* Le pasamos por URL el parametro obligatorio del video y un array con las caracteristicas del video*/
+            Route::get('/video/{video_id}',array(
+                'as'=> 'detailVideo',
+                'uses'=> 'VideoController@getVideoDetail'
+            ));
+
+            /*------------GET-VIDEO------------------*/
+            //A la ruta le tengo que pasar el parametro que llega obligatoriamente. 
+            Route::get('/video-file/{filename}', array(
+            //Como segundo parametro le paso un array con el nombre que va a tenr la ruta
+                'as' => 'fileVideo',
+            //Que controlador va a utilizar y que metodo dentro de ese controlador
+                'uses' =>'VideoController@getVideo'
+            ));
+
+
+
+            /*------------ADD-COMMENT------------------*/
+            //Indicamos el nombre de la ruta y metodo que va a cargar
+            Route::post('/comment',array(
+                'as'=> 'comment',
+                //'middleware'=>'auth',
+                'uses'=> 'CommentController@store'
+            ));
+
+            /*------------DELETE-COMMENT------------------*/
+            //Indicamos el nombre de la ruta y metodo que va a cargar
+            //---OJO---Si no le pasamos el segundo parametro me da error NotFoundHttpException
+            //Esto porque es el parametro que le estamos pasando por el metodo del controlador. MUST BE HERE ALSO
+            Route::get('/delete-comment/{comment_id}',array(
+                'as'=> 'commentDelete',
+               // 'middleware'=>'auth',
+                'uses'=> 'CommentController@delete'
+            ));
+
+            /*------------DELETE-VIDEO------------------*/
+            //Indicamos el nombre de la ruta y metodo que va a cargar
+            //---OJO---Si no le pasamos el segundo parametro me da error NotFoundHttpException
+            //Esto porque es el parametro que le estamos pasando por el metodo del controlador. MUST BE HERE ALSO
+            Route::get('/delete-video/{video_id}',array(
+                'as'=> 'videoDelete',
+                //'middleware'=>'auth',
+                'uses'=> 'VideoController@delete'
+            ));
+
+            /*------------EDITAR VIDEO------------------*/
+            /*Creamos la ruta para editar el video y le pasamos el parametro de video_id*/
+            Route::get('/editar-video/{video_id}', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'editVideo', 
+                //Uso el AUTH para que solo pueda crear videos si estoy identificados
+                //'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'VideoController@edit'
+            ));
+            /*------------GUARDAR-UPDATE------------------*/
+            /*Creamos la ruta para guardar el video una vez creado*/
+            Route::post ('/update-video/{video_id}', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'updateVideo', 
+                //Uso el AUTH para que solo pueda crear videos si estoy identificados
+                //'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'VideoController@update'
+            ));
+            /*------------SEARCH------------------*/
+            //El parametro search es un parametro opcional, me puede venir o no
+            //Para que el FILTRO funcione le tengo que pasar a la ruta otro parametro FILTER. Tambien va a ser opcional (?)
+            Route::get('/buscar/{search?}/{filter?}',array(
+                'as'=>'videoSearch',
+                'uses'=> 'VideoController@search'
+            ));
+        /******************************************/
+         /*------------*VIDEOS*-------------------*/
+        /******************************************/
+
+        /******************************************/
+         /*------------*Docs*-------------------*/
+        /******************************************/
+            /*Creamos la ruta hacia la pagina y utilizamos un array para pasarle los parametros que estaremos utilizando*/
+            Route::get ('/crear-doc', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'createDoc', 
+                //Uso el AUTH para que solo pueda crear docs si estoy identificados
+               // 'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'DocController@createDoc'
+            ));
+
+            /*------------GUARDAR------------------*/
+            /*Creamos la ruta para guardar el doc una vez creado*/
+            Route::post ('/guardar-doc', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'saveDoc', 
+                //Uso el AUTH para que solo pueda crear docs si estoy identificados
+                //'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'DocController@saveDoc'
+            ));
+
+            /*------------PAGINA-DOC-----------------*/
+            /* Le pasamos por URL el parametro obligatorio del doc y un array con las caracteristicas del doc*/
+            Route::get('/doc/{doc_id}',array(
+                'as'=> 'detailDoc',
+                'uses'=> 'DocController@getDocDetail'
+            ));
+
+            /*------------GET-DOC------------------*/
+            //A la ruta le tengo que pasar el parametro que llega obligatoriamente. 
+            Route::get('/doc-file/{filename}', array(
+            //Como segundo parametro le paso un array con el nombre que va a tenr la ruta
+                'as' => 'fileDoc',
+            //Que controlador va a utilizar y que metodo dentro de ese controlador
+                'uses' =>'DocController@getDoc'
+            ));
+
+
+
+            /*------------ADD-COMMENT------------------*/
+            //Indicamos el nombre de la ruta y metodo que va a cargar
+            Route::post('/comment-doc',array(
+                'as'=> 'commentDoc',
+                //'middleware'=>'auth',
+                'uses'=> 'CommentControllerDoc@store'
+            ));
+
+            /*------------DELETE-COMMENT------------------*/
+            //Indicamos el nombre de la ruta y metodo que va a cargar
+            //---OJO---Si no le pasamos el segundo parametro me da error NotFoundHttpException
+            //Esto porque es el parametro que le estamos pasando por el metodo del controlador. MUST BE HERE ALSO
+            Route::get('/delete-comment-doc/{comment_id}',array(
+                'as'=> 'commentDelete',
+                //'middleware'=>'auth',
+                'uses'=> 'CommentControllerDoc@delete'
+            ));
+
+            /*------------DELETE-DOC------------------*/
+            //Indicamos el nombre de la ruta y metodo que va a cargar
+            //---OJO---Si no le pasamos el segundo parametro me da error NotFoundHttpException
+            //Esto porque es el parametro que le estamos pasando por el metodo del controlador. MUST BE HERE ALSO
+            Route::get('/delete-doc/{doc_id}',array(
+                'as'=> 'docDelete',
+              //  'middleware'=>'auth',
+                'uses'=> 'DocController@delete'
+            ));
+
+            /*------------EDITAR DOC------------------*/
+            /*Creamos la ruta para editar el doc y le pasamos el parametro de doc_id*/
+            Route::get('/editar-doc/{doc_id}', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'editDoc', 
+                //Uso el AUTH para que solo pueda crear docs si estoy identificados
+               // 'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'DocController@edit'
+            ));
+            /*------------GUARDAR-UPDATE------------------*/
+            /*Creamos la ruta para guardar el doc una vez creado*/
+            Route::post ('/update-doc/{doc_id}', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'updateDoc', 
+                //Uso el AUTH para que solo pueda crear docs si estoy identificados
+               // 'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'DocController@update'
+            ));
+            /*------------SEARCH------------------*/
+            //El parametro search es un parametro opcional, me puede venir o no
+            //Para que el FILTRO funcione le tengo que pasar a la ruta otro parametro FILTER. Tambien va a ser opcional (?)
+            Route::get('/buscar-doc/{search?}/{filter?}',array(
+                'as'=>'docSearch',
+                'uses'=> 'DocController@search'
+            ));
+        /******************************************/
+         /*------------*Docs*-------------------*/
+        /******************************************/
+
+
   });
 /*------------------>  /MIDDLEWARE */
 });
