@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facade\DB;
 use Illuminate\Support\Facade\Storage;
-
 use Symfony\Component\HttpFoundation\Response;
 
 //Ahora importo los modelos
@@ -94,35 +93,14 @@ class VideoController extends Controller
     /* Este metodo recibo por URL el nombre del fichero*/
     public function getImage($filename){
     	//Creamos una variable $file para acceder al STORAGE y con el metodo (disk) le indicamos en que carpeta esta nuestra imagen. COn el metodo get le indicamos cual fichero queremos. CUAL?. PUes el que nos llegue por parametro $filename
-    	$file = Storage::disk('images')->get($filename);
+        //La \ se la pongo adelante al Storage porque aunque tengo importado el metodo de Storage arriba, por algun motivo no fucniona sin la raya
+    	$file = \Storage::disk('images')->get($filename);
     	//POr ultimo regresamos un response con un $file que nos devuelve el fichero en si
     	return new Response($file,200);
     	/* Ahora necesitamos crear una ruta para este metodo en web.php*/
 
     }
-//*******************************************//
-    // ----PAGINA DETALLE DEL VIDEO------//
-    // TEnemos que pasar el $video_ID que el el detalle del video que deseamos mostrar
 
-    public function getVideoDetail ($video_id){
-        //Creamos una variable video que haga un FIND a la BD para conseguir el registro que deseamos mostrar. Esto lo podemos hacer con ELOQUENT y el metodo find- ÑLe solicitamos el video_id. Diferente como se hace con el QUERY builder
-        $video = Video::find($video_id);
-        //Cargamos una vista que se llma video y un array con la infomracion del video a cargar
-        return view('.dashboard.video.detail', array(
-            //Video va a llevar dentro todo el contenido de la variable $video
-            'video' =>$video
-        //POr ultimo es necesario crear la vista para este metodo
-        ));
-
-    }
-
-// *******************************************//
-    // ---------MOSTRAR VIDEO --------//
-    /* Este metodo recibo por URL el nombre del fichero*/
-    public function getVideo($filename){
-        $file = Storage::disk('videos')->get($filename);
-        return new Response($file,200);
-    }
 
 
 // *******************************************//
@@ -135,8 +113,8 @@ class VideoController extends Controller
         $video = Video::find($video_id);
         //Tambien hacemos un find de los comentarios que deseamos borrar. Asegurarse de tener importado el modelo de comment
         //Esto nos va a sacar todos los comentarios cuyo video_id sea el correspondiente
-        $comments = Comment::where('video_id',$video_id)->get();
-        $comments = Comment::where('video_id',$video_id);
+        //$comments = VideoComment::where('video_id',$video_id)->get();
+        //$comments = VideoComment::where('video_id',$video_id);
         //Ahora tenenmos que comprobar si el usuario existe y el que solamente cuando estemos identificados como el ususario dueño del video podamos usarlo. SI otro lo intenta no va a poder
         if($user && $video->user_id == $user->id){
             //Antes de borrar el video tenemos que borar los comentarios
@@ -144,19 +122,19 @@ class VideoController extends Controller
 
             /*******Warning: count(): Parameter must be an array or an object that implements Countable***/
             //if($comments && count($comments)>=1) esto no provoca el error. EL is_array lo soluciona
-            if(is_array($comments) && count($comments)>=1){
+            /*if(is_array($comments) && count($comments)>=1){
                 foreach ($comments as $comment) {
                      $comments->delete();                 
                 }            
-            }
+            }*/
             //Despues tenemos que eliminar las imagenes y los videos a nivel de disco fisico. Eliminarlos del Storage. Utilizamos el OBJETO  video y la PROPIEDAD image.
-            Storage::disk('images')->delete($video->image);
-            Storage::disk('videos')->delete($video->video_path);
+            \Storage::disk('images')->delete($video->image);
+            \Storage::disk('videos')->delete($video->video_path);
             //Finamente eliminar el registro del video en la base de datos
             $video->delete();
         }
         //Lo ultimo que hace este metodo es redirigirnos a HOME con el aaray de mensaje para que me diga si se elimino o no correctamente
-        return redirect()->route('home')->with(array(
+        return redirect()->route('index')->with(array(
             'message'=>'Video eliminado correctamente'
         ));
     }
@@ -173,10 +151,10 @@ public function edit($video_id){
     //Ahora tenenmos que comprobar si el usuario existe y el que solamente cuando estemos identificados como el ususario dueño del video podamos usarlo. SI otro lo intenta no va a poder
     if($user && $video->user_id == $user->id){
         //Devolvemos la vista edit dentro de la carpeta de videos
-        return view('video.edit', array('video' => $video));
+        return view('dashboard.videos.edit', array('video' => $video));
     //Si esto no funcionara hacemos una redireccion a la HOME sin mensaje
     }else{
-        return redirect()->route('home');
+        return redirect()->route('index');
     }
     //Ahora es necesario crear la vista de Edit
 }
@@ -208,7 +186,7 @@ public function update($video_id, Request $request){
     if ($image){
         //********OJO*************//
          //Antes de actualizar el video tenemos que eliminar el registro anterior para que La imagen no se reporduzca una y otra vez. Es decir si no elimino el registro cada vez que se actualize la imagen se crea una copia y nos satura la base de datos
-         Storage::disk('images')->delete($video->image);
+         \Storage::disk('images')->delete($video->image);
          //*************************//
 
          //Si nos llega recojemos el path de la imagen
@@ -241,86 +219,8 @@ public function update($video_id, Request $request){
 ///Una vez que todo esto este listo ya podemos hacer un UPDARe en la base de datos.
     $video->update();
 
-    return redirect()->route('home')->with(array('message'=>'EL video se ha actualizado correctamente'));
+    return redirect()->route('index')->with(array('message'=>'EL video se ha actualizado correctamente'));
     //Finalmente ceramos la ruta.
 }
-//*******************************************//
-// ---------FUNCION DE SEARCH--------//
 
-//Le pasamos por parametro la busqueda que vamos a realizar
-//POr defecto el parametro va a ser NULL porque puede que el parametro venga por la URL con busqueda o sin busqueda
-//Tambien pasamos el parametro filter para poder utilizarlo
-public function search($search = null, $filter = null){
-
-    //Si el parametro de SEARCH es nulo entonces le vamos a asignar un valor a search que es que que vienen en la request
-    if (is_null($search)) {
-        //De esta forma siempre va a tener un valor que es el que ingresa en la barra de busqueda.
-        //Esta es la variable que nos llega por get
-        $search= \Request::get('search');
-
-        /**************SI PRESIONO EL BOTON SIN NINGUNA BUSQUEDA*************/
-        //Si presiono el boton de busqueda sin nada nos redirige al listado principal en el HOME
-        if (is_null($search)) {
-           return redirect()->route('home');
-        }
-        /*******************************************************************/
-        //Esto es para que nos llegue un parametro limpia cuando nos redirija
-        //De esta manera a la hora de buscar algo, la direccion sale con lo que escribi en search
-        //Le pasamos el contenido que tiene la variable por GET
-        return redirect()->route('videoSearch',array('search' =>$search));
-    }
-
-    //-----FILTRO--------
-    /*Si no existe el parametro FILTER es decir es NULO,
-     *Si existe el parametro que me llega por GET
-     *Pero no es nulo SEARCH, entonces ...
-      me hace una redireccion con el filtro capturando el parametro GET sino nada*/
-    if (is_null($filter) && \Request::get('filter') && !is_null($search)) {
-        //Creamos variable filter para capturar el parametro por GET
-        $filter= \Request::get('filter');
-        //Esto es para que nos llegue un parametro limpia cuando nos redirija
-        //De esta manera a la hora de buscar algo, la direccion sale con lo que escribi en search
-        //Le pasamos el contenido que tiene la variable por GET, es decir los dos parametros
-        return redirect()->route('videoSearch',array('search' =>$search, 'filter' =>$filter));
-    }
-    /**************Si hay filtro***********/
-    //Aqui vamos a optimizar la consulta para que queda perfecta
-    //Creamos dos variable que son las que va a utilizar el ORDERBY
-    //Estas con las variables que cambian en el filtro cunado seleccionamos las opciones
-    $colum ='id';
-    $order = 'desc';
-    //En caso de que el filtro exista, es decir que no es NULL
-    if (!is_null($filter)) {
-        //Hacemos el ordenamiento de los video de acuerdo a los criterios del filtro
-        //Ahora tenemos que hacer un acomprobarcion con el IF
-        if ($filter == 'new') {
-            $colum ='id';
-            $order = 'desc';;
-        }
-        if ($filter == 'old') {
-            $colum ='id';
-            $order = 'asc';;
-        }
-        if ($filter == 'alfa') {                                
-            $colum ='title';
-            $order = 'asc';;
-        }
-
-    }
-    /***************************************/
-    //Vamos a hacer una QUERY , para que busque en el titulo la informacion
-    //Cuando realicemos la busqueda, si el titulo es igual a lo que venga en SEARCH que nos de el resultado
-    //Sacame todos los video cuando el titulo contenga lo que hemos buscado
-    //Los % los pongo para que me saque la coincidencias de la Primera letra y la Ultima, no solo el resultado completo
-    
-    $videos = Video::where('title','LIKE','%'.$search.'%')
-                            //Ha esto le agregamos el ORDERBY con los valores de las variables de arriba y el paginate
-                            ->orderBy($colum,$order)
-                            ->paginate(5);
-
-    return view('video.search', array(
-        'videos'=> $videos,
-        'search'=> $search
-    ));
-}
 }

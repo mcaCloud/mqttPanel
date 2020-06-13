@@ -13,7 +13,7 @@
     
 
     <!-- Cargamos el archivo de CSS particular que tenemos dentro del storage en la carpeta CSS que creamos. Utilizo un URL y la ruta ruta donde tengo el ASSET -->
-     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+     <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
      
   <!-- Con este link cargamos la configuracion del bootstrap.min.css, con todos los defaults-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">

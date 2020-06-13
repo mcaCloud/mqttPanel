@@ -30,26 +30,7 @@
             <!-- -------------- /Branding Image ------------------->          
         </div>
         <!--------------------------/HEADER---------------------------------------- -->          
-  <div class="navbar-header col-md-4">          
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="{{route('home')}}"><span class=" glyphicon glyphicon-off"></a></li>
 
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Proyectos
-        <span class="caret"></span></a>
-
-        <ul class="dropdown-menu">
-          <li><a href="{{route('videos')}}"><span class=" glyphicon glyphicon-play-circle"> Videos</a></li>
-
-          <li><a href="{{route('audios')}}"><span class=" glyphicon glyphicon-volume-up"> Audios</a></li>
-
-          <li><a href="{{route('docs')}}"><span class=" glyphicon glyphicon-folder-open"> Archivos</a></li>
-        </ul>
-      </li>
-      <li><a href="#">Sobre mí</a></li>
-      <li><a href="{{url('contacto')}}">Contacto</a></li>
-    </ul>
-   </div>         
         <!-----------------SOCIAL-MEDIA ------------------------------------------------>
         <div class="col-md-3" >
             <ul class="nav navbar-nav">
@@ -103,7 +84,7 @@
                         </li>
                         <li>
                             <!-- Como estamos en la plantilla principal el llamado a las propiedades del ojeto user se hacen diferente. So se puede utilizar el objeto userProfile que creamos en el controlador porque no funciona.Tenemos que cojer las propiedades del Auth::user -->
-                            <a href="{{route('editProfile',['id' =>Auth::user()->id]) }}">Perfil</a>
+                            <a href="{{route('profile',['id' =>Auth::user()->id]) }}">Perfil</a>
                         </li>
                     </ul>
                     <!-- ---------/OPCIONES-MENU --------------->

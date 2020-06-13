@@ -19,6 +19,10 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 
 /*Importo el MODELO de User*/
 use App\User;
+//Ahora importo los modelos
+use App\Video;
+use App\VideoComment;
+
 /* Middleware vendor/laravel/framework/src/iluminate/auth/middleware/Authenticate*/
 use Auth;
 
@@ -468,7 +472,30 @@ class UserController extends Controller
         ]);
     }
 /*****************************************************************/
+//*******************************************//
+/*---------CANAL DE USUARIO-VIDEOS ----------*/
+   //Aqui vamos a capturar toda la informacion del usuario que nos llegue por un parametro de la URL
+   public function channel($user_id){
+        // A traves del user_id (que llega por la URL) solicitamos al modelo USER toda la informacion del OBJETO del usuario 
+        $user = User::find($user_id);
 
+        /******SI NO EXISTE EL USUARIO **************/
+        //Si el usuario no existe que me redirija al Home
+        if (!is_object($user)) {
+            return redirect()-> route('welcome');
+        }
+        //Vamos a sacar todos los videos asociados a ese usuario
+        //Sacame todos los videos cuyo user_id sea igual al user_id que me llega por la URL
+        $videos = Video::where('user_id',$user_id)->paginate(5);
+        //Finalmente devolvemos una vista con un array que contenga los datos del objeto de usuario y el objeto de video.
+        return view ('dashboard.user.channel', array(
+            'user'=> $user,
+            'videos'=> $videos
+        ));
+   }
+
+//*******************************************//
+// *******************************************//
 
 /******************* /TOGGLE**************************************/
 /*

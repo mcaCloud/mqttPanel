@@ -62,7 +62,7 @@
                             
                             @yield('alerts')
 
-                            @yield('searchWords')
+                            @yield('searchBar')
                             
                             @yield('content')
                         </div>

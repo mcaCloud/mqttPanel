@@ -59,7 +59,6 @@ return [
 // -------------DISCOS  adicionales --------------//
         'images' => [
             'driver' => 'local',
-            //Va a utilizar la ruta 'app\images'
             'root' => storage_path('app/images'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',

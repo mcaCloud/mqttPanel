@@ -39,7 +39,8 @@
 
 				<!-- ---------MAIN-PAGE-CONTENT---------->				
 				<div class="col-xs-12 col-md-offset col-md-8">
-					@yield('tabs')					
+					@yield('tabs')	
+					@yield('content')				
 				</div>
 				<!-- ---------/MAIN-PAGE-CONTENT---------->
 				<div class="col-xs-12 col-md-4">	

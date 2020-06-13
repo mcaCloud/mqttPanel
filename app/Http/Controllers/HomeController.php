@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+//Como esta informacion va a representarse en la pagina de Index, y existen diferentes tabs que van a interactuar con tablas diferentes. Debo mencionar a todos los modelos con los que voy a interactuar. Sino cuando intente hacer un retrive de la informacion no me va a encontrar la variable.
 use App\File;
+use App\Video;
+use App\Doc;
 
 class HomeController extends Controller
 {
@@ -30,9 +33,14 @@ class HomeController extends Controller
         $files = File::orderBy('id','desc')-> paginate(5);
         /*Ahora le tengo que pasar la informacion a la vista, para eso le paso un array al VIEW*/
 
+        //Como en la vista de Index tengo tabs y cada una tiene informacion diferente los que voy a hacer es hacer un query en cada tabla y pasarle la info de todas las tablas que ocupo a la vista. 
+        $videos = Video::orderBy('id','desc')-> paginate(5);
+        $docs = Doc::orderBy('id','desc')-> paginate(5);
         return view ('welcome',array(
             /*Creo un indice FILES y le paso todos los files, de esta forma ya tengo accesible todos los files en la vista welcome*/
-            'files' =>$files
+            'files' =>$files,
+            'videos' =>$videos,
+            'doc' =>$docs
         ));
 
 

@@ -5,11 +5,12 @@
 /*Ponemos el evento aqiu para poder usarlo desde este controlador, pero hay que ponerlo en el controlador desde el cual se va a utilizar*/
 
 Route::get('/', 'HomeController@index')->name('index');
-/********************************************************/
-/*************/                            /*************/  
-/**************     *//*LOGIN-LOGOUT*//*   ***************/ 
-/*************/                            /*************/ 
-/********************************************************/
+
+/****************************************************************************************/
+/***************************/                            /*****************************/  
+/******************************     *//*LOGIN-LOGOUT*//*   *******************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
 
 /*Esta ruta entra dentro del LoginController y no utiliza un metodo de ahi, sino que de una vez ahi llama un TRAIT (showLoginForm) porque dentro del controlador llame al TRAIT AuthenticatesUser*/
 /*Entonces se puede mencionar el controlador y directamente un trait*/
@@ -24,11 +25,11 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 
 
-/********************************************************/
-/*************/                            /*************/  
-/**************     *//*RESET-PSS*//*      ***************/ 
-/*************/                            /*************/ 
-/********************************************************/
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/******************************     *//*RESET-PSS*//*      *******************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
 /******   1  *****/
 /*Esta es la ruta cuando el USER hace click en el 'Forgot Password', me lleva a la vista 'email' para que e ususario intoduzca el email*/
 /*Dentro el controlador 'ForgotPasswordController' solo hay una referencia hacia el TRAIT de 'SendsPasswordresetEmails'*/
@@ -54,13 +55,16 @@ Route::get('/password/reset/{token} ', 'Auth\ResetPasswordController@showResetFo
 Route::post('/password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
 
 
-/********************************************************/
-/*************/                            /*************/  
-/**************     *//*DASHBOARD*//*      ***************/ 
-/*************/                            /*************/ 
-/********************************************************/
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/******************************     *//*DASHBOARD*//*      *******************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
 
+
+/****************************************************************/
 /*************** PREFIX-DASHBOARD ******************************/
+
 /*Esto lo que hace es que pueda solicitar cuaquier ruta del dashboard con el prefijo*/
 /*dashboard va a ir enfrente de todas las rutas*/
 /*Utilizo name space porque todas las rutas de los controlladores estan dentro del folder dashboard*/
@@ -69,7 +73,8 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
  /*Todas estas rutas estan agrupadas con el middleware 'auth' que es un metodo dentro del controllador 'router.php' ubicado en'Illuminate/Routing*/
  /*aqui se pueden ver las diferentes rutas que el el metodo cubre*/
 
-/*------------------>  MIDDLEWARE */
+/****************************************************************/
+/******************  MIDDLEWARE ***********************************/
   Route::group(['middleware' => ['auth']], function () {
 
         //Al final la ruta seria 'dashboard/'porque estamos dentro del namespace de 'Dashboard' entonces cualquier ruta aqui adentro comienza con dashboard como prefijo
@@ -78,22 +83,37 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
         /*Al ser Resourceful ya tiene metodos preestablacidos para las operaciones mas basicas de crud*/
         /*El except significa que el controller maneja las defualt actions except for SHOW*/
 
-        /*------------*USER*-------------------*/
+        /******************************************/
+         /*------------*ARCHIVOS*-------------------*/
+        /******************************************/
         Route::resource('/users', 'UserController', ['except' => ['show']]);
 
-             Route::get('/users/{user}/access', 'UserController@toggleAccess')->name('users.toggleAccess');
-             Route::get('/users/export', 'UserController@export')->name('users.export');
+                Route::get('/users/{user}/access', 'UserController@toggleAccess')->name('users.toggleAccess');
 
-        /*------------*ROLES*-------------------*/
+                 Route::get('/users/export', 'UserController@export')->name('users.export');
+
+
+         /******************************************/
+         /*------------*ROLES*-------------------*/
+        /******************************************/
         Route::resource('/roles', 'RoleController', ['except' => ['show']]);
 
-        /*------------*PERMISSIONS*-------------------*/
+
+         /******************************************/
+         /*------------*PERMISSIONS*-------------------*/
+        /******************************************/
         Route::resource('/permissions', 'PermissionController', ['except' => ['show']]);
 
-        /*------------*COMMON*-------------------*/
+
+         /******************************************/
+         /*------------*COMMONS*-------------------*/
+        /******************************************/
         Route::get('/common/slug/{name}', 'CommonController@slug')->name('common.slug');
 
-        /*------------*PDFS*-------------------*/
+
+         /******************************************/
+         /*------------*PDF*-------------------*/
+        /******************************************/
         Route::get('/pdfs', 'PdfController@index')->name('pdfs.index');
 
         Route::post('/pdfs/generate', 'PdfController@export_document_generate')->name('pdfs.export_document_generate');
@@ -110,17 +130,17 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
          //Aqui ya tenemos 2 prefijos . El del namespace 'dashboard' y el resource 'folders'
         //Cualquier ruta de aqui llevara los dos
          Route::resource('/folders', 'FoldersController');
-             //Esta ruta por ejemplo seria:  /dashboard/folders/crear
-             Route::get('/crear','FoldersController@create')->name('folder-create');
-             //dashboard/folder/store
-             Route::get('/store','FoldersController@store')->name('folder-store');
+                //Esta ruta por ejemplo seria:  /dashboard/folders/crear
+                Route::get('/crear','FoldersController@create')->name('folder-create');
+                //dashboard/folder/store
+                Route::get('/store','FoldersController@store')->name('folder-store');
 
-             //Route::post('/folders/borrar',  'UserController@destroy')->name('folders.delete');
-             Route::get('show/{id}/','FoldersController@show')->name('folder-edit');
+                //Route::post('/folders/borrar',  'UserController@destroy')->name('folders.delete');
+                Route::get('show/{id}/','FoldersController@show')->name('folder-edit');
           
-            //Route::post('folders_restore/{id}','UserController@restore')->name('folders.restore');
+                //Route::post('folders_restore/{id}','UserController@restore')->name('folders.restore');
 
-            //Route::delete('folders_perma_del/{id}', 'UserController@restore') ->name('folders.perma_del');
+                //Route::delete('folders_perma_del/{id}', 'UserController@restore') ->name('folders.perma_del');
 
         /******************************************/
          /*------------*ARCHIVOS*-------------------*/
@@ -159,32 +179,6 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
                 //Ahora le indico que clase y que controlador(accion) va a utilizar
                 'uses' => 'VideoController@saveVideo'
             ));
-            /*------------GET-IMAGE------------------*/
-            //A la ruta le tengo que pasar el parametro que llega obligatoriamente. 
-            Route::get('/miniatura/{filename}', array(
-            //Como segundo parametro le paso un array con el nombre que va a tenr la ruta
-                'as' => 'imageVideo',
-            //Que controlador va a utilizar y que metodo dentro de ese controlador
-                'uses' =>'VideoController@getImage'
-            ));
-
-            /*------------PAGINA -VIDEO-----------------*/
-            /* Le pasamos por URL el parametro obligatorio del video y un array con las caracteristicas del video*/
-            Route::get('/video/{video_id}',array(
-                'as'=> 'detailVideo',
-                'uses'=> 'VideoController@getVideoDetail'
-            ));
-
-            /*------------GET-VIDEO------------------*/
-            //A la ruta le tengo que pasar el parametro que llega obligatoriamente. 
-            Route::get('/video-file/{filename}', array(
-            //Como segundo parametro le paso un array con el nombre que va a tenr la ruta
-                'as' => 'fileVideo',
-            //Que controlador va a utilizar y que metodo dentro de ese controlador
-                'uses' =>'VideoController@getVideo'
-            ));
-
-
 
             /*------------ADD-COMMENT------------------*/
             //Indicamos el nombre de la ruta y metodo que va a cargar
@@ -348,37 +342,130 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
 
 
   });
-/*------------------>  /MIDDLEWARE */
+/****************************************************************/
+/******************  /MIDDLEWARE ***********************************/
 });
+/****************************************************************/
+/******************  /DASHBOARD ***********************************/
 
-/********************************************************/
-/*************/                            /*************/  
-/**************     *//*USER-PROFILE*//*   ***************/ 
-/*************/                            /*************/ 
-/********************************************************/
+
+
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/******************************     *//*USER-PROFILE*//*   *******************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
 
 /*Se recomienda poner las llamadas a los metodos antes de poner el RESOURCEFULL*/
 Route::get('/editar/{id}','UserProfile@edit') ->name('perfil');
 
 Route::post('/actualizar/{id}','UserProfile@update') ->name('updateUser');
 
-/*------------GET-IMAGE------------------*/
+/******************************************/
+/*------------*GET-IMAGE*-------------------*/
+/******************************************/
 /*Esta es la ruta que utilizo para obtener la informacion de los avatares*/
 /*Tengo que realizar rutas parecidas para los otros controladores*/ 
-Route::get('/miniatura/{filename}','UserProfile@getImage') ->name('miniatura');
+Route::get('/miniatura/{filename}','UserProfile@getVideoImage') ->name('miniatura');
 
  /*Maneja todos los metodos tipicos con una solo linea de codigo*/
  /*Al ser REsourceful ya tiene metodos preestablacidos para las operaciones mas basicas de crud*/
+ /******************************************/
+/*------------*GET-IMAGE*-------------------*/
+/******************************************/
  /*El except significa que el controller maneja las default actions except for...*/
-    Route::resource('/Perfil', 'UserProfile')->except([
+Route::resource('/Perfil', 'UserProfile')->except([
     'create', 'store', 'show'
 ]);
 
-/********************************************************/
-/*************/                            /*************/  
-/**************   *//*NOTIFICATIONS*//*    ***************/ 
-/*************/                            /*************/ 
-/********************************************************/
+ /******************************************/
+/*------------*CANAL-DE USUARIO*-----------*/
+/******************************************/
+//El user_id es obligatorio
+Route::get('/canal/{user_id}',array(
+    'as'=> 'channel',
+    'uses'=> 'UserProfile@channel'
+));
+
+ /******************************************/
+/*------------*VIDEO*--------------*/
+/******************************************/
+
+/*------------VIDEO-DETAIL------------------*/
+/* Le pasamos por URL el parametro obligatorio del video y un array con las caracteristicas del video*/
+/*Lo hacemos aqui porque es una ruta que no necesita autenticacion.Esto es para que un usuario no atenticado pueda ver el video*/
+Route::get('/video/{video_id}',array(
+            'as'=> 'detailVideo',
+            'uses'=> 'UserProfile@getVideoDetail'
+));
+
+/*------------GET-VIDEO------------------*/
+//A la ruta le tengo que pasar el parametro que llega obligatoriamente. 
+Route::get('/video-file/{filename}', array(
+            //Como segundo parametro le paso un array con el nombre que va a tenr la ruta
+            'as' => 'fileVideo',
+            //Que controlador va a utilizar y que metodo dentro de ese controlador
+            'uses' =>'UserProfile@getVideo'
+));
+/*------------SEARCH-VIDEO------------------*/
+//El parametro search es un parametro opcional, me puede venir o no
+//Para que el FILTRO funcione le tengo que pasar a la ruta otro parametro FILTER. Tambien va a ser opcional (?)
+Route::get('/buscar-video/{search?}/{filter?}',array(
+            'as'=>'videoSearch',
+            'uses'=> 'UserProfile@searchVideo'
+));
+
+ /******************************************/
+/*------------*DOC-DETAIL*--------------*/
+/******************************************/
+/* Le pasamos por URL el parametro obligatorio del video y un array con las caracteristicas del video*/
+/*Lo hacemos aqui porque es una ruta que no necesita autenticacion.Esto es para que un usuario no atenticado pueda ver el video*/
+Route::get('/documento/{doc_id}',array(
+            'as'=> 'detailDoc',
+            'uses'=> 'UserProfile@getDocDetail'
+));
+
+/*------------GET-DOC------------------*/
+//A la ruta le tengo que pasar el parametro que llega obligatoriamente. 
+Route::get('/doc-file/{filename}', array(
+            //Como segundo parametro le paso un array con el nombre que va a tenr la ruta
+            'as' => 'fileDoc',
+            //Que controlador va a utilizar y que metodo dentro de ese controlador
+            'uses' =>'UserProfile@getDoc'
+));
+/*------------SEARCH-DOC------------------*/
+//El parametro search es un parametro opcional, me puede venir o no
+//Para que el FILTRO funcione le tengo que pasar a la ruta otro parametro FILTER. Tambien va a ser opcional (?)
+Route::get('/buscar-documento/{search?}/{filter?}',array(
+            'as'=>'docSearch',
+            'uses'=> 'UserProfile@searchDoc'
+));
+
+
+ /******************************************/
+/*------------*CONTACTO*--------------*/
+/******************************************/
+Route::get('/contacto', function () {
+        return view('contacto');
+});
+
+ /******************************************/
+/*------------*SHOW-ALL-USERS*--------------*/
+/******************************************/
+/*Creamos la ruta para editar el perfil del usuario  y le pasamos el parametro de user_id*/
+Route::get('/users', array(
+    //Este va a ser el nombre de la ruta
+    'as' => 'showUsers', 
+    //Ahora le indico que clase y que controlador(accion) va a utilizar
+    'uses' => 'UserController@showUsers'
+));
+
+
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/******************************   *//*NOTIFICATIONS*//*    *******************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
 
 /*/*********** ALL-READ ************/
 /*Esta es una funcion de testing para ver como se puede retrive la info de la notificacion y imprimirla en pantalla*/
@@ -413,11 +500,11 @@ Route::get('/unReadNotification/{id}','NotificationsController@oneUnRead') ->nam
 Route::get('/emptyNotification','NotificationsController@empty') ->name('emptyNotifications');
 
 
-/********************************************************/
-/*************/                            /*************/  
-/**************     *//*PUSHER*//*         ***************/ 
-/*************/                            /*************/ 
-/********************************************************/
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/******************************     *//*PUSHER*//*         *******************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
 
 
 /********* Muestra la pagina*************/

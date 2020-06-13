@@ -20,7 +20,7 @@
         @endpush
 
         <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('.landingPage.common.tabs.home')
+        @include('landingPage.common.tabs.home')
 
     </div>
 
@@ -47,7 +47,8 @@
         @include('.landingPage.common.tabs.citas')
     </div>
         <!--------Noticias---------->
-    <div id="noticias" class="tab-pane fade">        
+
+    <div id="noticias" class="tab-pane fade">     
          <!-- Agregar el contenido del tab o hacer referencia al contenido -->
         @include('.landingPage.common.tabs.noticias')
     </div>

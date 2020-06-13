@@ -1,6 +1,6 @@
 @extends('layouts.videosTemplate')
 
-@section('searchWords')
+@section('searchBar')
 
 <!-- El COL y ROW lo hacemos para darle formato al titulo de lo que buscamos y 
 	 el filtro de busqueda, sino se descuadra todo-->

@@ -78,8 +78,12 @@
    <div class="panel-footer">
      <p>Prueba del body</p>
    </div>
+
+
  </div> 
 </div>
+
+
 </div>
 <script>
 $(document).ready(function(){
