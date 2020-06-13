@@ -263,23 +263,6 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
                 'uses' => 'DocController@saveDoc'
             ));
 
-            /*------------PAGINA-DOC-----------------*/
-            /* Le pasamos por URL el parametro obligatorio del doc y un array con las caracteristicas del doc*/
-            Route::get('/doc/{doc_id}',array(
-                'as'=> 'detailDoc',
-                'uses'=> 'DocController@getDocDetail'
-            ));
-
-            /*------------GET-DOC------------------*/
-            //A la ruta le tengo que pasar el parametro que llega obligatoriamente. 
-            Route::get('/doc-file/{filename}', array(
-            //Como segundo parametro le paso un array con el nombre que va a tenr la ruta
-                'as' => 'fileDoc',
-            //Que controlador va a utilizar y que metodo dentro de ese controlador
-                'uses' =>'DocController@getDoc'
-            ));
-
-
 
             /*------------ADD-COMMENT------------------*/
             //Indicamos el nombre de la ruta y metodo que va a cargar
@@ -367,12 +350,13 @@ Route::post('/actualizar/{id}','UserProfile@update') ->name('updateUser');
 /*Esta es la ruta que utilizo para obtener la informacion de los avatares*/
 /*Tengo que realizar rutas parecidas para los otros controladores*/ 
 Route::get('/miniatura/{filename}','UserProfile@getVideoImage') ->name('miniatura');
+Route::get('/miniaturaDoc/{filename}','UserProfile@getDocImage') ->name('miniatura');
 
- /*Maneja todos los metodos tipicos con una solo linea de codigo*/
- /*Al ser REsourceful ya tiene metodos preestablacidos para las operaciones mas basicas de crud*/
  /******************************************/
 /*------------*GET-IMAGE*-------------------*/
 /******************************************/
+ /*Maneja todos los metodos tipicos con una solo linea de codigo*/
+ /*Al ser REsourceful ya tiene metodos preestablacidos para las operaciones mas basicas de crud*/
  /*El except significa que el controller maneja las default actions except for...*/
 Route::resource('/Perfil', 'UserProfile')->except([
     'create', 'store', 'show'
@@ -420,7 +404,7 @@ Route::get('/buscar-video/{search?}/{filter?}',array(
 /******************************************/
 /* Le pasamos por URL el parametro obligatorio del video y un array con las caracteristicas del video*/
 /*Lo hacemos aqui porque es una ruta que no necesita autenticacion.Esto es para que un usuario no atenticado pueda ver el video*/
-Route::get('/documento/{doc_id}',array(
+Route::get('/doc/{doc_id}',array(
             'as'=> 'detailDoc',
             'uses'=> 'UserProfile@getDocDetail'
 ));
@@ -443,11 +427,12 @@ Route::get('/buscar-documento/{search?}/{filter?}',array(
 
 
  /******************************************/
-/*------------*CONTACTO*--------------*/
+/*------------*INFORMACION DE TABS*--------------*/
 /******************************************/
 Route::get('/contacto', function () {
         return view('contacto');
 });
+
 
  /******************************************/
 /*------------*SHOW-ALL-USERS*--------------*/

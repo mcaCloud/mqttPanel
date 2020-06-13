@@ -29,7 +29,7 @@ class LoginController extends Controller
      */
 
     /*La ruta raiz esta protegida, solo usuario autorizado puede acceder*/
-     protected $redirectTo = '/';
+     protected $redirectTo = 'index';
 
     /**
      * Create a new controller instance.

@@ -402,6 +402,19 @@ public function searchVideo($search = null, $filter = null){
         $file = Storage::disk('docs')->get($filename);
         return new Response($file,200);
     }
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/******************************     GET-DOC-VIDEO        ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
+/* Este metodo recibo por URL el nombre del fichero*/
+public function getDocImage($filename){
+    //Creamos una variable $file para acceder al STORAGE y con el metodo (disk) le indicamos en que carpeta esta nuestra imagen. COn el metodo get le indicamos cual fichero queremos. CUAL?. Pues el que nos llegue por parametro $filename
+    $file = \Storage::disk('images')->get($filename);
+    //POr ultimo regresamos un response con un $file que nos devuelve el fichero en si
+    return new Response($file,200);
+    /* Ahora necesitamos crear una ruta para este metodo en web.php*/
+}
 
 
 /****************************************************************************************/

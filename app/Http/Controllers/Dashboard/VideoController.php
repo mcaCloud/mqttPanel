@@ -16,8 +16,12 @@ use App\VideoComment;
 
 class VideoController extends Controller
 {
-    //*******************************************//
-    //-------------CREAR UN VIDEO------------------
+
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/**********************         CREAR-VIDEO                     ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
     //Simplemente una pagina que nos muetre los videos
 
     public function createVideo(){
@@ -25,8 +29,12 @@ class VideoController extends Controller
     }
 
 
-//*******************************************//
-    //-------------GUARDAR UN VIDEO------------------
+
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/**********************         GURDAR-VIDEO                     ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
     //Validar formulario
     //Le pasamos como primero parametro los datos que llegan por POST
     public function saveVideo (Request $request){
@@ -88,8 +96,12 @@ class VideoController extends Controller
     //Para que esto funcione correctamente necesito configurar los Drivers del Storage. Para ello CONFIG>fileSystems.php y como solo esta el Disk public me tengo que crear otros dos discos. Unos para IMAGES y otro para VIDEOS, o para todo lo que necesite.
     //*********************************************//
     }
-//*******************************************//
-    // ---------DEVOLVER IMAGEN --------//
+
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/**********************         GET-IMAGE                     ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
     /* Este metodo recibo por URL el nombre del fichero*/
     public function getImage($filename){
     	//Creamos una variable $file para acceder al STORAGE y con el metodo (disk) le indicamos en que carpeta esta nuestra imagen. COn el metodo get le indicamos cual fichero queremos. CUAL?. PUes el que nos llegue por parametro $filename
@@ -102,9 +114,11 @@ class VideoController extends Controller
     }
 
 
-
-// *******************************************//
-    // ---------ELIMINAR VIDEO --------//
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/**********************         DELETE-VIDEO                     ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
     /* Este metodo recibo por URL el nombre del fichero*/
     public function delete($video_id){
         //Lo primero es conseguir una variable del usuario identificado
@@ -139,8 +153,12 @@ class VideoController extends Controller
         ));
     }
 
-// *******************************************//
-// ---------EDITAR VIDEO --------//
+
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/**********************         EDIT-VIDEO                     ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
 //Recibo la variable ID del video por URL
 public function edit($video_id){
      //Lo primero es conseguir una variable del usuario identificado
@@ -158,8 +176,12 @@ public function edit($video_id){
     }
     //Ahora es necesario crear la vista de Edit
 }
-//*******************************************//
-// ---------ACTUALIZAR VIDEO EN BD--------//
+
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/**********************         UPDATE-VIDEO-DB                   ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
 //Recibo la variable ID del video por URL, y tambien le paso la request para poder recibir los parametro que me lleguen por POST
 public function update($video_id, Request $request){
      ///Lo primero que vamos a hacer es validar el forrmulario y le pasamos la request para que recoja todos los datos que llegan por POST. Ademas le vamos a pasar un array con las reglas de validacion.

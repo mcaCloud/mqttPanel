@@ -5,14 +5,14 @@
 <div class="container">
 	<!--------------MAIN-ROW------------->
 	<div class="row">
-		<h2>Crear un nuevo video</h1>
+		<h2>Crear una nueva Publicación</h1>
 
 		<!-- HR es una separacion para que se vea mejor -->
 		<hr>
 
 		<!-- ----FORMULARIO ----- -->
 		<!-- Cuando utilizo ROUTE() uso el nombre de la ruta en el controlador. No importa que cambie el nombre del URL siempore nos va a dirigir a la ruta. En caso de usar URL() tenemos que usar el URL del controlador -->
-		<form action="{{route('dashboard::saveVideo')}}" method="post" enctype="multipart/form-data" class="col-lg-7">
+		<form action="{{route('dashboard::saveDoc')}}" method="post" enctype="multipart/form-data" class="col-lg-7">
 			<!-- Laravel nos obliga a proteger los formularios con CSRF-->
 			{!! csrf_field() !!}
 

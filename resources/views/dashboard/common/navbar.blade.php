@@ -23,6 +23,8 @@
   <div class="sidebar-heading">
     Menu
   </div>
+
+  @hasanyrole('administrador|super-administrador')
 <!---------------------------------------------------------->
  <!---------------------- LI-1 ----------------------------->
   <li class="nav-item">
@@ -39,9 +41,9 @@
         <a class="collapse-item" href="{{ route('dashboard::permissions.index') }}"><i class="fa fa-unlock" aria-hidden="true"></i> Permisos</a>
       </div>
     </div>
+  @endhasanyrole
 <!---------------------------------------------------------->
  <!---------------------- LI-2 ----------------------------->
-
   <li class="nav-item">
     <!-- El 'data-target ' lo que hace es vincular el ID de lo que tiene que mostrar-->
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#procesosUtility" aria-expanded="true" aria-controls="collapseUtilities">
@@ -58,6 +60,7 @@
       </div>
 
     </div>
+
 <!---------------------------------------------------------->
  <!---------------------- LI-2 ----------------------------->
   </li>
@@ -77,7 +80,24 @@
 
 
     </div>
-  </li>
+
+
+
+    <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#miPlanUtility" aria-expanded="true" aria-controls="collapseUtilities2">
+      <i class="fas fa-credit-card"></i>
+      <span>Mi plan</span>
+    </a>
+    <div id="miPlanUtility" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+
+        <a class="collapse-item" href="#"><i class="fas fa-credit-card "></i> Pagos</a>
+        <a class="collapse-item" href="#"><i class="fa fa-address-card" aria-hidden="true"></i></i> Suscripción</a>
+
+        <a class="collapse-item" href="{{ route('dashboard::pdfs.index') }}"><i class="fas fa-key"></i> Cambiar contraseña</a>
+
+
+    </div>
 
 <!---------------------------------------------------------->
 <!---------------------- LI-1 ----------------------------->

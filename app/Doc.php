@@ -3,12 +3,25 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
+
+
 
 class Doc extends Model
+
 {
   //Lo primero es indicar a que tabla o entidad hace referencia el modelo
     protected $table = 'docs';
 
+  protected $fillable = [
+    'title',
+    'description',
+    'created_at',
+    'updated_At',
+    'image',
+
+  ];
     //Ahora defino la relacion con las diferentes entidades
 
     //RELACION ONE TO MANY

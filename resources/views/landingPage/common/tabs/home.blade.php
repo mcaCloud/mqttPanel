@@ -61,8 +61,9 @@
 <!------------------------------------------>
 <!------------------------------------------>
  <br>
- <div class="row">
-<div class="col-md-12">
+ 
+<div class="row">
+  <div class="col-md-12">
   
  <div class="panel panel-default">
 
@@ -70,15 +71,10 @@
   <!------------------------------------------>
   <!-- ---------- PANEL-BODY ------------------->
   <div class="panel-body">
-      @include('dashboard.files.filesList')
+      @include('dashboard.docs.docsList')
   </div>
   <!------------------------------------------>
   <!------------------------------------------>
-
-   <div class="panel-footer">
-     <p>Prueba del body</p>
-   </div>
-
 
  </div> 
 </div>
