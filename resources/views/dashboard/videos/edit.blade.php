@@ -54,7 +54,7 @@
                         <!--Le meto un video-image-mask para poder manipularla desde CSS-->
                         <div class="video-image-mask">
                              <!-- Le concateno a la ruta minitura la imagen que quiero ver, en este caso la que pertenesca al fichero que recibo por URL. Tambien le ponemos una clase para poder reducir su tamaño con CSS file-->
-                             <img src="{{url('/miniatura/'.$video->image)}}" class="video-image" width="200px" />
+                             <img src="{{url('/miniaturaVideo/'.$video->image)}}" class="video-image" width="200px" />
                         </div>
                       </div>
                     @endif

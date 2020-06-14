@@ -15,17 +15,8 @@
                 <span class="icon-bar"></span>
             </button>
             <!-- --------------/Collapsed Hamburger --------------->
-            <!-- -------------- Branding Image -------------------->
-            <!-- Esto es el nombre que nos lleva a HOME-->
-                    
-            <a class="auth">             
-                <img src="https://i.pinimg.com/originals/1c/00/72/1c0072ede2933cd26dfbe3bdecd6784d.gif" width="30" height="30" 
-                    class="d-inline-block align-top" alt=""/>
-            </a>
-
-            <!-- -------------- /Branding Image ------------------->          
+         
         </div>
-
         <!--------------------------/HEADER---------------------------------------- -->          
         <div class="navbar-header col-md-8"> 
         </div>         
@@ -61,7 +52,8 @@
                 <!-- Tendre un dropdown con el nombre del USUARIO identificado -->
                 <li class="dropdown">
 
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>{{ Auth::user()->first_name }}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+
                     </a>
 
                     <!-- ---------/OPCIONES-MENU --------------->

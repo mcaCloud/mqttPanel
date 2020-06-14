@@ -1,6 +1,8 @@
+
 <!--Estos on los botones del TAB-->
 <ul class="nav nav-tabs" style="padding-top: 10px">
-    <li class="active"><a href="{{route('index')}}"><span class="glyphicon glyphicon-home"></a></li>
+    <!--You can activate a tab or pill navigation without writing any JavaScript by simply specifying data.toggle="tab" or data.toggle="pill" on an element. Adding the nav and nav-tabs classes to the tab ul will apply the Bootstrap tab styling.-->
+    <li class="active"><a data-toggle="tab" href="#home"><span class="glyphicon glyphicon-home"></a></li>
     <li><a data-toggle="tab" href="#equipo">Equipo</a></li>
     <li><a data-toggle="tab" href="#servicios">Servicios</a></li>
     <li><a data-toggle="tab" href="#hablemos">Hablemos ahora</a></li>
@@ -13,7 +15,7 @@
 <!-- todas las TABS estaran dentro de un COL-MD-10-->
 <div class="tab-content">
     <!--------HOME---------->
-    <div id="home" class="tab-pane fade in active">
+    <div id="home" class="tab-pane active">
 
         @push('styles')
             <link href="{{ asset('css/carrousel.css') }}" rel="stylesheet">
@@ -25,41 +27,47 @@
     </div>
 
     <!--------Desarrollo Web---------->
-    <div id="equipo" class="tab-pane fade in active">
+    <div id="equipo" class="tab-pane">
         <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('.landingPage.common.tabs.equipo')
+        @include('landingPage.common.tabs.equipo')
     </div>
     <!--------Servicios---------->
-    <div id="servicios" class="tab-pane fade">  
+    <div id="servicios" class="tab-pane ">  
         <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('.landingPage.common.tabs.servicios')
+        @include('landingPage.common.tabs.servicios')
     </div>
 
     <!--------Hablemos---------->
-    <div id="hablemos" class="tab-pane fade">        
+    <div id="hablemos" class="tab-pane ">        
         <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('.landingPage.common.tabs.hablemos')
+        @include('landingPage.common.tabs.hablemos')
     </div>
 
     <!--------citas---------->
-    <div id="citas" class="tab-pane fade">        
+    <div id="citas" class="tab-pane ">        
          <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('.landingPage.common.tabs.citas')
+        @include('landingPage.common.tabs.citas')
     </div>
         <!--------Noticias---------->
 
-    <div id="noticias" class="tab-pane fade">     
+    <div id="noticias" class="tab-pane ">     
          <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('.landingPage.common.tabs.noticias')
+        @include('landingPage.common.tabs.noticias')
     </div>
         <!--------Cursos---------->
-    <div id="cursos" class="tab-pane fade">        
+    <div id="cursos" class="tab-pane ">        
          <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('.landingPage.common.tabs.cursos')
+        @include('landingPage.common.tabs.cursos')
     </div>
         <!--------Precios---------->
     <div id="precios" class="tab-pane fade">        
          <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('.landingPage.common.tabs.precios')
+        @include('landingPage.common.tabs.precios')
     </div>
 </div>
+<script type="text/javascript">
+    
+  $(function () {
+    $('#myTab a:last').tab('show');
+  })
+</script>

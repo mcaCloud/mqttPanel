@@ -13,10 +13,47 @@ use Symfony\Component\HttpFoundation\Response;
 //Ahora importo los modelos
 use App\Doc;
 use App\DocComment;
-
+USE Auth;
 class DocController extends Controller
 {
 
+ /*************************************************************************************/
+/*****************************/                            /*****************************/  
+/**********************         INDEX                     ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
+    /*Recojo la request que me llega por URL*/
+    public function index(Request $request)
+    {
+        /*THIS es un puntero que hace referencia a un OBJETO*/
+        /*El AUTHORIZE es un metodo del controller App\Http\Requests\UserRequest
+        /* Se autoriza a quien tenga permiso de 'listar-usuarios'*/
+        //$this->authorize('listar-usuarios');
+
+        /*Creo un variable DOCS para que me guarde el QUERY el modelo de docs*/
+        $docs = Doc::query();
+
+        /*Si el usuario autenticado tiene otro rol diferente a
+          'super-admin' entonces: */
+        /*Utiliza el TRAIT 'HasRoles' y el metodo de 'hasRole'*/
+        /*Esto se logra porque se usan los modelo de SPATIE que ya a su vez incluyen los TRAITS*/
+        if (!Auth::user()->hasRole('super-administrador')){
+            /*Se le muestra la info, no se le oculta */
+            /*Si el valor estuviera en TRUE solo el super admin la podria ver*/
+            $docs = $docs->where('hidden', false);
+        }
+        /*Muestreme esta vista*/
+        return view('dashboard.docs.index', [
+            /*Donde la variable 'items' me muestra el QUERY dentro de la variable USERS de forma paginada
+              *CONFIG es parte de un helper to Get / set the specified configuration value. Y poder utilizar el User Interface*/ 
+            /*La variable 'page' me da el objeto de la request dentro de la pagina
+            */
+            /*Se hace asi para poder utilizar el JS de DataTables*/
+            'items' => $docs->paginate(config('ui.dashboard.page_size')),
+            'page' => $request->query('page')
+        ]);
+    }
+/******************* /INDEX*********************************/
 
  /*************************************************************************************/
 /*****************************/                            /*****************************/  
@@ -347,4 +384,30 @@ class DocController extends Controller
 	        'search'=> $search
 	    ));
 	}
+
+    /*******************TOGGLE**************************************/
+    /* Aqui recivo la REQUEST y el ID del usuario que me viene por la URL*/
+    public function toggleAccess(Request $request, $id)
+    {   
+        /*Almaceno en la variable DOc el documento que coincide con el ID 
+          que me llega por la URL
+         *Del lado del formulario lo que pedi fue el ($item->id)
+         */
+        $doc = Doc::findOrFail($id);
+        /*User va a llamar a la funcion del modelo DOC 'toggleAccess'
+         *Este metodo pide una variable TYPE
+         *Entonces aqui recojo la variable de 'type' que vienen dentro del request
+         que me llega por la URL
+         */
+        $doc->toggleAccess($request->get('type'));
+
+        /*Guardo el objeto en la base de datos*/
+        $doc->save();
+
+        /*Redirijo a la base de datos con un mensaje que contiene el nombre completo del usuario*/
+        return redirect()->route('dashboard::noticiasIndex', ['page' => $request->query('page')])->with([
+            'message' => 'Se han actualizado la publicacion de esta noticia',
+            'level' => 'success'
+        ]);
+}
 }

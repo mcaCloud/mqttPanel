@@ -19,7 +19,7 @@ class CreateVideosTable extends Migration
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('status')->nullable();
+            $table->boolean('status')->default(0);
             $table->string('image')->nullable();
             $table->string('video_path')->nullable();
 

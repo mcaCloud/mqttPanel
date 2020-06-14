@@ -158,6 +158,12 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
         /******************************************/
          /*------------*VIDEOS*-------------------*/
         /******************************************/
+
+            Route::get('/videos','VideoController@index')->name('videosIndex');
+
+             Route::get('/videos/{user}/access', 'VideoController@toggleAccess')->name('videos.toggleAccess');
+
+
             /*Creamos la ruta hacia la pagina y utilizamos un array para pasarle los parametros que estaremos utilizando*/
             Route::get ('/crear-video', array(
                 //Este va a ser el nombre de la ruta
@@ -242,6 +248,12 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
         /******************************************/
          /*------------*Docs*-------------------*/
         /******************************************/
+
+        Route::resource('/noticias', 'DocController');
+
+            Route::get('/noticias/{user}/access', 'DocController@toggleAccess')->name('noticias.toggleAccess');
+
+            Route::get('/index', 'DocController@index')->name('noticiasIndex');
             /*Creamos la ruta hacia la pagina y utilizamos un array para pasarle los parametros que estaremos utilizando*/
             Route::get ('/crear-doc', array(
                 //Este va a ser el nombre de la ruta
@@ -349,8 +361,9 @@ Route::post('/actualizar/{id}','UserProfile@update') ->name('updateUser');
 /******************************************/
 /*Esta es la ruta que utilizo para obtener la informacion de los avatares*/
 /*Tengo que realizar rutas parecidas para los otros controladores*/ 
-Route::get('/miniatura/{filename}','UserProfile@getVideoImage') ->name('miniatura');
-Route::get('/miniaturaDoc/{filename}','UserProfile@getDocImage') ->name('miniatura');
+Route::get('/miniatura/{filename}','UserProfile@getImage') ->name('miniatura');
+Route::get('/miniaturaVideo/{filename}','UserProfile@getVideoImage') ->name('miniaturaFile');
+Route::get('/miniaturaDoc/{filename}','UserProfile@getDocImage') ->name('miniaturaDoc');
 
  /******************************************/
 /*------------*GET-IMAGE*-------------------*/

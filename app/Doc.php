@@ -39,4 +39,10 @@ class Doc extends Model
     	//Es decir que dentro de la propiedad USER va a cargar todo el objeto del usuario que se identifique con el user_id.
 		return $this -> belongsTo('App\User','user_id');   
     }
+
+
+    public function toggleAccess($type)
+  {
+      $this->attributes[$type] = ($this->attributes[$type]) ? false : true;
+  }
 }

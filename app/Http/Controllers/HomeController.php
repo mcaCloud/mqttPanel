@@ -10,6 +10,10 @@ use App\Http\Controllers\Controller;
 use App\File;
 use App\Video;
 use App\Doc;
+//Este modelo lo utilizo para poder llamar la lista de usuarios en el landing page.
+use App\User;
+
+use App\EmployeeInfo;
 
 
 class HomeController extends Controller
@@ -42,6 +46,9 @@ class HomeController extends Controller
 
         $docs = Doc::orderBy('id','desc')-> paginate(5);
         
+        $users = User::orderBy('id','desc')-> paginate(5);
+
+        $employees = EmployeeInfo::orderBy('id','desc')-> paginate(5);
         //Ahora lo que tengo que hacer es pasarle a la vista toda la informacion de estos objetos de la base de datos.
         //Le paso los tre por si tengo que intercalar en 
         return view ('welcome',array(
@@ -49,6 +56,8 @@ class HomeController extends Controller
             'files' =>$files,
             'videos' =>$videos,
             'docs' =>$docs,
+            'users' =>$users,
+            'employees' =>$employees
         ));
 
 

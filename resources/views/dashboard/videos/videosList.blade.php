@@ -5,6 +5,8 @@
 
                     <!-- Al FOREACH le paso el nombre de la variable que le paso desde el controlador a la vista ($videos) y que en cada interaccion me cree una variable que se llame $video.-->
                     @foreach($videos as $video)
+
+                    @if($video->status ==1)
                         <div class="video-item col-md-12 pull-left panel">
 
                             <!--------PANEL-BODY ------------------------------------->
@@ -19,7 +21,8 @@
                                     <!--Le meto un video-image-mask para poder manipularla desde CSS-->
                                     <div class="video-image-mask">
                                          <!-- Le concateno a la ruta minitura la imagen que quiero ver, en este caso la que pertenesca al fichero que recibo por URL. Tambien le ponemos una clase para poder reducir su tamaño con CSS Video-->
-                                        <img src="{{url('/miniatura/'.$video->image)}}" class="video-image"/>
+                                         <!--Muy importante fijarse en la ruta por que si no puede provocar poroblema que no despliega la imagen-->
+                                        <img src="{{url('/miniaturaVideo/'.$video->image)}}" class="video-image"/>
                                         
 
                                     </div>
@@ -83,6 +86,7 @@
                             </div>
                             <!--------/PANEL-BODY ------------------------------------->
                         </div>
+                        @endif
                     @endforeach
                 <!-- EN el caso de que no hubieran files que coincida con la busqueda que muestre una alerta-->
                 @else
