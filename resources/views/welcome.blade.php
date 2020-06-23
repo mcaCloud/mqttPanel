@@ -1,5 +1,9 @@
 @extends('landingPage.layout')
 
+@section('alert')	
+	@include('landingPage.alerts')
+@endsection
+
 @section('topBar')	
 	@include('landingPage.topbar')
 @endsection

@@ -23,6 +23,8 @@ class CreateProductsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->integer('created_by_id')->unsigned()->nullable();
+            $table->integer('folder_id')->unsigned()->nullable();
+            $table->boolean('status')->default(0);
 
             $table->boolean('avaiable')->default(0);
 
@@ -31,6 +33,11 @@ class CreateProductsTable extends Migration
             $table->foreign('created_by_id')
                   ->references('id')
                   ->on('users')
+                  ->onDelete('cascade');
+
+            $table->foreign('folder_id')
+                  ->references('id')
+                  ->on('folders')
                   ->onDelete('cascade');
 
         });

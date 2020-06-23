@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-/*Con esto importo los metodos (authorize,rules,message)*/
-/*Es unicamente para la creacion y actualizacion de usuarios*/
-use App\Http\Requests\UserRequest;
+
+//Todas las request que nos llegan por HTT
+use App\Http\Requests;
 
 //Para poder almacenar en el Storage
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +20,9 @@ use Spatie\Permission\Models\Permission;
 use App\User;
 use App\File;
 use App\Folder;
+use App\Cathegory;
+use App\Product;
+use App\Office;
 
 /* Middleware vendor/laravel/framework/src/iluminate/auth/middleware/Authenticate*/
 use Auth;
@@ -65,28 +68,38 @@ class FoldersController extends Controller
 /******************* /INDEX*********************************/
 
 //*******************************************//
-    //-------------CREAR UN DOC------------------
+    //-------------CREAR UN FOLDER------------------
     //Simplemente una pagina que nos muetre los docs
 
-    public function create(){
-    	return view('dashboard.folders.create');
+    public function create(Request $request){
+
+        //Saco el ROLE del usuario que crea el file
+        $roleId = Auth::getUser()->role_id;
+
+        //La variable me guarda la busqueda en la base de datos donde el campo de created_id es igual al ID del ususario actual. Y finalmente cuento las veces.
+        $userFilesCount = Folder::where('created_by_id', Auth::getUser()->id)->count();
+
+        $cathegory = $request->id;
+
+
+        $offices = Office::query()->get();
+
+        //Esta variable me guarda la query a la tabla de FOLDER paar sacar el objeto que tenga este ID..
+        $cathegoryName = Cathegory::find($request->id);
+
+        $created_bies = User::get()->pluck('name', 'id');
+
+        return view('dashboard.folders.create', compact('cathegory','offices','cathegoryName', 'created_bies', 'userFilesCount', 'roleId'));
     }
 
 
 //*******************************************//
-    //-------------GUARDAR UN DOC------------------
+    //-------------GUARDAR UN FOLDER------------------
     //Validar formulario
     //Le pasamos como primero parametro los datos que llegan por POST
     public function store (Request $request){
     	//Creamos una variable que se llama ValidateData
-    	//Le pasamos en un array las reglas de validacion
-        /*
-    	$validateData = $this->validate($request, [
-    		'title' =>'required | min:5',
-    		'description'=> 'required',
-    		//Los formatos en los que puede venir el doc
-    		'doc' => 'mimetypes:application/pdf,application/msword,application/vnd.ms-powerpoint, application/x-rar-compressed,application/x-tar,application/zip, application/x-7z-compressed,application/octet-stream,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.ms-access'
-    	]);*/
+
         $validateData = $this->validate($request, [
             'title' =>'required | min:5',
         ]);
@@ -98,17 +111,37 @@ class FoldersController extends Controller
     	$user = \Auth::user();
     	// Ahora al doc le asigno un valor a cada una de las propiedades, con las variables que me llegan por POST
     	$folder ->created_by_id = $user->id;
-        
+
+        //Me llama el INPUT del formulario create que tiene por nombre 'title'
     	$folder ->name = $request->input('title');
     	
+        //Me llama el IMPUT del formulario con nombre 'cathegory' esto lo hago para conseguir el ID del Cathegory. Esto lo guarde en un input de typo hidden.
+        $cathegoryID = $request->input('cathegory');
+
+        /****************************************************/
+        //Aqui recojo la informacion del select box en la vista
+        $officeID = $request->input('office_id');
+        /****************************************************/
+
+        //Ahora creo una variable USER para guardar la informacion del usuario identificado
+        $user = \Auth::user();
+
+        // Ahora al objeto file que cree  le asigno un valor a cada una de las propiedades, con las variables que me llegan por POST
+        $folder ->created_by_id = $user->id;
+
+        $folder ->cathegory_id = $cathegoryID;
+
+        $folder ->office_id = $officeID;
+
+
+        //Ahora para guardar el nuevo objeto en la BD en la base de datos utilizo metodo SAVE()
     	$folder ->save();
 
-    	//Cuando termino le ahago una redireccion a HOME
-    	//Ademas añado una alerta que diga que el doc se ha subido correctamente
-    	return redirect('dashboard/folders')->with(array(
-    		'message'=> 'El folder se ha creado correctamente'
-    	 ));
-
+        //Cuando termino le ahago una redireccion a HOME
+        //Ademas añado una alerta que diga que el doc se ha subido correctamente
+        return redirect('dashboard/categorias/'.$request->input('cathegory'))->with(array(
+            'message'=> 'El servicio se ha creado correctamente'
+         ));
 
     //*********CARPETA STORAGE ******************//
     //Para que esto funcione correctamente necesito configurar los Drivers del Storage. Para ello CONFIG>fileSystems.php y como solo esta el Disk public me tengo que crear otros dos discos. Unos para IMAGES y otro para DOCS, o para todo lo que necesite.
@@ -117,10 +150,10 @@ class FoldersController extends Controller
     }
 
     //*****************DOWNLOAD******************//
-    // TEnemos que pasar el $ID que el el detalle del doc que deseamos mostrar
+    // TEnemos que pasar el $ID que el el detalle del folder que deseamos mostrar
     public function show($id){
 
-        $files = File::where('folder_id', $id)->get();
+        $product = Product::where('folder_id', $id)->get();
         //Creamos una variable folder que haga un FIND a la BD para conseguir el registro que deseamos mostrar. Esto lo podemos hacer con ELOQUENT y el metodo find- Le solicitamos el doc_id. Diferente como se hace con el QUERY builder
         $folder = Folder::findOrFail($id);
 
@@ -128,7 +161,7 @@ class FoldersController extends Controller
 
         //Cargamos una vista que se llma doc y un array con la infomracion del doc a cargar
 
-        return view('dashboard.folders.show', compact('folder','files','userFilesCount'));
+        return view('dashboard.folders.show', compact('folder','product','userFilesCount'));
     }
 
 
@@ -152,67 +185,59 @@ class FoldersController extends Controller
 // *******************************************//
 // ---------EDITAR DOC --------//
 //Recibo la variable ID del doc por URL
-public function edit($doc_id){
+public function edit($folder_id){
      //Lo primero es conseguir una variable del usuario identificado
     $user = \Auth::user();
     //Creamos una variable doc para conseguir el objeto del doc que estamos intentando editar. Utilizamos FindOrFail para que nos devuelva un error en caso de que no exista en la base de datos
-    $doc = Doc::findOrFail($doc_id);
+    $folder = Folder::findOrFail($folder_id);
 
+    $offices = Office::query()->get();
     //Ahora tenenmos que comprobar si el usuario existe y el que solamente cuando estemos identificados como el ususario dueño del doc podamos usarlo. SI otro lo intenta no va a poder
-    if($user && $doc->user_id == $user->id){
+    if($user && $folder->created_by_id == $user->id){
         //Devolvemos la vista edit dentro de la carpeta de docs
-        return view('doc.editDoc', array('doc' => $doc));
+        return view('dashboard.folders.edit', array(
+
+            'folder' => $folder,
+            'offices' =>$offices
+
+        ));
     //Si esto no funcionara hacemos una redireccion a la HOME sin mensaje
     }else{
-        return redirect()->route('docs');
+        return redirect()->route('folders');
     }
     //Ahora es necesario crear la vista de Edit
 }
 //*******************************************//
 // ---------ACTUALIZAR DOC EN BD--------//
 //Recibo la variable ID del doc por URL, y tambien le paso la request para poder recibir los parametro que me lleguen por POST
-public function update($doc_id, Request $request){
+public function update($folder_id, Request $request){
      ///Lo primero que vamos a hacer es validar el forrmulario y le pasamos la request para que recoja todos los datos que llegan por POST. Ademas le vamos a pasar un array con las reglas de validacion.
     $validate = $this->validate($request, array(
             'title' =>'required | min:5',
-            'description'=> 'required',
-            //Los formatos en los que puede venir el doc
-            'doc' => 'mimetypes:pdf'
     ));
 
     //Ahora toca conseguir el objeto del doc, con un FIND
-    $doc = Doc::findOrFail($doc_id);
+    $folder = Folder::findOrFail($folder_id);
+    
     //Tambien vamos a conseguir el usuario identificado
     $user = \Auth::user();
-    //Ahora le asigno los valores a cada una de las propuedades del objeto del doc.
-    $doc->user_id = $user->id;
-    $doc->title = $request->input('title');
-    $doc->description = $request->input('description');
 
-    //Ahora lo que tenemos que hacer es recojer los ficheros del documento para guradarlos en la base de datos
+    $folder->name = $request->input('title');
 
-    // -----  UPLOAD DOC ----//
-    $doc_file = $request->file('doc');
+    /****************************************************/
+    //Aqui recojo la informacion del select box en la vista
+    $officeID = $request->input('office_id');
+    /****************************************************/
 
-    if($doc_file){
-        //********OJO*************//
-        //Antes de actualizar el doc tenemos que eliminar el registro anterior para que el doc no se reporduzca una y otra vez. Es decir si no elimino el registro cada vez que se actualize el doc se crea una copia y nos satura la base de dato.
-        Storage::disk('docs')->delete($doc->doc_path);
-        //*************************//
-
-        ///Una vez borrado el registro ya se puede actualizar.
-         $doc_path = time().$doc_file ->getClientOriginalName();
-        \Storage::disk('docs')->put($doc_path,\File::get($doc_file));
-
-        $doc->doc_path = $doc_path;
-    }
-
-
+    $folder ->office_id = $officeID;
 ///Una vez que todo esto este listo ya podemos hacer un UPDARe en la base de datos.
-    $doc->update();
+    $folder->update();
 
-    return redirect()->route('docs')->with(array('message'=>'EL documento se ha actualizado correctamente'));
-    //Finalmente ceramos la ruta.
+    //Session::flash('flash_message', 'Folder successfully added!');
+
+
+return redirect()->route('dashboard::categorias.show',['id' => $folder->cathegory_id])->with(array('message'=>'El servicio se ha actualizado correctamente'));
+
 }
 
 
@@ -256,5 +281,32 @@ public function update($doc_id, Request $request){
 
         return redirect()->route('admin.folders.index');
     }
+
+/*******************TOGGLE**************************************/
+    /* Aqui recivo la REQUEST y el ID del usuario que me viene por la URL*/
+    public function toggleAccess(Request $request, $id)
+    {   
+        /*Almaceno en la variable User el usuario que coincide con el ID 
+          que me llega por la URL
+         *Del lado del formulario lo que pedi fue el ($item->id)
+         */
+        $folder = Folder::findOrFail($id);
+        /*User va a llamar a la funcion del modelo USER 'toggleAccess'
+         *Este metodo pide una variable TYPE
+         *Entonces aqui recojo la variable de 'type' que vienen dentro del request
+         que me llega por la URL
+         */
+        $folder->toggleAccess($request->get('type'));
+
+        /*Guardo el objeto en la base de datos*/
+        $folder->save();
+
+        /*Redirijo a la base de datos con un mensaje que contiene el nombre completo del usuario*/
+       return redirect()->back()->with([
+            'message' => 'Se el acceso al  folder [' . $folder->name . ']',
+            'level' => 'success'
+        ]);
+    }
+/*****************************************************************/
 
 }

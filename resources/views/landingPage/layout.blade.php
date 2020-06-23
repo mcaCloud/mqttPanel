@@ -32,11 +32,17 @@
 		<div id="content-wrapper" class="d-flex flex-column">
 
 			<div id="content">
+				<div class="col-md-12 col-md-offset">
+					@include('landingPage.banner')
+				</div>
 
 				<div class="col-md-12 col-md-offset">
 					@yield('topBar')
 				</div>
 
+				<div class="col-md-12 col-md-offset">
+					@yield('alert')
+				</div>
 				<!-- ---------MAIN-PAGE-CONTENT---------->				
 				<div class="col-xs-12 col-md-offset col-md-8">
 					@yield('tabs')	
@@ -44,6 +50,7 @@
 				</div>
 				<!-- ---------/MAIN-PAGE-CONTENT---------->
 				<div class="col-xs-12 col-md-4">	
+					@yield ('searchBar')
 					@yield ('sideBar')					
 				</div>
 

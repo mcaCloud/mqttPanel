@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Folder;
 use App\User;
 use App\File;
+use App\Product;
 use Auth;
 class FileController extends Controller
 {
@@ -42,11 +43,11 @@ class FileController extends Controller
         $folder = $request->id;
 
         //Esta variable me guarda la query a la tabla de FOLDER paar sacar el objeto que tenga este ID..
-        $folderName = Folder::find($request->id);
+        $productName = Product::find($request->id);
 
         $created_bies = User::get()->pluck('name', 'id');
 
-        return view('dashboard.files.create', compact('folder','folderName', 'created_bies', 'userFilesCount', 'roleId'));
+        return view('dashboard.files.create', compact('folder','productName', 'created_bies', 'userFilesCount', 'roleId'));
 
     }
 
@@ -81,7 +82,7 @@ class FileController extends Controller
         $fileName = $request->input('title');
 
         //Me llama el IMPUT del formulario con nombre 'folder' esto lo hago para conseguir el ID del folder. Esto lo guarde en un input de typo hidden.
-        $folderID = $request->input('folder');
+        $productID = $request->input('product');
 
     	//Ahora creo una variable USER para guardar la informacion del usuario identificado
     	$user = \Auth::user();
@@ -92,7 +93,7 @@ class FileController extends Controller
 
     	$file ->filename = $fileName;
 
-    	$file ->folder_id = $folderID;
+    	$file ->product_id = $productID;
 
     	// -----  UPLOAD DOC ----//
         //Aqui solicitamos el dato de tipo FILE dentro de la request que se llame 'doc'
@@ -152,7 +153,7 @@ class FileController extends Controller
     /* Este metodo recibo por URL el nombre del fichero*/
     public function show($id){
 
-        $download = DB::table('files')->get();
+         $files = File::where('product_id', $id)->get();
 
         $file = File::find('id',$id)->first();
 
@@ -249,4 +250,30 @@ public function update($doc_id, Request $request){
     //Finalmente ceramos la ruta.
 }
 
+/*******************TOGGLE**************************************/
+    /* Aqui recivo la REQUEST y el ID del usuario que me viene por la URL*/
+    public function toggleAccess(Request $request, $id)
+    {   
+        /*Almaceno en la variable User el usuario que coincide con el ID 
+          que me llega por la URL
+         *Del lado del formulario lo que pedi fue el ($item->id)
+         */
+        $file = File::findOrFail($id);
+        /*User va a llamar a la funcion del modelo USER 'toggleAccess'
+         *Este metodo pide una variable TYPE
+         *Entonces aqui recojo la variable de 'type' que vienen dentro del request
+         que me llega por la URL
+         */
+        $file->toggleAccess($request->get('type'));
+
+        /*Guardo el objeto en la base de datos*/
+        $file->save();
+
+        /*Redirijo a la base de datos con un mensaje que contiene el nombre completo del usuario*/
+       return redirect()->back()->with([
+            'message' => 'Se modificó el acceso al archivo:  [' . $file->name . ']',
+            'level' => 'success'
+        ]);
+    }
+/*****************************************************************/
 }

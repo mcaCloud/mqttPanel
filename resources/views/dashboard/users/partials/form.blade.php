@@ -60,12 +60,16 @@
       <div class="col-md-6 col-sm-6 col-xs-12">
           <div class="form-group">
               <label class="control-label">Role :</label>
+
               <select name="role_id" id="role_id" class="form-control select2" >
+
                   <option value="">Seleccione una opción...</option>
                   @foreach($roles as $index => $name )
                   <option value="{{ $index }}" @if( $model->hasRole(str_slug($name))) selected="selected" @endif>{{ $name }}</option>
                   @endforeach
+                  
               </select>
+
           </div>
       </div>
   </div>

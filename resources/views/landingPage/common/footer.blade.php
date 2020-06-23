@@ -21,7 +21,18 @@
       </div>
       <!-- Grid column -->
       <!------------------------------------------------------->
+        <!-----------------SOCIAL-MEDIA ------------------------------------------------>
+        <div class="col-md-3" >
+            <ul class="nav navbar-nav">
+                <a href="#" class="fa fa-facebook fa-2x" style="padding-top: 7px">&nbsp; &nbsp;</a>                 
+                <a href="#" class="fa fa-twitter fa-2x">&nbsp; &nbsp;</a>                    
+                <a href="#" class="fa fa-linkedin fa-2x">&nbsp; &nbsp;</a>                   
+                <a href="#" class="fa fa-youtube fa-2x">&nbsp; &nbsp;</a>                    
+                <a href="#" class="fa fa-instagram fa-2x">&nbsp; &nbsp;</a>                                       
+            </ul> 
+        </div>
 
+        <!-----------------/Social-MEdia ------------------------------------------------>
       <!------------------------------------------------------->
       <!-- Grid column -->
       <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">

@@ -499,5 +499,40 @@ public function searchDoc($search = null, $filter = null){
         'search'=> $search
     ));
 }
+
+
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/**************************     ALERT-DETAIL                   ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
+    // TEnemos que pasar el $doc_ID que el el detalle del doc que deseamos mostrar
+
+    public function getAlertDetail ($alert_id){
+        //Creamos una variable DOC que haga un FIND a la BD para conseguir el registro que deseamos mostrar. Esto lo podemos hacer con ELOQUENT y el metodo find- ÑLe solicitamos el video_id. Diferente como se hace con el QUERY builder
+        $alert = Alert::find($alert_id);
+        //Cargamos una vista que se llma doc y un array con la infomracion del doc a cargar
+        return view('dashboard.alerts.detail', array(
+            //Video va a llevar dentro todo el contenido de la variable $doc
+            'alert' =>$doc
+        //POr ultimo es necesario crear la vista para este metodo
+        ));
+
+    }
+
+/****************************************************************************************/
+/*****************************/                            /*****************************/  
+/******************************     GET-DOC-VIDEO        ************************/ 
+/*****************************/                            /*****************************/ 
+/****************************************************************************************/
+/* Este metodo recibo por URL el nombre del fichero*/
+public function getAlertImage($filename){
+    //Creamos una variable $file para acceder al STORAGE y con el metodo (disk) le indicamos en que carpeta esta nuestra imagen. COn el metodo get le indicamos cual fichero queremos. CUAL?. Pues el que nos llegue por parametro $filename
+    $file = \Storage::disk('images')->get($filename);
+    //POr ultimo regresamos un response con un $file que nos devuelve el fichero en si
+    return new Response($file,200);
+    /* Ahora necesitamos crear una ruta para este metodo en web.php*/
+}
+
     
 }

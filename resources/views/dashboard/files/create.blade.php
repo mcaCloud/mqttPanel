@@ -7,7 +7,7 @@
 <div class="card shadow mb-6">
 	
  	<div class="card-header py-3">
-		<h2>{{ $folderName->name }}</h1>
+		<h2>{{ $productName->name }}</h1>
 	</div>	
 
 <div class="card-body">
@@ -39,7 +39,7 @@
 				<label for="title"><strong>Crea aquí un nuevo documento</strong></label>
 			</div>
 
-			<input type="hidden" class="form-control" id="title" name="folder" value="{{$folderName->id}}" />
+			<input type="hidden" class="form-control" id="title" name="product" value="{{$productName->id}}" />
 
 			<div class="form-group">
 				<label for="title">Nombre para el documento</label>

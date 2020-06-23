@@ -12,6 +12,7 @@
     "require": {
         "php": "^7.2.3",
         "barryvdh/laravel-snappy": "^0.4.4",
+        "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "~5.3|~6.0",
         "laracasts/flash": "^3.1",

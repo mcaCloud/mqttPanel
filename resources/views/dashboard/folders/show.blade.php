@@ -1,5 +1,5 @@
 @extends('dashboard.layout')
-@section('title','Folders')
+@section('title','Servicios')
 
 @section('content')
 
@@ -9,14 +9,14 @@
         <!-- Como la ruta esta en DASHBOARD no debemos olvidar ponerlo porque sino no encuentra la ruta-->
 
         
-        <a href="{{ route('dashboard::archivos.create',['id' =>$folder->id])}}" class="btn btn-success">Crear documento</a>
+        <a href="{{ route('dashboard::productos.create',['id' =>$folder->id])}}" class="btn btn-success">Crear trámite</a>
 
         <p>
         <!-- Esto es para que no nos pongo bullt points-->
         <ul style="list-style: none;">
 
             <li>
-                <a href="{{route('dashboard::folders.index')}}" style="{{ request('show_deleted') == 1 ? '' : 'font-weight: 700' }}">Inicio
+                <a href="{{route('dashboard::categorias.index')}}" style="{{ request('show_deleted') == 1 ? '' : 'font-weight: 700' }}">Inicio
                 </a>
 
                 <span class="separador">| </span>
@@ -59,22 +59,22 @@
             </thead>
            <!--Aqui tomo la variable ('files') que cree en el metodo Index
                 del controloador de User-->
-            @foreach ($files as $index => $file)
+            @foreach ($product as $index => $file)
             <tbody>
                 <!--Me recorre cada uno de los resultados-->
                 <td>
 
                   <div class="row">
                       <div class="col-md-4">
-                        {{$file->filename}} 
+                        {{$file->name}} 
                       </div>
 
                       <div class="col-md-8">
-                        <a  href="{{ route('dashboard::users.toggleAccess', ['user' => $file->id, 'type' => 'access_app']) }}"
+                        <a  href="{{ route('dashboard::products.toggleAccess', ['product' => $file->id, 'type' => 'status']) }}"
 
                         data-toggle="tooltip" data-placement="top" title="" class="status-icons d-flex justify-content-center" data-original-title="Acceder a la aplicación">
 
-                        <i class="fa @if( $file->access_app ) fa-toggle-on @else fa-toggle-off @endif fa-2x"></i>
+                        <i class="fa @if( $file->status ) fa-toggle-on @else fa-toggle-off @endif fa-2x"></i>
 
                         </a>
                       </div>
@@ -86,22 +86,21 @@
                 <!------------ BOTONES ------------------>
                 <td class="d-flex justify-content-center">
 
-                <!------------ Ver ------------------>
-                  <a href="{{ url('/download', $file->id) }}" class="btn btn-success btn-circle btn-sm" title="download" style="margin:1px">
+                <a href="{{ route('dashboard::productos.show', $file->id) }}" class="btn btn-success btn-circle btn-sm" title="download" style="margin:1px">
                     <span class="icon">
                       <i class="fas fa-eye"></i>
                     </span>
                   </a>
                 <!------------ /ver ------------------>
+                <!------------ EDITAR ------------------>
 
-                <!------------ Descargar ------------------>
-                  <a href="{{ url('/download', $file->id) }}" class="btn btn-info btn-circle btn-sm" title="download" style="margin:1px">
+
+                  <a href="{{ route('dashboard::folders.edit', $folder->id) }}" class="btn btn-warning btn-circle btn-sm" title="download" style="margin:1px">
                     <span class="icon">
-                      <i class="fas fa-download"></i>
+                      <i class="fas fa-edit"></i>
                     </span>
                   </a>
-                <!------------ /Descargar ------------------>
-
+                <!------------ /EDITAR ------------------>
 <!----------------------------DELETE-------------------------------------->
                 <!------------------------------------------------------------->
                 <!---------------------------OVERLAY--------------------------->

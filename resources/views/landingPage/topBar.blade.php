@@ -1,11 +1,17 @@
-    <!--------------------------TOP-NAVIGATION-BAR-------------------------------->
+
+<!--///////////////////////////////////////////////////////////////////////-->
+<!--------------------------TOP-NAVIGATION-BAR-------------------------------->
+<!--///////////////////////////////////////////////////////////////////////-->
 <nav class="navbar navbar-default navbar-static-top" style="box-shadow: 0 0 10px 0 black;" >
 
-<!--------------------------TOP-BAR---------------------------------------- -->
+
+    <!--///////////////////////////////////////////////////////////////////////-->
+    <!--------------------------TOP-BAR---------------------------------------- -->
     <div class="container col-md-12 col-md-offset-1">
-            
+
+        <!------------------------------------------------------------------------ -->   
         <!--------------------------HEADER------------------------------------ -->
-        <div class="navbar-header col-md-1">
+        <div class="navbar-header col-md-2">
             <!-- --------------Collapsed Hamburger ---------------->
             <!-- Esto es el menu responsive -->
              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
@@ -17,26 +23,24 @@
             <!-- --------------/Collapsed Hamburger --------------->
          
         </div>
-        <!--------------------------/HEADER---------------------------------------- -->          
+        <!--------------------------/HEADER---------------------------------------- -->   
+        <!------------------------------------------------------------------------ --> 
+
+
+        <!-------------------------COL-8----------------------------------------- -->
+        <!------------------------------------------------------------------------ -->
         <div class="navbar-header col-md-8"> 
         </div>         
-        <!-----------------SOCIAL-MEDIA ------------------------------------------------>
-        <!--<div class="col-md-3" >
-            <ul class="nav navbar-nav">
-                <a href="#" class="fa fa-facebook fa-2x" style="padding-top: 7px">&nbsp; &nbsp;</a>                 
-                <a href="#" class="fa fa-twitter fa-2x">&nbsp; &nbsp;</a>                    
-                <a href="#" class="fa fa-linkedin fa-2x">&nbsp; &nbsp;</a>                   
-                <a href="#" class="fa fa-youtube fa-2x">&nbsp; &nbsp;</a>                    
-                <a href="#" class="fa fa-instagram fa-2x">&nbsp; &nbsp;</a>                                       
-            </ul> 
-        </div>-->
+        <!-------------------------COL-8----------------------------------------- -->
+        <!------------------------------------------------------------------------ -->
 
-        <!-----------------/Social-MEdia ------------------------------------------------>
 
+        <!------------------------------------------------------------------------ -->
         <!--------------------------LEFT-HEADER---------------------------------------- -->
         <div class=" col-md-2 collapse navbar-collapse" id="app-navbar-collapse">
 
-            <!-- ----------- Right Side Of Navbar----------- -->
+            <!------------------                            ------------------- -->
+            <!-- --------------------- Right Side Of Navbar-------------------- -->
             <ul class="nav navbar-nav navbar-right">
 
                 <!-- Authentication Links -->
@@ -52,58 +56,66 @@
                 <!-- Tendre un dropdown con el nombre del USUARIO identificado -->
                 <li class="dropdown">
 
+                    <!--Aqui lo que hago es agragar la imagen dentro del ahref para que la imgen ser el inicio del dropdown menu-->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-
-                    </a>
+                      
+                        <!--------MINIATURA----------------->
+                          <!-- Para mostrar las imagenes de cada video hacemos un if para comprobar que realmente existen en el disco. Con (has) verifica-->
+                          <!-- Debode utilizar el AUTHUSER para que la miniatura me funcione en todas la paginas-->
+                          @if(Storage::disk('avatars')->has(Auth::user()->image))
+                            <!-- Le concateno a la ruta minitura la imagen que quiero ver-->
+                            <!-- Aqui estoy utilizando el metodo del UserProfile ('getImage')-->
+                            <!-- Como segundo parametro la ruta necesita el 'filename', entonces le paso el path de la image que guardé en el metodo update-->
+                            <!--La quiero centrar entonces utilizo una posicion relativa y 25% hacia la izquierda-->
+                            <img src="{{url('/miniatura/'.Auth::user()->image)}}" class="img-fluid" style="vertical-align: middle;width:50px;height:50px;border-radius: 50%;box-shadow: 0 0 8px rgba(0,0,0,0.8);" />   
+                          @else
+                              <img src="{{ URL::to('/') }}/img/avatar.png" class="img-fluid" style="vertical-align: middle;width: 50px;height: 50px;border-radius: 50%;box-shadow: 0 0 8px rgba(0,0,0,0.8);"/>
+                          @endif
+                    </a>  
 
                     <!-- ---------/OPCIONES-MENU --------------->
                     <ul class="dropdown-menu" role="menu">
-                        <li>
-                            <!-- --------- 1-LOGOUT --------------->
-                            <a href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
-                                            Logout
+
+                        <li>        
+                            <a class="dropdown-item" href="{{ route('logout') }}">
+                                <i class="glyphicon glyphicon-off mr-2 text-gray-400"></i>
+                                    Cerrar Sesión
                             </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                            </form>
-                            <!-- --------- /1-LOGOUT --------------->
-                        <!-- Para que el titulo me lleve al perfil tenemos que pasarle el nombre de la ruta y el parametro del [id] que estamos recorriendo en este preciso instante-->
-                        </li>
-                        <li>
+                            <a class="dropdown-item" href="{{ route('dashboard::index') }}">
+                                <i class="glyphicon glyphicon-wrench mr-2 text-gray-400"></i>
+                                    Panel de control
+                            </a>
 
+                            <a class="dropdown-item" href="{{route('perfil',['id' =>Auth::user()->id]) }}">
+                              <i class="glyphicon glyphicon-user mr-2 text-gray-400"></i>
+                              Perfil
+                            </a>
+
+                            <a class="dropdown-item" href="#">
+                                <i class="glyphicon glyphicon-bell mr-2 text-gray-400"></i>
+                                    Notificaciones
+                            </a>
 
                         </li>
+ 
                     </ul>
                     <!-- ---------/OPCIONES-MENU --------------->
                 </li>
 
-                <!------------CONFIGURACION -------- -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span>
-                    </a>
-
-                    <!-- ---------/OPCIONES-MENU --------------->
-                    <ul class="dropdown-menu" role="menu">
-                        <li>
-                            <a href=""> Eins </a> 
-                        </li>
-                        <li>
-                            <a href=""> Zwei </a>
-                        </li>
-                    </ul>
-                    <!-- ---------/OPCIONES-MENU --------------->
-                </li>
-                <!------------/CONFIGURACION -------- -->
                 @endif
             </ul>
-            <!-- ----------- /Right Side Of Navbar----------- -->
+            <!-- -------------------- /Right Side Of Navbar------------------- -->
+            <!------------------                            ------------------- -->
 
         </div>
         <!--------------------------/LEFT-HEADER---------------------------------------- -->
+        <!------------------------------------------------------------------------ -->
 
     </div>
     <!--------------------------TOP-BAR---------------------------------------- -->
+    <!--///////////////////////////////////////////////////////////////////////-->
+
 </nav>
+<!--///////////////////////////////////////////////////////////////////////-->
+<!--///////////////////////////////////////////////////////////////////////-->

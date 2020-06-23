@@ -2,32 +2,29 @@
 <!----------------------- Topbar ------------------------>
 <!------------------------------------------------------->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-  <!-------------------------------------->
-  <!---------- Sidebar Toggle ------------>
-  <!--Esta es el boton para dispositivos moviles
+      <!-------------------------------------->
+      <!---------- Sidebar Toggle ------------>
+      <!--Esta es el boton para dispositivos moviles
       Este boton colapsa la menu lateral
       Ojo con los estilos que estan muy bien-->
-  <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-    <!--Icono de barras-->
-    <i class="fa fa-bars"></i>
-  </button>
-  <!---------- /Sidebar Toggle------------->
-  <!-------------------------------------->
+      <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+        <!--Icono de barras-->
+        <i class="fa fa-bars"></i>
+      </button>
+      <!---------- /Sidebar Toggle------------->
+      <!-------------------------------------->
 
 
-  <!------------------------------------->
+  <!--////////////////////////////////////////////////////////-->
   <!----------- Topbar Navbar ----------->
+  <!--////////////////////////////////////////////////////////-->
   <ul class="navbar-nav ml-auto">
 
-    <!--////////////////////////////////////////////////////////-->
     <!-------------------------->
     <!-------- ALERTS ---------->
-        @include('dashboard.common.topBarNotifications')
-        
+        <span class="glyphicon glyphicon-envelope"></span></p>
     <!-------- Alerts ---------->
     <!-------------------------->
-    <!--////////////////////////////////////////////////////////-->
-
 
     <!--Esto solo es una linea para dividir partes-->
     <div class="topbar-divider d-none d-sm-block"></div>
@@ -71,9 +68,9 @@
           <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
           Configuración
         </a>
-        <a class="dropdown-item" href="#">
+        <a class="dropdown-item" href="{{route('index')}}">
           <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-          Activity Log
+          Página web
         </a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{{ route('logout') }}">

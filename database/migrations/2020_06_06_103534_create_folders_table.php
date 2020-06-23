@@ -19,8 +19,13 @@ class CreateFoldersTable extends Migration
             $table->integer('created_by_id')->unsigned()->nullable();
 
             $table->integer('product_id')->unsigned()->nullable();
+            $table->integer('cathegory_id')->unsigned()->nullable();
+            
+            $table->integer('office_id')->unsigned()->nullable();
+
             $table->integer('req_data')->unsigned()->nullable();
             $table->boolean('completed')->default(0);
+            $table->boolean('status')->default(0);
 
             $table->timestamps();
             $table->softDeletes();
@@ -35,6 +40,16 @@ class CreateFoldersTable extends Migration
             $table->foreign('product_id')
                   ->references('id')
                   ->on('products')
+                  ->onDelete('cascade');
+
+            $table->foreign('cathegory_id')
+                  ->references('id')
+                  ->on('cathegory')
+                  ->onDelete('cascade');
+
+            $table->foreign('office_id')
+                  ->references('id')
+                  ->on('offices')
                   ->onDelete('cascade');
         });
     }

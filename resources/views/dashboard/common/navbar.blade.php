@@ -49,14 +49,14 @@
 
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ordenesUtilities" aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Ordenes</span>
+            <span>Portafolio</span>
           </a>
 
           <div id="ordenesUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="{{ route('dashboard::noticiasIndex') }}"><i class="fas fa-users"></i>   Noticias</a>
-              <a class="collapse-item" href="#"><i class="fas fa-briefcase"></i> Videos</a>
-              <a class="collapse-item" href="#') }}"><i class="fa fa-unlock" aria-hidden="true"></i> Anuncios</a>
+              <a class="collapse-item" href="{{ route('dashboard::categorias.index') }}"><i class="fas fa-users"></i> Oferta de servicios</a>
+              <a class="collapse-item" href="{{ route('dashboard::offices.index') }}"><i class="fas fa-briefcase"></i> Directorio</a>
+              <a class="collapse-item" href="#') }}"><i class="fa fa-unlock" aria-hidden="true"> Productos</i> </a>
             </div>
           </div>
         </li>  
@@ -72,9 +72,9 @@
 
           <div id="websiteUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="{{ route('dashboard::noticiasIndex') }}"><i class="fas fa-users"></i>   Noticias</a>
-              <a class="collapse-item" href="{{ route('dashboard::videosIndex') }}"><i class="fas fa-briefcase"></i> Videos</a>
-              <a class="collapse-item" href="#"><i class="fas fa-briefcase"></i> Alertas</a>
+              <a class="collapse-item" href="{{route('dashboard::noticiasIndex') }}"><i class="fas fa-users"></i>   Noticias</a>
+              <a class="collapse-item" href="{{route('dashboard::videosIndex') }}"><i class="fas fa-briefcase"></i> Videos</a>
+              <a class="collapse-item" href="{{route('dashboard::alertsIndex') }}"><i class="fas fa-briefcase"></i> Alertas</a>
 
               <a class="collapse-item" href="#"><i class="fa fa-unlock" aria-hidden="true"></i> Anuncios</a>
             </div>

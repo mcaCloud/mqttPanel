@@ -29,7 +29,7 @@ class LoginController extends Controller
      */
 
     /*La ruta raiz esta protegida, solo usuario autorizado puede acceder*/
-     protected $redirectTo = 'index';
+     protected $redirectTo = 'dashboard';
 
     /**
      * Create a new controller instance.
@@ -85,19 +85,7 @@ class LoginController extends Controller
         return redirect('/');
     }
 /* ******************** /LOGOUT**************************/ 
-    /**
-     * Show the application's login form.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
-
-    /**
-     * Handle a login request to the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
-     */
 
 /* ********************LOGIN**************************/
 

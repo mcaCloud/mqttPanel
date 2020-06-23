@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use App\File;
 use App\Video;
 use App\Doc;
+//Para mostrar las alertas tengo que tener el modelo importado.
+use App\Alert;
 //Este modelo lo utilizo para poder llamar la lista de usuarios en el landing page.
 use App\User;
 
@@ -48,6 +50,8 @@ class HomeController extends Controller
         
         $users = User::orderBy('id','desc')-> paginate(5);
 
+        $alerts = Alert::orderBy('id','desc')-> paginate(5);
+        
         $employees = EmployeeInfo::orderBy('id','desc')-> paginate(5);
         //Ahora lo que tengo que hacer es pasarle a la vista toda la informacion de estos objetos de la base de datos.
         //Le paso los tre por si tengo que intercalar en 
@@ -57,7 +61,8 @@ class HomeController extends Controller
             'videos' =>$videos,
             'docs' =>$docs,
             'users' =>$users,
-            'employees' =>$employees
+            'employees' =>$employees,
+            'alerts' => $alerts
         ));
 
 

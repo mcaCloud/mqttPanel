@@ -19,6 +19,8 @@ class CreateFilesTable extends Migration
                 $table->string('file_path')->nullable();
                 $table->string('filename')->nullable();
                 $table->integer('folder_id')->unsigned()->nullable();
+                $table->integer('product_id')->unsigned()->nullable();
+                $table->boolean('status')->default(0);
                 $table->integer('created_by_id')->unsigned()->nullable();
                 $table->timestamps();
                 $table->softDeletes();
@@ -28,6 +30,11 @@ class CreateFilesTable extends Migration
                 $table->foreign('folder_id')
                       ->references('id')
                       ->on('folders')
+                      ->onDelete('cascade');
+
+                $table->foreign('product_id')
+                      ->references('id')
+                      ->on('products')
                       ->onDelete('cascade');
 
                 $table->foreign('created_by_id')

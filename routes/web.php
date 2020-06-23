@@ -122,25 +122,44 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
 
         Route::get('/pdfs/view', 'PdfController@export_by_view')->name('pdfs.export_by_view');
 
-
         /******************************************/
-         /*------------*FOLDERS*-------------------*/
+         /*------------*CATHEGORY (AREAS DE TRABAJO)*-------------------*/
+        /******************************************/
+
+         //Aqui ya tenemos 2 prefijos . El del namespace 'dashboard' y el resource 'cathegory'
+        //Cualquier ruta de aqui llevara los dos
+         Route::resource('/categorias', 'CathegoryController');
+
+                 /*Creamos la ruta para guardar el categoria una vez creado*/
+
+                //Route::post('/update/{cathegory_id}','CathegoryController@update')->name('updateCathegory');
+
+                //Route::post('folders_restore/{id}','UserController@restore')->name('folders.restore');
+
+                //Route::delete('folders_perma_del/{id}', 'UserController@restore') ->name('folders.perma_del');
+        /******************************************/
+         /*------------*FOLDERS (SERVICIOS)*-------------------*/
         /******************************************/
 
          //Aqui ya tenemos 2 prefijos . El del namespace 'dashboard' y el resource 'folders'
         //Cualquier ruta de aqui llevara los dos
          Route::resource('/folders', 'FoldersController');
-                //Esta ruta por ejemplo seria:  /dashboard/folders/crear
-                Route::get('/crear','FoldersController@create')->name('folder-create');
-                //dashboard/folder/store
-                Route::get('/store','FoldersController@store')->name('folder-store');
 
-                //Route::post('/folders/borrar',  'UserController@destroy')->name('folders.delete');
-                Route::get('show/{id}/','FoldersController@show')->name('folder-edit');
-          
-                //Route::post('folders_restore/{id}','UserController@restore')->name('folders.restore');
+                Route::get('/folders/{user}/access', 'FoldersController@toggleAccess')->name('folders.toggleAccess');
 
-                //Route::delete('folders_perma_del/{id}', 'UserController@restore') ->name('folders.perma_del');
+               //Route::post('/update/{folder_id}','FoldersController@update')->name('updateFolder');
+
+        /******************************************/
+         /*------------*TRAMITES POR SERVICIO (PRODUCTOS)*-------------------*/
+        /******************************************/
+        //Aqui ya tenemos 2 prefijos . El del namespace 'dashboard' y el resource 'archivos'
+        //Cualquier ruta de aqui llevara los dos
+         Route::resource('/productos', 'ProductsController');
+
+            Route::get('/productos/{user}/access', 'ProductsController@toggleAccess')->name('products.toggleAccess');
+
+            //Route::get('/download/{id}','FileController@show')->name('file-download');
+
 
         /******************************************/
          /*------------*ARCHIVOS*-------------------*/
@@ -148,13 +167,17 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
         //Aqui ya tenemos 2 prefijos . El del namespace 'dashboard' y el resource 'archivos'
         //Cualquier ruta de aqui llevara los dos
          Route::resource('/archivos', 'FileController');
+            //Route::get('/download/{id}','FileController@show')->name('file-download');
+            Route::get('/archivos/{user}/access', 'FileController@toggleAccess')->name('archivos.toggleAccess');
 
-            //Route::get('/folders','FoldersController@index')->name('folder-index');
-            // dashboard/archivos/crear
-            Route::get('/crear','FileController@create')->name('file-create');
-            Route::get('/store','FileController@store')->name('file-store');
-            Route::get('/download/{id}','FileController@show')->name('file-download');
-
+        /******************************************/
+         /*------------*OFICINAS*-------------------*/
+        /******************************************/
+        //Aqui ya tenemos 2 prefijos . El del namespace 'dashboard' y el resource 'archivos'
+        //Cualquier ruta de aqui llevara los dos
+         Route::resource('/offices', 'OfficeController');
+            //Route::get('/download/{id}','FileController@show')->name('file-download');
+            Route::get('/offices/{user}/access', 'OfficeController@toggleAccess')->name('offices.toggleAccess');
         /******************************************/
          /*------------*VIDEOS*-------------------*/
         /******************************************/
@@ -252,8 +275,7 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
         Route::resource('/noticias', 'DocController');
 
             Route::get('/noticias/{user}/access', 'DocController@toggleAccess')->name('noticias.toggleAccess');
-
-            Route::get('/index', 'DocController@index')->name('noticiasIndex');
+            Route::get('/noticias', 'DocController@index')->name('noticiasIndex');
             /*Creamos la ruta hacia la pagina y utilizamos un array para pasarle los parametros que estaremos utilizando*/
             Route::get ('/crear-doc', array(
                 //Este va a ser el nombre de la ruta
@@ -335,6 +357,74 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard', 'as' => 'dash
          /*------------*Docs*-------------------*/
         /******************************************/
 
+        /******************************************/
+         /*------------*Alertas*-------------------*/
+        /******************************************/
+
+        Route::resource('/alertas', 'AlertController');
+
+            Route::get('/alert/{user}/access', 'AlertController@toggleAccess')->name('alerts.toggleAccess');
+
+            Route::get('/alert/{user}/access', 'AlertController@toggleAccess1')->name('alerts.toggleAccess1');
+
+            Route::get('/alertas', 'AlertController@index')->name('alertsIndex');
+            /*Creamos la ruta hacia la pagina y utilizamos un array para pasarle los parametros que estaremos utilizando*/
+            Route::get ('/crear-alert', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'createAlert', 
+                //Uso el AUTH para que solo pueda crear docs si estoy identificados
+               // 'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'AlertController@createAlert'
+            ));
+
+            /*------------GUARDAR------------------*/
+            /*Creamos la ruta para guardar el doc una vez creado*/
+            Route::post ('/guardar-alert', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'saveAlert', 
+                //Uso el AUTH para que solo pueda crear docs si estoy identificados
+                //'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'AlertController@saveAlert'
+            ));
+
+
+            /*------------DELETE-DOC------------------*/
+            //Indicamos el nombre de la ruta y metodo que va a cargar
+            //---OJO---Si no le pasamos el segundo parametro me da error NotFoundHttpException
+            //Esto porque es el parametro que le estamos pasando por el metodo del controlador. MUST BE HERE ALSO
+            Route::get('/delete-alert/{alert_id}',array(
+                'as'=> 'alertDelete',
+              //  'middleware'=>'auth',
+                'uses'=> 'AlertController@delete'
+            ));
+
+            /*------------EDITAR DOC------------------*/
+            /*Creamos la ruta para editar el doc y le pasamos el parametro de doc_id*/
+            Route::get('/editar-alert/{alert_id}', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'editAlert', 
+                //Uso el AUTH para que solo pueda crear docs si estoy identificados
+               // 'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'AlertController@edit'
+            ));
+            /*------------GUARDAR-UPDATE------------------*/
+            /*Creamos la ruta para guardar el doc una vez creado*/
+            Route::post ('/update-alert/{alert_id}', array(
+                //Este va a ser el nombre de la ruta
+                'as' => 'updateAlert', 
+                //Uso el AUTH para que solo pueda crear docs si estoy identificados
+               // 'middleware'=> 'auth',
+                //Ahora le indico que clase y que controlador(accion) va a utilizar
+                'uses' => 'AlertController@update'
+            ));
+
+        /******************************************/
+         /*------------*Alertas*-------------------*/
+        /******************************************/
+
 
   });
 /****************************************************************/
@@ -364,6 +454,7 @@ Route::post('/actualizar/{id}','UserProfile@update') ->name('updateUser');
 Route::get('/miniatura/{filename}','UserProfile@getImage') ->name('miniatura');
 Route::get('/miniaturaVideo/{filename}','UserProfile@getVideoImage') ->name('miniaturaFile');
 Route::get('/miniaturaDoc/{filename}','UserProfile@getDocImage') ->name('miniaturaDoc');
+Route::get('/miniaturaAlert/{filename}','UserProfile@getAlertImage') ->name('miniaturaAlert');
 
  /******************************************/
 /*------------*GET-IMAGE*-------------------*/
@@ -436,6 +527,15 @@ Route::get('/doc-file/{filename}', array(
 Route::get('/buscar-documento/{search?}/{filter?}',array(
             'as'=>'docSearch',
             'uses'=> 'UserProfile@searchDoc'
+));
+ /******************************************/
+/*------------*Alert-DETAIL*--------------*/
+/******************************************/
+/* Le pasamos por URL el parametro obligatorio del video y un array con las caracteristicas del video*/
+/*Lo hacemos aqui porque es una ruta que no necesita autenticacion.Esto es para que un usuario no atenticado pueda ver el video*/
+Route::get('/alert/{alert_id}',array(
+            'as'=> 'detailAlert',
+            'uses'=> 'UserProfile@getAlertDetail'
 ));
 
 
