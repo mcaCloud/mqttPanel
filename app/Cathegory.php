@@ -38,5 +38,7 @@ class Cathegory extends Model
   {
       $this->attributes[$type] = ($this->attributes[$type]) ? false : true;
   }
+
+
   
 }

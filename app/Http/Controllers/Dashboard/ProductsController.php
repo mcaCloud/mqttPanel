@@ -135,13 +135,13 @@ class ProductsController extends Controller
 
         $files = File::where('product_id', $id)->get();
         //Creamos una variable folder que haga un FIND a la BD para conseguir el registro que deseamos mostrar. Esto lo podemos hacer con ELOQUENT y el metodo find- Le solicitamos el doc_id. Diferente como se hace con el QUERY builder
-        $product = Product::findOrFail($id);
+        $products = Product::findOrFail($id);
 
         $userFilesCount = File::where('created_by_id', Auth::getUser()->id)->count();
 
         //Cargamos una vista que se llma doc y un array con la infomracion del doc a cargar
 
-        return view('dashboard.products.show', compact('product','files','userFilesCount'));
+        return view('dashboard.products.show', compact('products','files','userFilesCount'));
     }
 
 
@@ -165,7 +165,7 @@ class ProductsController extends Controller
 // *******************************************//
 // ---------EDITAR DOC --------//
 //Recibo la variable ID del doc por URL
-public function edit($product_id){
+public function edit(Request $request, $product_id){
      //Lo primero es conseguir una variable del usuario identificado
     $user = \Auth::user();
     //Creamos una variable doc para conseguir el objeto del doc que estamos intentando editar. Utilizamos FindOrFail para que nos devuelva un error en caso de que no exista en la base de datos
@@ -201,14 +201,14 @@ public function update($product_id, Request $request){
 
     $product->name = $request->input('title');
 
+    $product->description = $request->input('description');
 
 ///Una vez que todo esto este listo ya podemos hacer un UPDARe en la base de datos.
     $product->update();
 
     //Session::flash('flash_message', 'product successfully added!');
 
-
-return redirect()->route('dashboard::categorias.show',['id' => $product->folder_id])->with(array('message'=>'El servicio se ha actualizado correctamente'));
+return redirect()->route('dashboard::folders.show',['id' => $product->folder_id])->with(array('message'=>'El trámite se ha actualizado correctamente'));
 
 }
 

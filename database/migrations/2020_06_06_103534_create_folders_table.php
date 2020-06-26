@@ -26,6 +26,7 @@ class CreateFoldersTable extends Migration
             $table->integer('req_data')->unsigned()->nullable();
             $table->boolean('completed')->default(0);
             $table->boolean('status')->default(0);
+            $table->boolean('appt_req')->default(0);
 
             $table->timestamps();
             $table->softDeletes();

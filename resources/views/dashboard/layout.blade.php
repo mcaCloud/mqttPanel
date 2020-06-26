@@ -109,8 +109,8 @@
 				p - pagination control
 				r - processing display element
 			*/
-			dom: 't',
 
+			dom: 'fipltr',
 			/*Replace a DataTable which matches the given selector
 			/*En este caso el OBJETO es el ID #datatable-responsive
 			/*La reemplaza con la nueva BD que tiene el ID del OBJETO

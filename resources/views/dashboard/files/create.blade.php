@@ -1,16 +1,32 @@
 @extends('dashboard.layout')
-@section('title','Crear documento')
+@section('title','Requisitos')
 
 @section('content')
 <!------------------MAIN-CONTAINER----------------->
-
+<!------------------------------>
+<!----------OPTIONs------------->
+<!------------------------------>
+<p>
+<!-- Esto es para que no nos pongo bullt points-->
+  <ul style="list-style: none;">
+    <li>
+      <a href="{{route('dashboard::categorias.index')}}" style="{{ request('show_deleted') == 1 ? '' : 'font-weight: 700' }}">Inicio
+      </a>
+      <span class="separador">| </span>
+      <a href="{{ URL::previous() }}" style="{{ request('show_deleted') == 1 ? 'font-weight: 700' : '' }}">Atrás
+      </a> 
+      <span class="separador">| </span>
+      <a href="#" style="{{ request('show_deleted') == 1 ? 'font-weight: 700' : '' }}">Borrados
+      </a> 
+    </li>  
+  </ul>
+</p>
+<!------------------------------>
+<!----------OPTIONs------------->
+<!------------------------------>
 <div class="card shadow mb-6">
-	
- 	<div class="card-header py-3">
-		<h2>{{ $productName->name }}</h1>
-	</div>	
 
-<div class="card-body">
+	<div class="card-body">
 		<!-- ----FORMULARIO ----- -->
 		<!-- Cuando utilizo ROUTE() uso el nombre de la ruta en el controlador. No importa que cambie el nombre del URL siempore nos va a dirigir a la ruta. En caso de usar URL() tenemos que usar el URL del controlador -->
 		<form action="{{route('dashboard::archivos.store')}}" method="post" enctype="multipart/form-data" class="col-lg-7">
@@ -34,10 +50,6 @@
 
 			<!-- ----FORM-GROUPS ----- -->
 			<!-- Tengo que pasarle el Folder_ID-->	
-
-			<div class="form-group">
-				<label for="title"><strong>Crea aquí un nuevo documento</strong></label>
-			</div>
 
 			<input type="hidden" class="form-control" id="title" name="product" value="{{$productName->id}}" />
 

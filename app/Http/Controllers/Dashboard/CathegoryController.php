@@ -113,7 +113,9 @@ class CathegoryController extends Controller
 
     //*****************SHOW******************//
     // TEnemos que pasar el $ID que el el detalle del doc que deseamos mostrar
-    public function show($id){
+    public function show(Request $request, $id){
+
+        $foldersAll = Folder::where('cathegory_id', $id);
 
         $folders = Folder::where('cathegory_id', $id)->get();
         //Creamos una variable cathegories que haga un FIND a la BD para conseguir el registro que deseamos mostrar. Esto lo podemos hacer con ELOQUENT y el metodo find- Le solicitamos el  folder_id. Diferente como se hace con el QUERY builder
@@ -123,7 +125,21 @@ class CathegoryController extends Controller
 
         //Cargamos una vista que se llma doc y un array con la infomracion del doc a cargar
 
-        return view('dashboard.cathegory.show', compact('folders','cathegories','userFilesCount'));
+       // return view('dashboard.cathegory.show', compact('folders','cathegories','userFilesCount'));
+
+        return view('dashboard.cathegory.show', [
+            /*Donde la variable 'items' me muestra el QUERY dentro de la variable USERS de forma paginada
+              *CONFIG es parte de un helper to Get / set the specified configuration value. Y poder utilizar el User Interface*/ 
+            /*La variable 'page' me da el objeto de la request dentro de la pagina
+            */
+            /*Se hace asi para poder utilizar el JS de DataTables*/
+            /*EL Paginate se rige por el archivo de config/ui que tiene la informacion sobre cuatos resultados por pagina*/
+            'items' => $foldersAll->paginate(config('ui.dashboard.page_size')),
+            'page' => $request->query('page'),
+            'cathegories' => $cathegories,
+            'folders' => $folders,
+            'userFilesCount'
+        ]);
     }
 
 
@@ -139,7 +155,7 @@ class CathegoryController extends Controller
         $cathegory->delete();
     
         //Lo ultimo que hace este metodo es redirigirnos a HOME con el aaray de mensaje para que me diga si se elimino o no correctamente
-        return redirect('dashboard/cathegory')->with(array(
+        return redirect()->route('dashboard::categorias.index')->with(array(
             'message'=>'La categoria se ha eliminado correctamente'
         ));
     }

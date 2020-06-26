@@ -19,14 +19,9 @@ class Folder extends Model
           //Lo primero es indicar a que tabla o entidad hace referencia el modelo
     protected $table = 'folders';
 
-    protected $fillable = ['name', 'created_by_id'];
+    protected $fillable = ['name', 'created_by_id','notes','office_id'];
 
     //Esto lo que hace es dejarme guardar un JSON o un array en este campo. Lo necesito porque tengo que guardar varias oficinas que trabajan estos folders (Servicios) 
-
-    //Si no estoy usando el tema de arrays tengo no debo tener esto activado porque sino me da errors
-    /*protected $casts = [
-        'office_id' => 'array',
-    ];*/
 
     public function setCreatedByIdAttribute($input)
     {
@@ -38,8 +33,11 @@ class Folder extends Model
         return $this->belongsTo(User::class, 'created_by_id');
     }
 
-        public function toggleAccess($type)
+   //Esta funcion de toggle me sirve para cualquier opcion que desee crear, solo tengo que cambiar la informacion del ID dentro de las vista para que me regrese cualquier campo dentro de la table que tenga un booleano 
+    public function toggleAccess($type)
   {
       $this->attributes[$type] = ($this->attributes[$type]) ? false : true;
   }
+
+
 }

@@ -34,20 +34,20 @@ class FileController extends Controller
         $userFilesCount = File::where('created_by_id', Auth::getUser()->id)->count();
         //Si el user es 'usuario' y ya ha subido mas de 5 archivos, que se redirija
 
-        if ( (!Auth::user()->hasRole('usuario')) && $userFilesCount > 5) {
+        /*if ( (!Auth::user()->hasRole('usuario')) && $userFilesCount > 5) {
             return redirect('folders')->with(array(
     		'message'=> 'El máximo de documentos permitidos es de 5 por carpeta'
     	 ));
-        }
+        }*/
 
-        $folder = $request->id;
+        $product = $request->id;
 
         //Esta variable me guarda la query a la tabla de FOLDER paar sacar el objeto que tenga este ID..
         $productName = Product::find($request->id);
 
         $created_bies = User::get()->pluck('name', 'id');
 
-        return view('dashboard.files.create', compact('folder','productName', 'created_bies', 'userFilesCount', 'roleId'));
+        return view('dashboard.files.create', compact('product','productName', 'created_bies', 'userFilesCount', 'roleId'));
 
     }
 

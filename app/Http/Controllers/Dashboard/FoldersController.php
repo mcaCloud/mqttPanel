@@ -177,19 +177,20 @@ class FoldersController extends Controller
         $folder->delete();
     
         //Lo ultimo que hace este metodo es redirigirnos a HOME con el aaray de mensaje para que me diga si se elimino o no correctamente
-        return redirect('dashboard/folders')->with(array(
-            'message'=>'Documento eliminado correctamente'
-        ));
+        return redirect()->route('dashboard::categorias.show',['id' => $folder->cathegory_id]);
     }
 
 // *******************************************//
 // ---------EDITAR DOC --------//
-//Recibo la variable ID del doc por URL
-public function edit($folder_id){
+//Recibo la variable FOLDER_ID de la categoria por URL junto con el REQUEST para poder utilizar los datos
+public function edit(Request $request,$folder_id){
      //Lo primero es conseguir una variable del usuario identificado
     $user = \Auth::user();
+
     //Creamos una variable doc para conseguir el objeto del doc que estamos intentando editar. Utilizamos FindOrFail para que nos devuelva un error en caso de que no exista en la base de datos
     $folder = Folder::findOrFail($folder_id);
+
+    $cathegory = Cathegory::where('id',$folder->cathegory_id);
 
     $offices = Office::query()->get();
     //Ahora tenenmos que comprobar si el usuario existe y el que solamente cuando estemos identificados como el ususario dueño del doc podamos usarlo. SI otro lo intenta no va a poder
@@ -198,8 +199,14 @@ public function edit($folder_id){
         return view('dashboard.folders.edit', array(
 
             'folder' => $folder,
-            'offices' =>$offices
+            'offices' =>$offices,
+            'page' => $request->query('page'),
 
+            /*Esto es para que me mantenga la oficina que tenia el servicio ('folder') anteriormente
+            * El ID del SELECT en el formulario esta conectado con esto para que me popule el OLD value del officeID.
+            */   
+            /* 'office_id' me pasa el 'office_id' anterior que me llego por la request, entonces de la QUERY de 'Folder' hago un pluck del 'office_id' y lo envio como un array*/      
+            'office_id' => $request->old('office_id',$folder->pluck('office_id')->toArray()),
         ));
     //Si esto no funcionara hacemos una redireccion a la HOME sin mensaje
     }else{
@@ -224,6 +231,11 @@ public function update($folder_id, Request $request){
 
     $folder->name = $request->input('title');
 
+    $folder->appt_req = $request->input('appt_req');
+
+    $folder->notes = $request->input('notes');
+    $folder->description = $request->input('description');
+    
     /****************************************************/
     //Aqui recojo la informacion del select box en la vista
     $officeID = $request->input('office_id');
@@ -302,11 +314,9 @@ return redirect()->route('dashboard::categorias.show',['id' => $folder->cathegor
         $folder->save();
 
         /*Redirijo a la base de datos con un mensaje que contiene el nombre completo del usuario*/
-       return redirect()->back()->with([
-            'message' => 'Se el acceso al  folder [' . $folder->name . ']',
-            'level' => 'success'
-        ]);
+       return redirect()->back();
     }
 /*****************************************************************/
+
 
 }
