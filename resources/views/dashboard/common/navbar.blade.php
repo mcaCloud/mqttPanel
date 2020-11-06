@@ -21,7 +21,7 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-      Menu
+      Administracíon
     </div>
 
     @hasanyrole('administrador|super-administrador')
@@ -82,7 +82,13 @@
         </li>  
       @endhasanyrole
 
-     @hasanyrole('usuario') 
+        <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      Cuenta de cliente
+    </div>
     <!---------------------------------------------------------->
      <!---------------------- LI-2 ----------------------------->
       <li class="nav-item">
@@ -123,7 +129,35 @@
 
     <!---------------------------------------------------------->
     <!---------------------- LI-1 ----------------------------->
-    @endhasrole
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      Gestión de clientes
+    </div>
+    <!---------------------------------------------------------->
+     <!---------------------- LI-2 ----------------------------->
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#clientesUtility" aria-expanded="true" aria-controls="collapseUtilities2">
+          <i class="fas fa-credit-card"></i>
+          <span>Clientes</span>
+        </a>
+        <div id="clientesUtility" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+
+            <a class="collapse-item" href="#"><i class="fas fa-credit-card "></i> Suscripciones</a>
+            <a class="collapse-item" href="#"><i class="fa fa-address-card" aria-hidden="true"></i></i> Nuevo contrato</a>
+
+            <a class="collapse-item" href="{{ route('dashboard::pdfs.index') }}"><i class="fas fa-key"></i> Cambiar contraseña</a>
+          </div>
+        </div>
+      </li>
+
+    <!---------------------------------------------------------->
+    <!---------------------- LI-1 ----------------------------->
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 

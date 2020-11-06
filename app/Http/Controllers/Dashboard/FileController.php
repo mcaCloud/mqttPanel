@@ -18,6 +18,7 @@ use App\Folder;
 use App\User;
 use App\File;
 use App\Product;
+use App\Doc;
 use Auth;
 class FileController extends Controller
 {
