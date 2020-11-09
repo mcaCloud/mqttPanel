@@ -1,22 +1,21 @@
 @extends('landingPage.layout')
 
-@section('alert')	
+@section('alert')
 	@include('landingPage.alerts')
 @endsection
 
-@section('topBar')	
-	@include('landingPage.topbar')
+@section('topBar')
+	@include('landingPage.topBar')
 @endsection
 
-@section('tabs')	
+@section('tabs')
 	@include('landingPage.Tabs')
 @endsection
 
-@section('sideBar')	
+@section('sideBar')
 	@include('landingPage.common.sideBars.home')
 @endsection
 
-@section('content')	
-	
-@endsection
+@section('content')
 
+@endsection
