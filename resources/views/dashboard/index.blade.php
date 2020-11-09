@@ -288,8 +288,23 @@ function process_led1(){
   //Si el input del led1 esta encendido (checked) entonces:
   if ($('#input_led1').is(":checked")) {
     console.log("Encendido ");
+    // Esta es la forma de publicar un menssage bajo un tópico
+    //Primero incluyo el tópico y despues el mensaje
+    //El tópico es el que lo creo yo, los que se suscriban vana tener acceso a los mensajes
+    client.publish('led1','ON',(error) =>{
+      //Ahora como estoy desarrollando es bueno revisar por pantalla
+      //Pero despues todos los console.log se tienen que eliminar.
+      //Asi no se expone informacion privada en el Internet
+      console.log(error || 'Mensaje enviado!!');
+    })
   }else{
+    //Ahora lo mismo. Si el estado es apagado envío un mensaje.
     console.log("Apagado ");
+    client.publish('led1','off',(error) =>{
+      //Ahora como estoy desarrollando es bueno revisar por pantalla
+      //Pero despues todos los console.log se tienen que eliminar.
+      //Asi no se expone informacion privada en el Internet
+      console.log(error || 'Mensaje enviado!!');
   }
 
 
@@ -357,7 +372,11 @@ De esta manera cuando el código crezca podemos ubicar las partes de manera más
         //Despues es mejor quitarlo para no revelar informacion sensible.
     		console.log('connect success exito')
 
+        /* ***************************************** */
+        /*              subscribe                   */
+        /* ***************************************** */
         //Despues me tengo que suscribir al topico que deseo escuchar
+        //Ya lo de QoS lo iré desarrollando después
         client.subscribe('values',{ qos: 0 }, (error) => {
           if (!error) {
             console.log('Suscripción exitosa')
@@ -365,7 +384,11 @@ De esta manera cuando el código crezca podemos ubicar las partes de manera más
             console.log('Suscripción fallida')
           }
         })
-	     })
+        /* ***************************************** */
+        /*              publish                      */
+        /* ***************************************** */
+
+	   })
 
        /* ****************************************** */
        /*            RE-CONNECT                       */
