@@ -37,7 +37,7 @@
                 Muy similar a ONCLICK
                 Recordar siempre abrir y cerra parentesis
             -->
-            <input id="input_led1" onchange="process_led1()" type="checkbox">
+            <input id="input_led1" onclick="process_led1()" type="checkbox">
               <span class="slider"></span>
           </label>
         </div>
@@ -55,7 +55,7 @@
                 Cuando alguien hace click sobre el input se ejecuta la funcion que yo le indique
                 Recordar siempre abrir y cerra parentesis
             -->
-            <input id="input_led2" onchange="process_led2()" type="checkbox">
+            <input id="input_led2" onclick="process_led2()" type="checkbox">
               <span class="slider round"></span>
           </label>
         </div>
