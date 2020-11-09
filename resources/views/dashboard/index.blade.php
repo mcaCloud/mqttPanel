@@ -269,13 +269,24 @@ function process_led2(){
   //Si el input del led1 esta encendido (checked) entonces:
   if ($('#input_led2').is(":checked")) {
     console.log("Encendido ");
+    // Esta es la forma de publicar un menssage bajo un tópico
+    //Primero incluyo el tópico y despues el mensaje
+    //El tópico es el que lo creo yo, los que se suscriban vana tener acceso a los mensajes
+    client.publish('led2', 'ON', (error) =>{
+    //Ahora como estoy desarrollando es bueno revisar por pantalla
+   //Pero despues todos los console.log se tienen que eliminar.
+   //Asi no se expone informacion privada en el Internet
+        console.log(error || 'Mensaje enviado!!');
+      })
 
   }else{
     //Ahora lo mismo. Si el estado es apagado envío un mensaje.
     console.log("Apagado ");
+    client.publish('led2', 'ON', (error) =>{
+        console.log(error || 'Mensaje enviado!!');
+      })
   }
 }
-
 
 /*
 ********************************************************************************************
