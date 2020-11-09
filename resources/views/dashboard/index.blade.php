@@ -29,7 +29,15 @@
       <div class="card col-md-3 shadow p-4 mb-4 bg-white">
         <div class="card-body">
           <label class="switch">
-            <input type="checkbox">
+            <!-- Al final de todo es un check box que se marca o note
+                Lo primero que voy a hacer asignarle un ID para poder conectarlo con el codigo en JS
+                Tambien tengo que captura el valor cuando le hacen CLICK
+                Entonces implemento la propiedad de ONCHANGE
+                Ejecuta la funcion que yo le indique cuando cambia el estado del toogle
+                Muy similar a ONCLICK
+                Recordar siempre abrir y cerra parentesis
+            -->
+            <input id="input_led1" onchange="process_led1()" type="checkbox">
               <span class="slider"></span>
           </label>
         </div>
@@ -40,7 +48,14 @@
       <div class="card bg-primary text-white col-md-3 shadow p-4 mb-4 bg-white">
         <div class="card-body">
           <label class="switch">
-            <input type="checkbox">
+            <!-- Al final de todo es un check box que se marca o note
+                Lo primero que voy a hacer asignarle un ID para poder conectarlo con el codigo en JS
+                Tambien tengo que captura el valor cuando le hacen CLICK
+                Entonces implemento la propiedad de ONCHANGE
+                Cuando alguien hace click sobre el input se ejecuta la funcion que yo le indique
+                Recordar siempre abrir y cerra parentesis
+            -->
+            <input id="input_led2" onchange="process_led2()" type="checkbox">
               <span class="slider round"></span>
           </label>
         </div>
@@ -157,9 +172,13 @@
 <!--------------- /MONITORS------------------------>
 <!------------------------------------------------>
 </div>
-<!----------------------------------------------------------->
-<!------------------------PAGE------------------------------>
-<!----------------------------------------------------------->
+
+
+
+<!------------------------------------------------------------------------------------------------------------------->
+<!-------------                 JAVESCRIPT                                                              ------------->
+<!------------------------------------------------------------------------------------------------------------------->
+
 
 <!----------------------------------------------------------->
 <!------------------------JS SCRIPTS MQTT-------------------->
@@ -174,9 +193,9 @@ segmentarlo de esta forma.-->
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 /*
-**********************************************
+********************************************************************************************
 ************* FUNCIONES **********************
-**********************************************
+********************************************************************************************
 */
 /*
 Aqui agrego todas las funciones que no tengan que ver directamente con la conneción de MQTT
@@ -254,12 +273,42 @@ function process_msg (topic, message){
     update_values(temp1, temp2, temp3);
   }
 }
+/* ********************************************* */
+/*         Toogle buttons                        */
+/* ********************************************* */
 
+/*Al final lo que se necesita hacer es capturar el estado del interruptor
+  Cuando este prendido y cuando este apgado.
+  El nombre de la funcion me lo invento yo pero es el mismo que tiene que ir en el
+  codigo html dentro de la propiedad onchange
+*/
+function process_led1(){
+  //Recordar que para llamar a la libreria de JQUERY se comienza con $
+  //Después le indicamos el ID que vamos a utilizar, es decir el ID del toogleButton.
+  //Si el input del led1 esta encendido (checked) entonces:
+  if ($('#input_led1').is(":checked")) {
+    console.log("Encendido ");
+  }else{
+    console.log("Apagado ");
+  }
+
+
+}
+
+function process_led2(){
+  //Recordar que para llamar a la libreria de JQUERY se comienza con $
+  //Después le indicamos el ID que vamos a utilizar, es decir el ID del toogleButton.
+  if ($('#input_led2').is(":checked")) {
+
+  }else {
+
+  }
+}
 
 /*
-**********************************************
+********************************************************************************************
 ************* CONNEXION *********************
-**********************************************
+********************************************************************************************
 Hago un diferencia marcada entre donde tengo los datos de la conneccón MQTT y el resto del código
 De esta manera cuando el código crezca podemos ubicar las partes de manera más simple.
 */
@@ -297,6 +346,10 @@ De esta manera cuando el código crezca podemos ubicar las partes de manera más
      ********* GENERAL CONEXION TO BROKER **********
      ***********************************************
      */
+     /* ****************************************** */
+     /*            CONNECT                         */
+     /* ****************************************** */
+
      //Lo primero que va a hacer l broker es conectarse
      //Imprimo un mensaje en pantalla para saber que estoy conectado
 	    client.on('connect', () => {
@@ -304,7 +357,7 @@ De esta manera cuando el código crezca podemos ubicar las partes de manera más
         //Despues es mejor quitarlo para no revelar informacion sensible.
     		console.log('connect success exito')
 
-        //Despues me tengo que suscribir al topico que deseo escuchar 
+        //Despues me tengo que suscribir al topico que deseo escuchar
         client.subscribe('values',{ qos: 0 }, (error) => {
           if (!error) {
             console.log('Suscripción exitosa')
@@ -314,13 +367,18 @@ De esta manera cuando el código crezca podemos ubicar las partes de manera más
         })
 	     })
 
+       /* ****************************************** */
+       /*            RE-CONNECT                       */
+       /* ****************************************** */
 
 	    client.on('reconnect', (error) => {
         //El console log esta bien dejarlo mientras desarrollamos
         //Despues es mejor quitarlo para no revelar informacion sensible.
     		console.log('reconnecting:', error)
 	     })
-
+       /* ****************************************** */
+       /*            ERROR                           */
+       /* ****************************************** */
 	    client.on('error', (error) => {
         //El console log esta bien dejarlo mientras desarrollamos
         //Despues es mejor quitarlo para no revelar informacion sensible.
@@ -342,5 +400,6 @@ De esta manera cuando el código crezca podemos ubicar las partes de manera más
         //Aqui llamo a la funcion de process_msg y le paso lo que me este llegando como mensaje y topico
         process_msg(topic, message);
 	     })
+
 	</script>
 @stop
