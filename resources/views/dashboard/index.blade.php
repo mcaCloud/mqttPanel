@@ -24,6 +24,24 @@
 <!------------------------------------------------>
     <h2>Toggle Switch</h2>
 
+    <!-------- Switch 1------------>
+    <div class="card bg-primary text-white col-md-3 shadow p-4 mb-4 bg-white">
+      <div class="card-body">
+        <label class="switch">
+          <!-- Al final de todo es un check box que se marca o note
+              Lo primero que voy a hacer asignarle un ID para poder conectarlo con el codigo en JS
+              Tambien tengo que captura el valor cuando le hacen CLICK
+              Entonces implemento la propiedad de ONCHANGE
+              Cuando alguien hace click sobre el input se ejecuta la funcion que yo le indique
+              Recordar siempre abrir y cerra parentesis
+          -->
+          <input id="input_led1" onclick="process_led1()" type="checkbox">
+            <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
+    <!-------- /Switch 1------------>
+
       <!-------- Switch 2------------>
       <div class="card bg-primary text-white col-md-3 shadow p-4 mb-4 bg-white">
         <div class="card-body">
