@@ -47,7 +47,7 @@ class HomeController extends Controller
 
         //$docs = Doc::orderBy('id','desc')-> paginate(5);
 
-        //$users = User::orderBy('id','desc')-> paginate(5);
+        $users = User::orderBy('id','desc')-> paginate(5);
 
         //$alerts = Alert::orderBy('id','desc')-> paginate(5);
 
