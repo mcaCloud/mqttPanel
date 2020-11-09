@@ -38,7 +38,7 @@
                             <small>Creado por {{$doc->created_at->diffForHumans()}}</small>
 
                             <!-- Aqui llamo la vista que contine todos los botones incluyendo el overlay para el eliminado de documentos-->
-                            @include('dashboard.docs.buttons')              
+                            @include('dashboard.docs.buttons')
                         </div>
                     </div>
                     <!--------/PANEL-BODY ------------------------------------->
