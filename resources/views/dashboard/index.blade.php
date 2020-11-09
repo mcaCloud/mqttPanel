@@ -282,7 +282,7 @@ function process_led2(){
   }else{
     //Ahora lo mismo. Si el estado es apagado envío un mensaje.
     console.log("Apagado ");
-    client.publish('led2', 'ON', (error) =>{
+    client.publish('led2', 'OFF', (error) =>{
         console.log(error || 'Mensaje enviado!!');
       })
   }
