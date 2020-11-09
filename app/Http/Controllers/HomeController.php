@@ -64,7 +64,7 @@ class HomeController extends Controller
         return view ('welcome',array(
             /*Creo un indice FILES y le paso todos los files, de esta forma ya tengo accesible todos los files en la vista welcome*/
             //'files' =>$files,
-            //'videos' =>$videos,
+            'videos' =>$videos,
             'docs' =>$docs,
             'users' =>$users,
             //'employees' =>$employees,
