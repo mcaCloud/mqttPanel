@@ -29,44 +29,44 @@
     <!--------Desarrollo Web---------->
     <div id="equipo" class="tab-pane">
         <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('landingPage.common.tabs.equipo')
+
     </div>
     <!--------Servicios---------->
-    <div id="servicios" class="tab-pane ">  
+    <div id="servicios" class="tab-pane ">
         <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('landingPage.common.tabs.servicios')
+
     </div>
 
     <!--------Hablemos---------->
-    <div id="hablemos" class="tab-pane ">        
+    <div id="hablemos" class="tab-pane ">
         <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('landingPage.common.tabs.hablemos')
+
     </div>
 
     <!--------citas---------->
-    <div id="citas" class="tab-pane ">        
+    <div id="citas" class="tab-pane ">
          <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('landingPage.common.tabs.citas')
+
     </div>
         <!--------Noticias---------->
 
-    <div id="noticias" class="tab-pane ">     
+    <div id="noticias" class="tab-pane ">
          <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('landingPage.common.tabs.noticias')
+
     </div>
         <!--------Cursos---------->
-    <div id="cursos" class="tab-pane ">        
+    <div id="cursos" class="tab-pane ">
          <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('landingPage.common.tabs.cursos')
+
     </div>
         <!--------Precios---------->
-    <div id="precios" class="tab-pane fade">        
+    <div id="precios" class="tab-pane fade">
          <!-- Agregar el contenido del tab o hacer referencia al contenido -->
-        @include('landingPage.common.tabs.precios')
+
     </div>
 </div>
 <script type="text/javascript">
-    
+
   $(function () {
     $('#myTab a:last').tab('show');
   })
