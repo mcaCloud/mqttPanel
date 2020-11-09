@@ -9,7 +9,7 @@
 @endsection
 
 @section('tabs')
-	@include('landingPage.Tabs')
+	@include('landingPage.tabs')
 @endsection
 
 @section('sideBar')
