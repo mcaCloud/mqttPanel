@@ -50,7 +50,7 @@ class HomeController extends Controller
         /*Ahora le tengo que pasar la informacion a la vista, para eso le paso un array al VIEW*/
 
         //Como en la vista de Index tengo tabs y cada una tiene informacion diferente los que voy a hacer es hacer un query en cada tabla y pasarle la info de todas las tablas que ocupo a la vista.
-        //$videos = Video::orderBy('id','desc')-> paginate(5);
+        $videos = Video::orderBy('id','desc')-> paginate(5);
 
         $docs = Doc::orderBy('id','desc')-> paginate(5);
 
