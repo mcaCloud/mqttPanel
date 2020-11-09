@@ -254,6 +254,28 @@ function process_msg (topic, message){
   }
 }
 
+/* ********************************************* */
+/*         Toogle buttons                        */
+/* ********************************************* */
+
+/*Al final lo que se necesita hacer es capturar el estado del interruptor
+  Cuando este prendido y cuando este apgado.
+  El nombre de la funcion me lo invento yo pero es el mismo que tiene que ir en el
+  codigo html dentro de la propiedad onchange
+*/
+function process_led2(){
+  //Recordar que para llamar a la libreria de JQUERY se comienza con $
+  //Después le indicamos el ID que vamos a utilizar, es decir el ID del toogleButton.
+  //Si el input del led1 esta encendido (checked) entonces:
+  if ($('#input_led2').is(":checked")) {
+    console.log("Encendido ");
+
+  }else{
+    //Ahora lo mismo. Si el estado es apagado envío un mensaje.
+    console.log("Apagado ");
+  }
+}
+
 
 /*
 ********************************************************************************************
