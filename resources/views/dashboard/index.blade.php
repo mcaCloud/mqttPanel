@@ -301,7 +301,16 @@ De esta manera cuando el código crezca podemos ubicar las partes de manera más
         //El console log esta bien dejarlo mientras desarrollamos
         //Despues es mejor quitarlo para no revelar informacion sensible.
     		console.log('connect success exito')
+
+        client.subscribe('values',{ qos: 0 }, (error) => {
+          if (!error) {
+            console.log('Suscripción exitosa')
+          }else{
+            console.log('Suscripción fallida')
+          }
+        })
 	     })
+
 
 	    client.on('reconnect', (error) => {
         //El console log esta bien dejarlo mientras desarrollamos
