@@ -189,6 +189,12 @@ Estos son los procesos que voy a estar tocando mucho más
 //El ejemplo de abajo ya me actualiza el valor del ID display_temp1
         //$("#display_temp1").html("77")
 */
+
+
+/* ********************************************* */
+/*          ACTUALIZAR VALORES                   */
+/* ********************************************* */
+
 /*
   Ahora me voy a crear un función que me actualice los tres valores al mismo tiempo
   Esto para maximizar la eficiencia del Broker y evitar recargar las peticiones
@@ -210,8 +216,12 @@ alguien la llame. ENtonces ahora llamo a esa funcióno
 Aqui utilizamos comillas dobles porque son STRINGS. Hay que recordar. Cada uno
 separado por un a coma.
         update_values("","","");
-La funcion la vamos desde otra funcion que obtiene los datos de MQTT.
+La funcion la vamos llamar desde otra funcion que obtiene los datos de MQTT.
 */
+
+/* ********************************************* */
+/*          PROCESA MENSAJES MQTT                */
+/* ********************************************* */
 
 // Para que esta funcion pueda obtener la info de MQTT me tiene que recibir el TOPIC y el mensaje
 //en la funcion de   client.on('message', (topic, message) llamo a esta funcion y le paso los dos parametros.
@@ -239,8 +249,10 @@ function process_msg (topic, message){
     var temp1 = sp[0];
     var temp2 = sp[1];
     var temp3 = sp[2];
-  }
 
+    //Ahora si llamo a la funcion de actualizar valores y le paso los valores del BROKER
+    update_values(temp1, temp2, temp3);
+  }
 }
 
 
