@@ -310,14 +310,6 @@ function process_led1(){
 
 }
 
-function process_led2(){
-  //Recordar que para llamar a la libreria de JQUERY se comienza con $
-  //Después le indicamos el ID que vamos a utilizar, es decir el ID del toogleButton.
-  if ($('#input_led2').is(":checked")) {
-
-  }else {
-
-  }
 }
 
 /*
