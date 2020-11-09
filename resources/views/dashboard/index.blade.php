@@ -297,11 +297,14 @@ De esta manera cuando el código crezca podemos ubicar las partes de manera más
      ********* GENERAL CONEXION TO BROKER **********
      ***********************************************
      */
+     //Lo primero que va a hacer l broker es conectarse
+     //Imprimo un mensaje en pantalla para saber que estoy conectado
 	    client.on('connect', () => {
         //El console log esta bien dejarlo mientras desarrollamos
         //Despues es mejor quitarlo para no revelar informacion sensible.
     		console.log('connect success exito')
 
+        //Despues me tengo que suscribir al topico que deseo escuchar 
         client.subscribe('values',{ qos: 0 }, (error) => {
           if (!error) {
             console.log('Suscripción exitosa')
