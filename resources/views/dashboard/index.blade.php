@@ -287,7 +287,30 @@ function process_led2(){
       })
   }
 }
+function process_led1(){
+  //Recordar que para llamar a la libreria de JQUERY se comienza con $
+  //Después le indicamos el ID que vamos a utilizar, es decir el ID del toogleButton.
+  //Si el input del led1 esta encendido (checked) entonces:
+  if ($('#input_led1').is(":checked")) {
+    console.log("Encendido ");
+    // Esta es la forma de publicar un menssage bajo un tópico
+    //Primero incluyo el tópico y despues el mensaje
+    //El tópico es el que lo creo yo, los que se suscriban vana tener acceso a los mensajes
+    client.publish('led1', 'ON', (error) =>{
+    //Ahora como estoy desarrollando es bueno revisar por pantalla
+   //Pero despues todos los console.log se tienen que eliminar.
+   //Asi no se expone informacion privada en el Internet
+        console.log(error || 'Mensaje enviado!!');
+      })
 
+  }else{
+    //Ahora lo mismo. Si el estado es apagado envío un mensaje.
+    console.log("Apagado ");
+    client.publish('led1', 'OFF', (error) =>{
+        console.log(error || 'Mensaje enviado!!');
+      })
+  }
+}
 /*
 ********************************************************************************************
 ************* CONNEXION *********************
