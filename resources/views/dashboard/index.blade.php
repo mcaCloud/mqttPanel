@@ -14,20 +14,19 @@
 
 	<div class="page">
 
-		<div class="timeline__post">
-				<div class="timeline__content">
+				<div>
 					 <p> Ya {{Auth::user()->created_at->diffForHumans()}}</p>
             <p>Bienvenido <strong> {{Auth::user()->completeName()}}!.</strong></p>
 				</div>
-	  </div>
 
 <!------------------------------------------------>
 <!---------------SWITCHES------------------------>
 <!------------------------------------------------>
     <h2>Toggle Switch</h2>
     <!-------- Switch 1------------>
-    <div class="row">
-      <div class="card col-md-3">
+    <!-- El card-deck es para que alla espacio entre las cards-->
+    <div class="card-deck">
+      <div class="card col-md-3 shadow p-4 mb-4 bg-white">
         <div class="card-body">
           <label class="switch">
             <input type="checkbox">
@@ -38,7 +37,7 @@
       <!-------- /Switch 1------------>
 
       <!-------- Switch 2------------>
-      <div class="card bg-primary text-white col-md-3">
+      <div class="card bg-primary text-white col-md-3 shadow p-4 mb-4 bg-white">
         <div class="card-body">
           <label class="switch">
             <input type="checkbox">
@@ -57,28 +56,104 @@
 <!--------------- MONITORS------------------------>
 <!------------------------------------------------>
     <h2>Monitors</h2>
-
-    <div class="row">
-      <div class="card col-md-3">
-        <div class="card-body">
-          <h4 class="card-title"><i class="fas fa-adjust" style="width:100%"> 12 </i></h4>
-          <p class="card-text">Some example text </p>
-          <a href="#" class="btn btn-primary">See Profile</a>
+    <!-- El card-deck es para que alla espacio entre las cards-->
+    <div class="card-deck">
+      <!------------ erste--------------->
+      <div class="card col-md-3 shadow p-4 mb-4 bg-white ">
+        <!-----BODY--->
+        <div class="card-body" >
+            <!-- Trabajo todo lo importante dentro del titulo del card-->
+            <h4 class="card-title">
+              <div class="row">
+                <!--Aislo el Icono para que se me alinie de forma independiente -->
+                <div class="md-4">
+                  <i class="fas fa-adjust" style="width:100%"></i>
+                </div>
+                
+                <div class="md-6">
+                    <!--Aislo el número que voy a utilizar para conectar con el MQTT
+                    Es muy importante siempre aislar el numero que represente el valor entre etiquetas
+                    Asi le puedo agregar el identificador ID
+                    El ID va a servir para que yo desde el JS pueda llamarlo e identificarlo
+                    el nombre me lo invento yo para saber a que se refiere-->
+                    <b id ="display_temp3"> 12</b>
+                    <span class="text-sm">c</span>
+                </div>
+              </div>
+            </h4>
+            <!--Estos son datos adicionales que desee trabajar o agregar al card-->
+            <p class="card-text">Temperatura 3 </p>
+            <a href="#" class="btn btn-primary">Ver detalles</a>
         </div>
+        <!-----/BODY--->
       </div>
-      <br>
+      <!------------ /erste--------------->
 
-      <div class="card col-md-3">
-        <div class="card-body">
-          <h4 class="card-title"><i class="fas fa-arrow-alt-circle-up" style="width:100%"> 12 </i></h4>
-          <p class="card-text">Some example text </p>
-          <a href="#" class="btn btn-primary">See Profile</a>
+      <!------------ zweitte--------------->
+      <div class="card col-md-3 shadow p-4 mb-4 bg-white ">
+        <!-----BODY--->
+        <div class="card-body" >
+            <!-- Trabajo todo lo importante dentro del titulo del card-->
+            <h4 class="card-title">
+              <div class="row">
+                <!--Aislo el Icono para que se me alinie de forma independiente -->
+                <div class="md-4">
+                  <i class="fas fa-adjust" style="width:100%"></i>
+                </div>
+
+                <div class="md-6">
+                    <!--Aislo el número que voy a utilizar para conectar con el MQTT
+                    Es muy importante siempre aislar el numero que represente el valor entre etiquetas
+                    Asi le puedo agregar el identificador ID
+                    El ID va a servir para que yo desde el JS pueda llamarlo e identificarlo
+                    el nombre me lo invento yo para saber a que se refiere-->
+                    <b id ="display_temp3"> 12</b>
+                    <span class="text-sm">c</span>
+                </div>
+              </div>
+            </h4>
+            <!--Estos son datos adicionales que desee trabajar o agregar al card-->
+            <p class="card-text">Temperatura 3 </p>
+            <a href="#" class="btn btn-primary">Ver detalles</a>
         </div>
+        <!-----/BODY--->
       </div>
+      <!------------ /zweitte--------------->
+
+      <!------------ dritte--------------->
+      <div class="card col-md-3 shadow p-4 mb-4 bg-white ">
+        <!-----BODY--->
+        <div class="card-body" >
+            <!-- Trabajo todo lo importante dentro del titulo del card-->
+            <h4 class="card-title">
+              <div class="row">
+                <!--Aislo el Icono para que se me alinie de forma independiente -->
+                <div class="md-4">
+                  <i class="fas fa-adjust" style="width:100%"></i>
+                </div>
+
+                <div class="md-6">
+                    <!--Aislo el número que voy a utilizar para conectar con el MQTT
+                    Es muy importante siempre aislar el numero que represente el valor entre etiquetas
+                    Asi le puedo agregar el identificador ID
+                    El ID va a servir para que yo desde el JS pueda llamarlo e identificarlo
+                    el nombre me lo invento yo para saber a que se refiere-->
+                    <b id ="display_temp3"> 12</b>
+                    <span class="text-sm">c</span>
+                </div>
+              </div>
+            </h4>
+            <!--Estos son datos adicionales que desee trabajar o agregar al card-->
+            <p class="card-text">Temperatura 3 </p>
+            <a href="#" class="btn btn-primary">Ver detalles</a>
+        </div>
+        <!-----/BODY--->
+      </div>
+      <!------------ /dritte--------------->
+  </div>
 <!------------------------------------------------>
 <!--------------- /MONITORS------------------------>
 <!------------------------------------------------>
-
 </div>
 <!----------------------------------------------------------->
 <!------------------------PAGE------------------------------>
