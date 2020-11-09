@@ -23,26 +23,6 @@
 <!---------------SWITCHES------------------------>
 <!------------------------------------------------>
     <h2>Toggle Switch</h2>
-    <!-------- Switch 1------------>
-    <!-- El card-deck es para que alla espacio entre las cards-->
-    <div class="card-deck">
-      <div class="card col-md-3 shadow p-4 mb-4 bg-white">
-        <div class="card-body">
-          <label class="switch">
-            <!-- Al final de todo es un check box que se marca o note
-                Lo primero que voy a hacer asignarle un ID para poder conectarlo con el codigo en JS
-                Tambien tengo que captura el valor cuando le hacen CLICK
-                Entonces implemento la propiedad de ONCHANGE
-                Ejecuta la funcion que yo le indique cuando cambia el estado del toogle
-                Muy similar a ONCLICK
-                Recordar siempre abrir y cerra parentesis
-            -->
-            <input id="input_led1" onclick="process_led1()" type="checkbox">
-              <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-      <!-------- /Switch 1------------>
 
       <!-------- Switch 2------------>
       <div class="card bg-primary text-white col-md-3 shadow p-4 mb-4 bg-white">
@@ -282,16 +262,16 @@ function process_msg (topic, message){
   El nombre de la funcion me lo invento yo pero es el mismo que tiene que ir en el
   codigo html dentro de la propiedad onchange
 */
-function process_led1(){
+function process_led2(){
   //Recordar que para llamar a la libreria de JQUERY se comienza con $
   //Después le indicamos el ID que vamos a utilizar, es decir el ID del toogleButton.
   //Si el input del led1 esta encendido (checked) entonces:
-  if ($('#input_led1').is(":checked")) {
+  if ($('#input_led2').is(":checked")) {
     console.log("Encendido ");
     // Esta es la forma de publicar un menssage bajo un tópico
     //Primero incluyo el tópico y despues el mensaje
     //El tópico es el que lo creo yo, los que se suscriban vana tener acceso a los mensajes
-    client.publish('led1','ON',(error) =>{
+    client.publish('led2','ON',(error) =>{
       //Ahora como estoy desarrollando es bueno revisar por pantalla
       //Pero despues todos los console.log se tienen que eliminar.
       //Asi no se expone informacion privada en el Internet
@@ -300,14 +280,12 @@ function process_led1(){
   }else{
     //Ahora lo mismo. Si el estado es apagado envío un mensaje.
     console.log("Apagado ");
-    client.publish('led1','off',(error) =>{
+    client.publish('led2','off',(error) =>{
       //Ahora como estoy desarrollando es bueno revisar por pantalla
       //Pero despues todos los console.log se tienen que eliminar.
       //Asi no se expone informacion privada en el Internet
       console.log(error || 'Mensaje enviado!!');
   }
-
-
 }
 
 }
@@ -327,8 +305,8 @@ De esta manera cuando el código crezca podemos ubicar las partes de manera más
           //Por razones obvias no incluyo las claves en este archivo.
           //Actualizar codigo en el servidor.
       		 clientId: 'emqx',
-      		 username: '',
-      		 password: '',
+      		 username: 'web_client',
+      		 password: '121212',
 
       		 keepalive: 60,
       		 clean: true,
