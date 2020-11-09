@@ -253,42 +253,7 @@ function process_msg (topic, message){
     update_values(temp1, temp2, temp3);
   }
 }
-/* ********************************************* */
-/*         Toogle buttons                        */
-/* ********************************************* */
 
-/*Al final lo que se necesita hacer es capturar el estado del interruptor
-  Cuando este prendido y cuando este apgado.
-  El nombre de la funcion me lo invento yo pero es el mismo que tiene que ir en el
-  codigo html dentro de la propiedad onchange
-*/
-function process_led2(){
-  //Recordar que para llamar a la libreria de JQUERY se comienza con $
-  //Después le indicamos el ID que vamos a utilizar, es decir el ID del toogleButton.
-  //Si el input del led1 esta encendido (checked) entonces:
-  if ($('#input_led2').is(":checked")) {
-    console.log("Encendido ");
-    // Esta es la forma de publicar un menssage bajo un tópico
-    //Primero incluyo el tópico y despues el mensaje
-    //El tópico es el que lo creo yo, los que se suscriban vana tener acceso a los mensajes
-    client.publish('led2','ON',(error) =>{
-      //Ahora como estoy desarrollando es bueno revisar por pantalla
-      //Pero despues todos los console.log se tienen que eliminar.
-      //Asi no se expone informacion privada en el Internet
-      console.log(error || 'Mensaje enviado!!');
-    })
-  }else{
-    //Ahora lo mismo. Si el estado es apagado envío un mensaje.
-    console.log("Apagado ");
-    client.publish('led2','off',(error) =>{
-      //Ahora como estoy desarrollando es bueno revisar por pantalla
-      //Pero despues todos los console.log se tienen que eliminar.
-      //Asi no se expone informacion privada en el Internet
-      console.log(error || 'Mensaje enviado!!');
-  }
-}
-
-}
 
 /*
 ********************************************************************************************
