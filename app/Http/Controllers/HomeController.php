@@ -12,14 +12,14 @@ use App\Http\Controllers\Controller;
 //Sino cuando intente hacer un retrive de la informacion no me va a encontrar
 //la variable.
 //use App\File;
-//use App\Video;
+use App\Video;
 use App\Doc;
 //Para mostrar las alertas tengo que tener el modelo importado.
 use App\Alert;
 //Este modelo lo utilizo para poder llamar la lista de usuarios en el landing page.
 use App\User;
 
-//use App\EmployeeInfo;
+use App\EmployeeInfo;
 
 
 class HomeController extends Controller
@@ -36,13 +36,15 @@ class HomeController extends Controller
     {
 
         //-------------PAGINATE----------------//
-        /*Hay varias formas de hacerlo. Lo puedo hacer con el QUERY builder utilizando el metodo DB. EN este caso NO tengo que importar el modelo de USER
+        /*Hay varias formas de hacerlo. Lo puedo hacer con el QUERY builder
+        utilizando el metodo DB. EN este caso NO tengo que importar el
+         modelo de USER
 
         $videos = DB::table('videos')->paginate(5);
         return view('home');
-        */
+
         $docs = DB::table('docs')->paginate(5);
-        return view('welcome');
+        return view('welcome');*/
         /*Tambien lo puedo hacer utilizando el modelo, de esta forma debo de importar el modelo FILE en el controlador. Tambien utilizo el ORDER BY para ordenar los videos de mas nuevo a mas antiguo*/
         //$files = File::orderBy('id','desc')-> paginate(5);
         /*Ahora le tengo que pasar la informacion a la vista, para eso le paso un array al VIEW*/
