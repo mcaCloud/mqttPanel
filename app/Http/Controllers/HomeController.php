@@ -6,9 +6,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-//Como esta informacion va a representarse en la pagina de Index, y existen diferentes tabs que van a interactuar con tablas diferentes. Debo mencionar a todos los modelos con los que voy a interactuar. Sino cuando intente hacer un retrive de la informacion no me va a encontrar la variable.
+//Como esta informacion va a representarse en la pagina de Index,
+//y existen diferentes tabs que van a interactuar con tablas diferentes.
+//Debo mencionar a todos los modelos con los que voy a interactuar.
+//Sino cuando intente hacer un retrive de la informacion no me va a encontrar
+//la variable.
 //use App\File;
 //use App\Video;
+use App\Doc;
 //Para mostrar las alertas tengo que tener el modelo importado.
 use App\Alert;
 //Este modelo lo utilizo para poder llamar la lista de usuarios en el landing page.
