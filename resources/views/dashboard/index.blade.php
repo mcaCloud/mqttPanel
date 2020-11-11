@@ -314,7 +314,7 @@ function process_led1(){
     // Esta es la forma de publicar un menssage bajo un tópico
     //Primero incluyo el tópico y despues el mensaje
     //El tópico es el que lo creo yo, los que se suscriban vana tener acceso a los mensajes
-    client.publish('led1','ledUnoON', (error) =>{
+    client.publish('led1','LedUnoON', (error) =>{
     //Ahora como estoy desarrollando es bueno revisar por pantalla
    //Pero despues todos los console.log se tienen que eliminar.
    //Asi no se expone informacion privada en el Internet
