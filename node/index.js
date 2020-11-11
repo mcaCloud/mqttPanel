@@ -19,7 +19,7 @@ var mqtt = require('mqtt');
 //Utilizo el metdo - createConnection
 //Dentro de las llaves escribo los datos de conexion
 var con = mysql.createConnection({
-  host: "gaia2-0.com",
+  host: "localhost",
   user:"mcespede",
   password:"$!KiwP$ratwXzw249!",
   database:"gaiaIOT",
