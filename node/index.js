@@ -22,7 +22,7 @@ var con = mysql.createConnection({
   host: "gaia2-0.com",
   user:"mcespede",
   password:"$!KiwP$ratwXzw249!",
-  database:"gaiaIOT"
+  database:"gaiaIOT",
 });
 //Con la conexion creada es hora de conectarme
 //Uso function(err)-> por si hay un error que me lo diga
