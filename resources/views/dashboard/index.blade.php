@@ -310,7 +310,7 @@ function process_led1(){
   //Después le indicamos el ID que vamos a utilizar, es decir el ID del toogleButton.
   //Si el input del led1 esta encendido (checked) entonces:
   if ($('#input_led1').is(":checked")) {
-    console.log("Encendido ");
+    console.log("Encendido" + topic);
     // Esta es la forma de publicar un menssage bajo un tópico
     //Primero incluyo el tópico y despues el mensaje
     //El tópico es el que lo creo yo, los que se suscriban vana tener acceso a los mensajes
