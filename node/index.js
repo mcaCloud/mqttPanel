@@ -19,6 +19,8 @@ var mqtt = require('mqtt');
 //Utilizo el metdo - createConnection
 //Dentro de las llaves escribo los datos de conexion
 var con = mysql.createConnection({
+  // Por algun motivo si no le pongo el debug no funciona y me niega la conexion
+  debug: true,
   host: "gaia2-0.com",
   user:"mcespede",
   password:"$!KiwP$ratwXzw249!",
