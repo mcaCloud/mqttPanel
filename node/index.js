@@ -19,9 +19,10 @@ var mqtt = require('mqtt');
 //Utilizo el metdo - createConnection
 //Dentro de las llaves escribo los datos de conexion
 var con = mysql.createConnection({
-  // Por algun motivo si no le pongo el debug no funciona y me niega la conexion
+  // Por algun motivo si no le pongo el debug no me entrega la informacion de la consulta
   debug: true,
-  host: "gaia2-0.com",
+  //Como la DB esta funcionando en el mismo servidor pongo local localhost
+  host: "localhost",
   user:"mcespede",
   password:"$!KiwP$ratwXzw249!",
   database:"gaiaIOT",
@@ -32,9 +33,10 @@ con.connect(function(err){
   //Hay que manejar los errores con un if simple
   //Si hay error tirame el error
   if (err) throw err;
-//Aqui ya estamos conectados entonces puedo ejecutar una consulta
-
-// **************  CONSULTA **********************
+  //Imprimo un mensaje para saber que ya estoy conectado
+  console.log("Conexion exitosa");
+  // **************  CONSULTA **********************
+    //Aqui ya estamos conectados entonces puedo ejecutar una consulta
   //Creo una variable local y preparo la consulta
   //Esta consulta dice seleccionamos todas las consultas de la tabla users
   //El WHERE 1 solo significa que lo seleccione de donde esta todo. Todas columnas y todas las filas
@@ -43,7 +45,6 @@ con.connect(function(err){
   //Le paso la consults -query-
   // La funcion no da errores si los hay, los resultados y los compos solicitados - fields -
   con.query(query, function(err, result, fields){
-
     if (err) throw err;
     //Los resultados se ponen dentro del if
     //So existen resultados imprimo los resultados. Forma bonita de hacerlo
