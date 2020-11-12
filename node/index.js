@@ -13,7 +13,7 @@ var mqtt = require('mqtt');
 //No basta con copiar y pegar los datos. Sino nos da error a la hora de instalar modulos
 
 // ********************************************
-// ************ Conexion MySql ****************
+// ************  MySql ****************
 // ********************************************
 
 //Utilizo el metdo - createConnection
@@ -60,6 +60,41 @@ con.connect(function(err){
     }
   });
 
+});
+
+// ********************************************
+// ************  MQTT  ************************
+// ********************************************
+var options = {
+  port: 1883,
+  host: 'gaia2-0.com',
+  clientId: 'access_control_server_'+Math.round(Math.random()*(0-10000)*-1),
+  username: 'web_client',
+  password: '121212',
+  keepalive: 60,
+  reconnectPeriod: 1000,
+  protocolId: 'MQIsdp',
+  protocolVersion: 3,
+  clean: true,
+  encoding: 'uft8'
+
+};
+
+// ********************************************
+// ************  MQTT CONEXION  ************************
+// ********************************************
+//Creo el cliente de mqtt
+var client = mqtt.connect("mqtt://gaia2-0.com",options);
+client.on('connect',function(){
+  console.log("Conexion a MQTT exitosa");
+
+  client.subscribe('+/#', function(err){
+    console.log("Suscripcion exitosa!!");
+  });
+})
+//Cuando recibe mensaje
+client.on('message',function(topic,message){
+  console.log("Mensaje recibido desde ->"+topic+message.toString());
 });
 
 // ************************************************************************
