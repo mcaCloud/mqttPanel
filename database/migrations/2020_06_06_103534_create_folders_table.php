@@ -20,7 +20,7 @@ class CreateFoldersTable extends Migration
 
             $table->integer('product_id')->unsigned()->nullable();
             $table->integer('cathegory_id')->unsigned()->nullable();
-            
+
             $table->integer('office_id')->unsigned()->nullable();
 
             $table->integer('req_data')->unsigned()->nullable();
@@ -38,10 +38,6 @@ class CreateFoldersTable extends Migration
                   ->on('users')
                   ->onDelete('cascade');
 
-            $table->foreign('product_id')
-                  ->references('id')
-                  ->on('products')
-                  ->onDelete('cascade');
 
             $table->foreign('cathegory_id')
                   ->references('id')

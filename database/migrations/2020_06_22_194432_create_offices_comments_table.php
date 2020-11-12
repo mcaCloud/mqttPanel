@@ -28,9 +28,6 @@ class CreateOfficesCommentsTable extends Migration
                   ->references('id')
                   ->on('users');
 
-            $table->foreign('office_id')
-                  ->references('id')
-                  ->on('offices');
         });
     }
 

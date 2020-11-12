@@ -35,13 +35,6 @@ class CreateFileCommentsTable extends Migration
                   ->references('id')
                   ->on('users');
 
-            $table->foreign('customer_id')
-                  ->references('id')
-                  ->on('customers');
-
-            $table->foreign('file_id')
-                  ->references('id')
-                  ->on('files');
         });
     }
 

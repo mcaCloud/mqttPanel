@@ -32,10 +32,6 @@ class CreateDocCommentsTable extends Migration
             $table->foreign('user_id')
                   ->references('id')
                   ->on('users');
-
-            $table->foreign('doc_id')
-                  ->references('id')
-                  ->on('docs');
         });
     }
 

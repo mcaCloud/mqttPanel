@@ -32,10 +32,6 @@ class CreateFilesTable extends Migration
                       ->on('folders')
                       ->onDelete('cascade');
 
-                $table->foreign('product_id')
-                      ->references('id')
-                      ->on('products')
-                      ->onDelete('cascade');
 
                 $table->foreign('created_by_id')
                       ->references('id')

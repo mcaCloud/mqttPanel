@@ -33,9 +33,6 @@ class CreateVideoCommentsTable extends Migration
                   ->references('id')
                   ->on('users');
 
-            $table->foreign('video_id')
-                  ->references('id')
-                  ->on('videos');
 
         });
     }
