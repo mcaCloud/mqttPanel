@@ -20,7 +20,7 @@ var mqtt = require('mqtt');
 //Dentro de las llaves escribo los datos de conexion
 var con = mysql.createConnection({
   // Por algun motivo si no le pongo el debug no me entrega la informacion de la consulta
-  debug: true,
+  //debug: true,
   //Como la DB esta funcionando en el mismo servidor pongo local localhost
   host: "localhost",
   user:"mcespede",
@@ -48,7 +48,7 @@ con.connect(function(err){
     if (err) throw err;
     //Los resultados se ponen dentro del if
     //So existen resultados imprimo los resultados. Forma bonita de hacerlo
-    if (result.lenth>0){
+    if (result.length > 0 ){
       //Esto seria un array con todas la filas y todo lo que encuentreSS
       console.log(result);
     }
