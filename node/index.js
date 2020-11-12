@@ -27,6 +27,11 @@ var con = mysql.createConnection({
   password:"$!KiwP$ratwXzw249!",
   database:"gaiaIOT",
 });
+
+// *****************************************************
+// **************  CREAR CONEXION MySql ****************
+// *****************************************************
+
 //Con la conexion creada es hora de conectarme
 //Uso function(err)-> por si hay un error que me lo diga
 con.connect(function(err){
@@ -35,8 +40,9 @@ con.connect(function(err){
   if (err) throw err;
   //Imprimo un mensaje para saber que ya estoy conectado
   console.log("Conexion exitosa");
+
   // **************  CONSULTA **********************
-    //Aqui ya estamos conectados entonces puedo ejecutar una consulta
+  //Aqui ya estamos conectados entonces puedo ejecutar una consulta
   //Creo una variable local y preparo la consulta
   //Esta consulta dice seleccionamos todas las consultas de la tabla users
   //El WHERE 1 solo significa que lo seleccione de donde esta todo. Todas columnas y todas las filas
