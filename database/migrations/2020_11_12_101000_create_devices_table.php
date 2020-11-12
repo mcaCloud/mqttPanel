@@ -15,11 +15,13 @@ class CreateDevicesTable extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->Increments('devices_id');
-            $table->timestamps('devices_date');
+
             $table->string('devices_alias')->nullable();
             $table->string('devices_serie');
             $table->integer('devices_user_id')->unsigned()->nullable();
 
+            $table->timestamps();
+            $table->index(['deleted_at']);
             $table->softDeletes();
 
             $table->foreign('devices_user_id')
