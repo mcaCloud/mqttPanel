@@ -37,17 +37,6 @@ class CreateFoldersTable extends Migration
                   ->references('id')
                   ->on('users')
                   ->onDelete('cascade');
-
-
-            $table->foreign('cathegory_id')
-                  ->references('id')
-                  ->on('cathegory')
-                  ->onDelete('cascade');
-
-            $table->foreign('office_id')
-                  ->references('id')
-                  ->on('offices')
-                  ->onDelete('cascade');
         });
     }
 

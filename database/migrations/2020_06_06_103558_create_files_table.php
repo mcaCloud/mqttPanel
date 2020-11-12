@@ -27,11 +27,6 @@ class CreateFilesTable extends Migration
 
                 $table->index(['deleted_at']);
 
-                $table->foreign('folder_id')
-                      ->references('id')
-                      ->on('folders')
-                      ->onDelete('cascade');
-
 
                 $table->foreign('created_by_id')
                       ->references('id')
